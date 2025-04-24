@@ -1,0 +1,561 @@
+---
+title: "Case Study 1: Frito-Lay Analysis"
+output: html_document
+author: "Chloe Barker"
+---
+# Download libraries
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(extrafont)
+library(caret)
+library(class)
+library(e1071)
+library(showtext)
+font_add_google("Oswald", "Oswald") 
+showtext_auto()
+```
+
+## Frito-Lay Attrition Project Links
+```{r}
+# PDF Presentation Link 
+browseURL("https://drive.google.com/file/d/1Tnj-58S58GQHO5TJ7wKfBoArqnQEkKkX/view?usp=sharing")
+
+# Presentation Link 
+browseURL("https://youtu.be/fbEB-BOKmEQ")
+```
+
+## Frito-Lay Attrition Analysis
+```{r}
+# Download Data
+frito_data = read.csv("CaseStudy1-data.csv", header = TRUE)
+# Make Attrition a factor: "Yes" = "Left", "No" = "Stayed"
+frito_data$Attrition = factor(frito_data$Attrition, labels = c( "Stayed", "Left"))
+# Make the "Left" group the positive reference group
+frito_data$Attrition = relevel(frito_data$Attrition, ref = "Left")
+# Check the counts of the employees who stayed vs left 
+table(frito_data$Attrition)
+```
+
+# Graph of Employees who Stayed vs. Left with Percentages
+```{r}
+frito_data %>% 
+  group_by(Attrition) %>% 
+  dplyr::summarize(count=n()) %>%
+  mutate(percent = (count / sum(count))*100) %>%
+  ggplot(aes(x=Attrition, y = percent, fill=Attrition)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(percent,2),"%")), nudge_y = 4, size = 5, family = "Oswald") + 
+  theme_gdocs(base_family = "Oswald", base_size = 14) + 
+  theme(legend.position = "none") +
+  ggtitle("Percentage of Employees Who Stayed vs. Left") + 
+  xlab("Attrition Status") + 
+  ylab("Percent") + 
+  scale_fill_manual(values = c("Left" = "red", "Stayed" = "yellow"))
+```
+
+# Analysis of Categorical Variables
+## Categorical Variables with Less Variation Visually
+```{r}
+## Department
+frito_data %>% 
+  group_by(Department, Attrition) %>% 
+  summarise(count = n(), .groups = "drop") %>% 
+  group_by(Department) %>% 
+  mutate(percent = count / sum(count) * 100) %>%  
+  ggplot(aes(x = Department, y = percent / 100, fill = Attrition)) +
+  geom_bar(position = "fill", stat = "identity") + 
+  geom_text(aes(label = ifelse(Attrition == "Left", paste0(round(percent, 1), "%"), "")), 
+            position = position_fill(vjust = 0.5), color = "black", family = "Oswald") +  
+  theme_gdocs(base_family = "Oswald", base_size = 13) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") +
+  xlab("Department") + 
+  ggtitle("Proportion of Employees Who Stayed vs. Left by Department") + 
+  ylab("Proportion") + 
+  scale_fill_manual(values = c("Left" = "red", "Stayed" = "yellow"))
+
+## Gender
+frito_data %>% 
+  group_by(Gender, Attrition) %>% 
+  summarise(count = n(), .groups = "drop") %>% 
+  group_by(Gender) %>% 
+  mutate(percent = count / sum(count) * 100) %>%  
+  ggplot(aes(x = Gender, y = percent / 100, fill = Attrition)) +
+  geom_bar(position = "fill", stat = "identity") + 
+  geom_text(aes(label = ifelse(Attrition == "Left", paste0(round(percent, 1), "%"), "")), 
+            position = position_fill(vjust = 0.5), color = "black", family = "Oswald", size = 5) +  
+  theme_gdocs(base_family = "Oswald", base_size = 14) + 
+  theme(legend.position = "none") +
+  xlab("Gender") + 
+  ggtitle("Proportion of Employees Who Stayed vs. Left by Gender") + 
+  ylab("Proportion") + 
+  scale_fill_manual(values = c("Left" = "red", "Stayed" = "yellow"))
+
+# Department and Gender see little variation between the number of employees leaving across their categories. 
+```
+
+## Categorical Variables with the Most Variation Visually
+```{r}
+## Job Role
+frito_data %>% 
+  group_by(JobRole, Attrition) %>% 
+  summarise(count = n(), .groups = "drop") %>% 
+  group_by(JobRole) %>% 
+  mutate(percent = count / sum(count) * 100) %>%
+  ggplot(aes(x = JobRole, y = percent / 100, fill = Attrition)) + 
+  geom_bar(position = "fill", stat = "identity") + 
+  geom_text(aes(label = ifelse(Attrition == "Left", paste0(round(percent, 1), "%"), "")), 
+            position = position_fill(vjust = 0.5), color = "black", family = "Oswald", size = 5) +
+  theme_gdocs(base_family = "Oswald", base_size = 14) + 
+  ggtitle("Proportion of Employees Who Stayed vs. Left by Job Role") +
+  theme(plot.title = element_text(size = 15), legend.position = "none") +
+  xlab("Job Role") +
+  ylab("Proportion") + 
+  scale_fill_manual(values = c("Left" = "red", "Stayed" = "yellow")) + 
+  coord_flip()
+
+## Over Time
+frito_data %>% 
+  group_by(OverTime, Attrition) %>% 
+  summarise(count = n(), .groups = "drop") %>% 
+  group_by(OverTime) %>% 
+  mutate(percent = count / sum(count) * 100) %>%  
+  ggplot(aes(x = OverTime, y = count, fill = Attrition)) + 
+  geom_bar(position = "fill", stat = "identity") + 
+  geom_text(aes(label = ifelse(Attrition == "Left", paste0(round(percent, 1), "%"), "")), 
+            position = position_fill(vjust = 0.5), color = "black", family = "Oswald", size = 5) +  
+  theme_gdocs(base_family = "Oswald", base_size = 14) + 
+  theme(plot.title = element_text(size = 15), legend.position = "none") +
+  ggtitle("Proportion of Employees Who Stayed vs. Left by Over Time") + 
+  ylab("Proportion") + 
+  xlab("Over Time Status") + 
+  scale_fill_manual(values = c("Left" = "red", "Stayed" = "yellow"))
+
+# Job Role, Over Time, and Job Level see high variation between the number of employees leaving across their categories. 
+```
+
+## t-Test Analysis for Numeric Variables
+#### Goal: Determine whether the mean value of each numeric variable differs significantly between employees who Stayed versus those who Left.
+#### Impact: If any variable shows a statistically significant difference across these two groups, it may be a strong indicator of attrition risk and should be investigated further as a potential leading factor driving employee turnover.
+```{r}
+# Make sure relevant columns are numeric for testing
+frito_data$DailyRate = as.numeric(frito_data$DailyRate)
+frito_data$MonthlyRate = as.numeric(frito_data$MonthlyRate)
+frito_data$HourlyRate = as.numeric(frito_data$HourlyRate)
+frito_data$NumCompaniesWorked = as.numeric(frito_data$NumCompaniesWorked)
+frito_data$Education = as.numeric(frito_data$Education)
+frito_data$RelationshipSatisfaction = as.numeric(frito_data$RelationshipSatisfaction)
+frito_data$PerformanceRating = as.numeric(frito_data$PerformanceRating)
+frito_data$PercentSalaryHike = as.numeric(frito_data$PercentSalaryHike)
+frito_data$TrainingTimesLastYear = as.numeric(frito_data$TrainingTimesLastYear)
+frito_data$YearsSinceLastPromotion = as.numeric(frito_data$YearsSinceLastPromotion)
+frito_data$Age = as.numeric(frito_data$Age)
+frito_data$MonthlyIncome = as.numeric(frito_data$MonthlyIncome)
+frito_data$DistanceFromHome = as.numeric(frito_data$DistanceFromHome)
+frito_data$EnvironmentSatisfaction = as.numeric(frito_data$EnvironmentSatisfaction)
+frito_data$JobInvolvement = as.numeric(frito_data$JobInvolvement)
+frito_data$JobLevel = as.numeric(frito_data$JobLevel)
+frito_data$JobSatisfaction = as.numeric(frito_data$JobSatisfaction)
+frito_data$TotalWorkingYears = as.numeric(frito_data$TotalWorkingYears)
+frito_data$WorkLifeBalance = as.numeric(frito_data$WorkLifeBalance)
+frito_data$YearsAtCompany = as.numeric(frito_data$YearsAtCompany)
+frito_data$YearsInCurrentRole = as.numeric(frito_data$YearsInCurrentRole)
+frito_data$YearsWithCurrManager = as.numeric(frito_data$YearsWithCurrManager)
+frito_data$StockOptionLevel = as.numeric(frito_data$StockOptionLevel)
+
+# We perform two-sample t-tests for each numeric variable grouped by Attrition ("Left" vs. "Stayed")
+# Small p-values (<0.05) suggest statistical significance and we can reject the null hypothesis that the means are equal. 
+
+# Example: Daily Rate (Not significant) 
+t.test(DailyRate ~ Attrition, data = frito_data)
+# Example: MonthlyIncome (Significant)
+t.test(MonthlyIncome ~ Attrition, data = frito_data)
+# Critical Value for Monthly Income test
+qt(.975,228.45)
+# Example: Age (Significant)
+t.test(Age ~ Attrition, data = frito_data)
+# Critical Value for Age test 
+qt(.975,184.91)
+
+# Below are additional tests for analysis that were run. 
+# Not significant
+# t.test(MonthlyRate ~ Attrition, data = frito_data)
+# t.test(HourlyRate ~ Attrition, data = frito_data)
+# t.test(NumCompaniesWorked ~ Attrition, data = frito_data)
+# t.test(Education ~ Attrition, data = frito_data)
+# t.test(RelationshipSatisfaction ~ Attrition, data = frito_data)
+# t.test(PerformanceRating~ Attrition, data = frito_data)
+# t.test(PercentSalaryHike ~ Attrition, data = frito_data)
+# t.test(TrainingTimesLastYear~ Attrition, data = frito_data)
+# t.test(YearsSinceLastPromotion~ Attrition, data = frito_data)
+
+# Significant difference of means
+# t.test(DistanceFromHome ~ Attrition, data = frito_data)
+# t.test(EnvironmentSatisfaction ~ Attrition, data = frito_data)
+# t.test(JobSatisfaction~ Attrition, data = frito_data)
+# t.test(WorkLifeBalance ~ Attrition, data = frito_data)
+# t.test(StockOptionLevel ~ Attrition, data = frito_data)
+# t.test(JobInvolvement ~ Attrition, data = frito_data)
+# t.test(YearsWithCurrManager	~ Attrition, data = frito_data)
+# t.test(YearsAtCompany~ Attrition, data = frito_data)
+
+# Strong significance for difference of means
+# t.test(JobLevel~ Attrition, data = frito_data)
+# t.test(TotalWorkingYears ~ Attrition, data = frito_data)
+# t.test(YearsInCurrentRole ~ Attrition, data = frito_data)
+```
+
+## Further Visuals of Data
+```{r}
+# Age vs. Monthly Income by Over Time
+# More red points in the "Yes" Over Time category among lower monthly incomes on average, with many red points (Attrition group that Left) seen among employees around the ages of 20 to 30. 
+ggplot(frito_data, aes(x = Age, y = MonthlyIncome, color = Attrition)) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(~ OverTime) +
+  scale_color_manual(values = c("Stayed" = "yellow", "Left" = "red")) +
+  theme_gdocs(base_family = "Oswald", base_size = 12) +
+  labs(title = "Age vs Monthly Income by Over Time",
+       x = "Age",
+       y = "Monthly Income")
+
+
+# Age vs. Monthly Income for Sales Representatives
+# Job Role with a large proportion of employees leaving, shown for Age verses Monthly Income.
+frito_data %>%
+  filter(JobRole == "Sales Representative") %>%
+  ggplot(aes(x = Age, y = MonthlyIncome, color = Attrition)) +
+  geom_point(alpha = 0.7) +
+  scale_color_manual(values = c("Stayed" = "yellow", "Left" = "red")) +
+  theme_gdocs(base_family = "Oswald", base_size = 12) +
+  labs(title = "Age vs. Monthly Income for Sales Representatives", x= "Age",y = "Monthly Income")
+
+# Age vs. Monthly Income by Job Role
+# There is a higher frequency of red points for certain job roles, as seen in the "Sales Represenatives" and "Research Scientist" categories. 
+ggplot(frito_data, aes(x = Age, y = MonthlyIncome, color = Attrition)) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(~ JobRole) +
+  scale_color_manual(values = c("Stayed" = "yellow", "Left" = "red")) +
+  theme_gdocs(base_family = "Oswald", base_size = 12) +
+  labs(title = "Age vs. Monthly Income by Job Role", x = "Age",y = "Monthly Income")
+
+# Years In Current Role vs. Monthly Income for Job Level 1
+# There is a high frequency of red points seen in the first Job Level mainly among first year through thirs year employees. 
+frito_data %>%
+  filter(JobLevel == "1") %>%
+  ggplot(aes(x = YearsInCurrentRole, y = MonthlyIncome, color = Attrition)) +
+  geom_jitter(alpha = 0.7, width = 0.3, height = 0) +
+  scale_color_manual(values = c("Stayed" = "yellow", "Left" = "red")) +
+  theme_gdocs(base_family = "Oswald", base_size = 12) +
+  theme(legend.position = "none") +
+  labs(title = "Years In Current Role vs. Monthly Income for Job Level 1", x= "Years In Current Role",y = "Monthly Income")
+
+# Years In Current Role vs. Monthly Income for Job Levels
+# There is a high frequency of red points (employees leaving) seen in the first three Job Levels. The first job level sees a higher frequency of employees leaving in their first three years, whereas job level 3 sees more employees leaving around the seven to ten year mark. 
+ggplot(frito_data, aes(x = YearsInCurrentRole, y = MonthlyIncome, color = Attrition)) +
+  geom_jitter(alpha = 0.6, width = 0.2, height = 0) +
+  facet_wrap(~ JobLevel) +
+  scale_color_manual(values = c("Stayed" = "yellow", "Left" = "red")) +
+  theme_gdocs(base_family = "Oswald", base_size = 10) +
+  theme(legend.position = "none") +
+  labs(title = "Years In Current Role vs Monthly Income by Job Level",x = "Years In Current Role", y = "Monthly Income") 
+```
+
+# Naive Bayes Model
+```{r}
+# Reload the data 
+fritonb = read.csv("CaseStudy1-data.csv", header = TRUE)
+# Make Attrition a factor: "Yes" = "Left", "No" = "Stayed" 
+fritonb$Attrition = factor(fritonb$Attrition, labels = c( "Stayed", "Left"))
+fritonb$Attrition = relevel(fritonb$Attrition, ref = "Left")
+
+# Convert more significant columns from previous tests to numeric variables for the model
+fritonb$MonthlyIncome = as.numeric(fritonb$MonthlyIncome)
+fritonb$Age = as.numeric(fritonb$Age)
+fritonb$TotalWorkingYears = as.numeric(fritonb$TotalWorkingYears)
+fritonb$YearsInCurrentRole = as.numeric(fritonb$YearsInCurrentRole)
+fritonb$YearsWithCurrManager = as.numeric(fritonb$YearsWithCurrManager)
+# Convert the more visually significant columns from previous tests to factors for the model
+fritonb$JobRole = as.factor(fritonb$JobRole)
+fritonb$OverTime = as.factor(fritonb$OverTime)
+fritonb$JobLevel = as.factor(fritonb$JobLevel)
+fritonb$JobInvolvement = as.factor(fritonb$JobInvolvement)
+```
+
+```{r}
+# Naive Bayes Testing Model
+# Picked a subset of three features (i.e JobLevel, OverTime, YearsInCurrentRole) to see how well they predict Attrition. We chose threshold = 0.20 after my initial runs to balance sensitivity and specificity as sensitivity slightly more important here as we try to correctly predict who will leave the company.
+
+frito_nb = fritonb %>% select(JobLevel, OverTime, YearsInCurrentRole, Attrition)
+threshold = .20
+# Fit Naive Bayes model using selected predictors
+nb_model = naiveBayes(frito_nb[,1:3],frito_nb[,4])
+probsNB = predict(nb_model,frito_nb[,1:3], type = "raw")
+# We use a threshold to predict "Left" for probabilities greater than 20% 
+NewClass = ifelse(probsNB[,1] > threshold, "Left", "Stayed")
+# Confusion matrix to find accuracy, sensitivity, and specificity
+CM_nb = confusionMatrix(table(NewClass, frito_nb[,4]), mode = "everything")
+
+# Different Models Tested for Comparison
+# frito_nb = fritonb %>% select(JobRole, OverTime, Age, Attrition)
+## Sensitivity: 0.60000, Specificity: 0.82329, Accuracy: 0.7874
+
+# frito_nb = fritonb %>% select(JobLevel, YearsInCurrentRole, OverTime, Attrition)
+## Sensitivity: 0.6786, Specificity: 0.6918, Accuracy: 0.6897
+```
+
+## Naive Bayes Model with 100 different seeds for JobRole, OverTime, and Age
+```{r}
+# We run the Naive Bayes model 100 times with different seeds, each time shuffling the data, to get average performance metrics. We then calculate potential "costs" of attrition or misclassifications using a range of 50% to 400% of an average yearly salary for replacements.
+
+# Incentive Cost for people predicted to leave
+CostPerIncentive = 200
+# Average annual salary
+x = mean(fritonb$MonthlyIncome) * 12
+# Lower bound (50% of salary)
+CostPerAttrition1 = 0.5 * x
+# Upper bound (400% of salary)
+CostPerAttrition2 = 4.0 * x
+
+# Vectors to store results from loop
+FN_Holder = numeric(100) # False Negatives (predicted stayed, actually left)
+FP_Holder = numeric(100) # False Positives (predicted left, actually stayed)
+TP_Holder = numeric(100) # True Positives (predicted left, actually left)
+AccHolder = numeric(100) # Accuracy
+SensHolder = numeric(100) # Sensitivity
+SpecHolder = numeric(100) # Specificity
+
+# Naive Bayes Model Loop with threshold of 0.12 based on previous testing 
+for (seed in 101:200) {
+  set.seed(seed)
+  frito_nb = fritonb[sample(nrow(fritonb)), ]
+  threshold = 0.12
+  nb_model = naiveBayes(frito_nb[, c("JobRole", "OverTime", "Age")], frito_nb$Attrition)
+  probsNB = predict(nb_model, frito_nb[, c("JobRole", "OverTime", "Age")], type = "raw")
+  NewClass = ifelse(probsNB[,1] > threshold, "Left", "Stayed")
+  
+  # Confusion Matrix
+  CM_nb = confusionMatrix(table(NewClass, frito_nb$Attrition), mode = "everything")
+  
+  AccHolder[seed-100] = CM_nb$overall["Accuracy"]
+  SensHolder[seed-100] = CM_nb$byClass["Sensitivity"]
+  SpecHolder[seed-100] = CM_nb$byClass["Specificity"]
+  FN_Holder[seed-100] = CM_nb$table[2]
+  FP_Holder[seed-100] = CM_nb$table[3]
+  TP_Holder[seed-100] = CM_nb$table[1]
+}
+
+# Overall average performance of model
+mean_accuracy = mean(AccHolder)
+mean_sensitivity = mean(SensHolder)
+mean_specificity = mean(SpecHolder)
+
+# Average values from the confusion matrix tables
+Avg_FN = mean(FN_Holder)
+Avg_FP = mean(FP_Holder)
+Avg_TP = mean(TP_Holder)
+
+# Estimated costs calculation
+# Incentives go to predicted positives (False Positives + True Positives)
+# Employees predicted to stay, but actually leave (False Negatives) will cost 40% to 500% of an average salary to find a replacement. 
+Cost_Base1 = CostPerAttrition1 * Avg_FN + CostPerIncentive * (Avg_FP + Avg_TP)
+Cost_Base2 = CostPerAttrition2 * Avg_FN + CostPerIncentive * (Avg_FP + Avg_TP)
+
+# Overall results across the 100 seeds
+print(list(
+  "Mean Accuracy" = mean_accuracy,
+  "Mean Sensitivity" = mean_sensitivity,
+  "Mean Specificity" = mean_specificity,
+  "Estimated Cost (50% Attrition Cost)" = Cost_Base1,
+  "Estimated Cost (400% Attrition Cost)" = Cost_Base2))
+```
+
+# kNN Model Data set-up
+```{r}
+fritok = read.csv("CaseStudy1-data.csv", header = TRUE)
+# Make Attrition a factor and make the "Left" group the reference group
+fritok$Attrition = factor(fritok$Attrition, labels = c( "Stayed", "Left"))
+fritok$Attrition = relevel(fritok$Attrition, ref = "Left")
+# Convert more significant columns from previous tests to numeric variables for the model
+fritok$OverTime = as.numeric(as.factor(fritok$OverTime))
+fritok$Age = as.numeric(fritok$Age)
+fritok$JobRole = as.numeric(as.factor(fritok$JobRole))
+fritok$JobLevel = as.numeric(as.factor(fritok$JobLevel))
+fritok$YearsInCurrentRole = as.numeric(fritok$YearsInCurrentRole)
+# Standardize predictor variables for the model
+fritok$Z_OverTime = scale(fritok$OverTime)
+fritok$Z_Age = scale(fritok$Age)
+fritok$Z_JobRole = scale(fritok$JobRole)
+fritok$Z_YearsInCurrentRole = scale(fritok$YearsInCurrentRole)
+fritok$Z_JobLevel = scale(fritok$JobLevel)
+```
+
+```{r}
+# kNN Testing Model
+# Here we pick a subset of three standardized features (i.e Z_JobRole, Z_OverTime, Z_Age) to see how well they predict Attrition. We chose threshold = 0.15 after initial experimentation to balance sensitivity and specificity as sensitivity is important here as we try to correctly predict who will leave the company. 
+threshold = .15
+frito_k = fritok %>% select(Z_JobRole, Z_OverTime, Z_Age, Attrition)
+classifications = knn(frito_k[,1:3], frito_k[,1:3], cl = frito_k[,4], prob = TRUE, k = 11)
+probs = ifelse(classifications == "Left", attributes(classifications)$prob, 1 - attributes(classifications)$prob)
+NewClass = ifelse(probs > threshold, "Left", "Stayed")
+CM_k = confusionMatrix(table(NewClass, frito_k[,4]), mode = "everything")
+# Confusion matrix to find accuracy, sensitivity, and specificity
+CM_k
+
+# frito_k = fritok %>% select(Z_JobLevel, Z_OverTime, Z_YearsInCurrentRole, Attrition)
+## Sensitivity : 0.7857       
+## Specificity : 0.6288
+## Accuracy : 0.654
+## Threshold = .15
+
+# frito_k = fritok %>% select(Z_JobRole, Z_OverTime, Z_Age, Attrition)
+## Sensitivity : 0.8143      
+## Specificity : 0.6521
+## Accuracy : 0.6782
+## Threshold = .15
+```
+
+#Graph to find best k-value for the model
+```{r}
+frito_k = fritok %>% select(Z_JobRole, Z_OverTime, Z_Age, Attrition)
+
+# We will run 50 iterations over 90 values of k (1-90) and plot the average performance of them to see where our accuracy and sensitivity are highest to determine the best k-value range. 
+set.seed(1)
+iterations = 50
+numks = 90
+# Vectors to store results from loop
+masterAcc = matrix(nrow = iterations, ncol = numks)
+masterSens = matrix(nrow = iterations, ncol = numks)
+masterSpec = matrix(nrow = iterations, ncol = numks)
+  
+for(j in 1:iterations)
+{
+  
+  for(i in 1:numks)
+  {
+    threshold = .15
+    classifications = knn(frito_k[,1:3], frito_k[,1:3], cl = frito_k[,4], prob = TRUE, k = i)
+    probs = ifelse(classifications == "Left", attributes(classifications)$prob, 1 - attributes(classifications)$prob)
+    NewClass = ifelse(probs > threshold, "Left", "Stayed")
+    CMk = confusionMatrix(table(NewClass, frito_k[,4]), mode = "everything")
+    
+    masterAcc[j,i] = CMk$overall[1]
+    masterSens[j,i] = CMk$byClass["Sensitivity"]
+    masterSpec[j,i] = CMk$byClass["Specificity"]
+    
+  }
+  
+}
+# Plot of k vs. accuracy
+MeanAcc = colMeans(masterAcc)
+plot(seq(1,numks,1),MeanAcc, type = "l", xlab = "k-value", ylab = "Mean Accuracy")
+
+# Plot of k vs. sensitivity
+MeanSens = colMeans(masterSens)
+plot(seq(1,numks,1),MeanSens, type = "l", xlab = "k-value", ylab = "Mean Sensitivity")
+```
+
+# kNN Model over 100 iterations for JobRole, OverTime, and Age (k = 3)
+```{r}
+frito_k = fritok %>% select(Z_JobRole, Z_OverTime, Z_Age, Attrition)
+# Incentive Cost for people predicted to leave
+CostPerIncentive = 200
+# Average annual salary
+x = mean(fritonb$MonthlyIncome) * 12
+# Lower bound (50% of salary)
+CostPerAttrition1 = 0.5 * x
+# Upper bound (400% of salary)
+CostPerAttrition2 = 4.0 * x
+
+set.seed(1)
+iterations = 100
+
+# Vectors to store results from loop
+FNk_Holder = numeric(100) # False Negatives (predicted stayed, actually left)
+FPk_Holder = numeric(100) # False Positives (predicted left, actually stayed)
+TPk_Holder = numeric(100) # True Positives (predicted left, actually left)
+AccHolderk = numeric(100) # Accuracy
+SensHolderk = numeric(100) # Sensitivity
+SpecHolderk = numeric(100) # Specificity
+
+# We will use k=3 and a threshold of 0.15
+for (j in 1:iterations) {
+  threshold = .15
+  classifications = knn(frito_k[,1:3], frito_k[,1:3], cl = frito_k[,4], prob = TRUE, k = 3)
+  probs = ifelse(classifications == "Left", attributes(classifications)$prob, 1 - attributes(classifications)$prob)
+  NewClass = ifelse(probs > threshold, "Left", "Stayed")
+  CM_k = confusionMatrix(table(NewClass, frito_k[,4]), mode = "everything")
+  
+  AccHolderk[j] = CM_k$overall[1]
+  SensHolderk[j] = CM_k$byClass["Sensitivity"]
+  SpecHolderk[j] = CM_k$byClass["Specificity"]
+  FNk_Holder[j] = CM_k$table[2]
+  FPk_Holder[j] = CM_k$table[3]
+  TPk_Holder[j] = CM_k$table[1]
+  
+}
+
+# Average Performance Metrics
+mean_accuracyk = mean(AccHolderk)
+mean_sensitivityk = mean(SensHolderk)
+mean_specificityk = mean(SpecHolderk)
+
+# Average Values for Confusion Matrix Tables
+Avg_FNk = mean(FNk_Holder)
+Avg_FPk = mean(FPk_Holder)
+Avg_TPk = mean(TPk_Holder)
+
+# Cost Calculations
+Cost_Basek1 = CostPerAttrition1 * Avg_FNk + CostPerIncentive * (Avg_FPk + Avg_TPk)
+Cost_Basek2 = CostPerAttrition2 * Avg_FNk + CostPerIncentive * (Avg_FPk + Avg_TPk)
+
+# Overall Results
+print(list(
+  "Mean Accuracy (k=3)" = mean_accuracyk,
+  "Mean Sensitivity (k=3)" = mean_sensitivityk,
+  "Mean Specificity (k=3)" = mean_specificityk,
+  "Estimated Cost (50% Attrition Cost)" = Cost_Basek1,
+  "Estimated Cost (400% Attrition Cost)" = Cost_Basek2))
+```
+
+# Competition portion to predict Attrition for a seperate data set
+```{r}
+frito = read.csv("CaseStudy1-data.csv", header = TRUE)
+# Make Attrition a factor and make the "Left" group the reference group
+frito$Attrition = factor(frito$Attrition, labels = c( "No", "Yes"))
+frito$Attrition = relevel(frito$Attrition, ref = "Yes")
+# Make variables numeric
+frito$OverTime = as.numeric(as.factor(frito$OverTime))
+frito$Age = as.numeric(frito$Age)
+frito$JobRole = as.numeric(as.factor(frito$JobRole))
+# Standardize predictor variables
+frito$Z_OverTime = scale(frito$OverTime)
+frito$Z_Age = scale(frito$Age)
+frito$Z_JobRole = scale(frito$JobRole)
+
+# Download Competition Set of 300 rows
+CompSet = read.csv("CaseStudy1CompSet No Attrition.csv", header = TRUE)
+# Make variables numeric
+CompSet$OverTime = as.numeric(as.factor(CompSet$OverTime))
+CompSet$Age = as.numeric(CompSet$Age)
+CompSet$JobRole = as.numeric(as.factor(CompSet$JobRole))
+# Standardize predictor variables
+CompSet$Z_OverTime = scale(CompSet$OverTime)
+CompSet$Z_Age = scale(CompSet$Age)
+CompSet$Z_JobRole = scale(CompSet$JobRole)
+```
+
+# Competition Portion Using kNN model
+```{r}
+frito_train = frito %>% select(Z_OverTime,Z_JobRole,Z_Age,Attrition)
+Comp_test = CompSet %>% select(Z_OverTime,Z_JobRole,Z_Age,ID)
+
+classifications = knn(frito_train[, 1:3], Comp_test[, 1:3], cl = frito_train$Attrition, prob = TRUE, k = 3)
+probs = ifelse(classifications == "Yes", attributes(classifications)$prob, 1 - attributes(classifications)$prob)
+NewClass = ifelse(probs > threshold, "Yes", "No")
+new_att = data.frame(ID = CompSet$ID, Attrition = NewClass)
+write.csv(new_att, "Case1PredictionsChloe Attrition.csv", row.names = FALSE)
+head(new_att)
+```

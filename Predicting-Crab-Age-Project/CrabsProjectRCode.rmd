@@ -1,0 +1,746 @@
+---
+title: "CrabsDataScienceFinalProject"
+author: "Chloe Barker, Drew Nunnally, Tracy Dower"
+date: "2025-04-21"
+output: word_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/Crabs/") # Set root directory so that all file paths default to C:/Crabs
+setwd("C:/Crabs") # Set working directory too for safety
+[Link Text](https://dnunnally21.shinyapps.io/Crab_Final/)
+```
+# Load Required Libraries 
+Load libraries required for data manipulation, machine learning, and plotting
+```{r libraries}
+library(ggplot2)
+library(gtsummary) # pretty tables
+library(overviewR)
+# library(pROC)
+library(tidyverse)
+# library(UBL)
+library(GGally)
+
+intVersionNumber <- 10 
+# Set  colors
+hexBlue <- "#354CA1"
+hexRed <- "#CC0035" 
+hexGold <- "#DD923B"
+sex_colors <- c("Female" = hexRed, "Male" = hexBlue, "Indeterminate" = hexGold)
+age_group_colors <- c("Young" = "#1f78b4", "Adult" = "#e31a1c", "Old" = "#33a02c")
+
+```
+# EDA
+## Load Test and combinedData
+```{r load-data}
+train <- read.csv("train-1.csv")
+test <- read.csv("competition-1.csv")
+```
+## CompareTest and Train, Compare
+Do test and train have the same columns and the same levels?
+```{r compare-datasets}
+# Columns only in train
+setdiff(names(train), names(test))
+# Columns only in test
+setdiff(names(test), names(train))
+# Columns in both
+intersect(names(train), names(test))
+# Check for levels in one dataset that aren't in the other
+categoricals <- names(train)[sapply(train, is.factor)]
+for (var in categoricals) {
+ cat("Levels in test only for", var, ":\n")
+ print(setdiff(unique(test[[var]]), unique(train[[var]])))
+}
+```
+## Combine Test and Train before cleaning
+```{r combine-data}
+train <- train %>% mutate(DataSet = "train")
+test <- test %>% mutate(DataSet = "test")
+combinedData <- bind_rows(train, test)
+
+# Set factor levels for Sex
+combinedData$Sex <- factor(combinedData$Sex, levels = c("F", "M", "I"), labels = c("Female", "Male", "Indeterminate"))
+names(combinedData)[names(combinedData) == "id"] <- "ID"
+
+# Order the columns for consistent nice plots and tables.
+orderColumns <- c("Age", "Sex", "Diameter", "Height", "Length", "Weight","Shell.Weight", "Shucked.Weight", "Viscera.Weight")
+
+# Reorder the columns for nice reporting
+combinedData <- combinedData[ , c("ID","DataSet", orderColumns)]
+# names(combinedData)
+```
+## Handle Missing and Nonsense Values
+```{r nonsense-values}
+# names(combinedData)
+combinedData |> 
+ tbl_summary( 
+ by = Sex
+ ,include = c(Length, Diameter, Height, Weight, Shell.Weight, Shucked.Weight, Viscera.Weight)
+ ,type = all_continuous() ~ "continuous2"
+ ,statistic = all_continuous() ~ c(
+ "{N_nonmiss}",
+ "{median} ({p25}, {p75})",
+ "{min}, {max}"
+ ),
+ missing = "no"
+ ) |>
+ add_p(pvalue_fun = label_style_pvalue(digits = 2))
+# Number of rows in our data where values are NA
+sum(sapply(names(combinedData), function(col) {
+ if (col == "Age") {
+ sum(is.na(combinedData[[col]]) & combinedData$DataSet != "Train") # We expect NAs for Age in our Train set.
+ } else {
+ sum(is.na(combinedData[[col]]))
+ }
+}))
+
+# number of rows in our data where values are nonsense (0 is not a valid value)
+sum(sapply(combinedData[ , names(combinedData) != "id"], function(x) sum(x == 0, na.rm = TRUE)))
+# nrow(combinedData)
+
+summaryMissing <- function(data, ignore_cols = c("ID", "Age")) {
+ data %>%
+ summarise(across(where(is.numeric), ~sum(is.na(.) | . == 0))) %>%
+ select(-all_of(ignore_cols)) %>%
+ pivot_longer(everything(), names_to = "Variable", values_to = "Missing_Count") %>%
+ filter(Missing_Count > 0) %>%
+ mutate(Missing_Percent = round(Missing_Count / nrow(data) * 100, 2)) %>%
+ arrange(desc(Missing_Count))
+}
+missingStart <- summaryMissing(combinedData)
+missingStart
+
+```
+We have data for 25000 crabs; of those, only 19 crabs are missing Height, and only 3 crabs are missing Diameter.
+We impute the missing values for Diameter based on a simple linear regression model using Sex, Height, Weight, and Length.
+We impute the missing values for Height based on a simple linear regression model using Sex, Diameter, Weight, and Length.
+
+```{r fix-nonsense-values}
+fitDiameter <- lm(Diameter ~ Weight + Length + Height + Sex, data = combinedData[combinedData$Height > 0 & combinedData$Diameter > 0, ])
+ missing <- which(combinedData$Diameter == 0 & combinedData$Height > 0 & combinedData$Length > 0 & combinedData$Weight > 0) # Predict Diameter for those rows using the fitted model
+ combinedData$Diameter[missing] <- predict(fitDiameter, newdata = combinedData[missing, ]) # Replace Diameter with predicted values
+# Predict Height for those rows using the fitted model
+fitHeight <- lm(Height ~ Weight + Length + Diameter + Sex, data = combinedData %>% filter(Height > 0, Diameter > 0, Length > 0, Weight > 0))
+# Predict Diameter for those 
+missing <- which(combinedData$Height == 0 & combinedData$Diameter > 0 & combinedData$Length > 0 & combinedData$Weight > 0) 
+# Replace Height with predicted values 
+ combinedData$Height[missing] <- predict(fitHeight, newdata = combinedData[missing, ]) 
+missingEnd <- summaryMissing(combinedData)
+missingEnd
+
+# Missing data has been resolved.
+```
+## Plot and Summarize Data
+```{r simple-summary-raw-variables}
+
+# A different summary table 
+tbl_summary(
+ combinedData[ , names(combinedData) != "ID"],
+ by = Sex,
+ label = NULL,
+ statistic = list(all_continuous() ~ "{median} ({p25}, {p75})", all_categorical() ~ "{n} ({p}%)"),
+ digits = NULL,
+ type = NULL,
+ value = NULL,
+ missing = c("ifany", "no", "always"),
+ missing_text = "Unknown",
+ missing_stat = "{N_miss}",
+ sort = all_categorical(FALSE) ~ "alphanumeric",
+ percent = c("column", "row", "cell"),
+ include = orderColumns #everything()
+)
+```
+### Correlations
+```{r correlations-with-age, eval = FALSE}
+trainClean <- combinedData %>% filter(DataSet == "train")
+# names(trainClean)
+plot(trainClean[,3:11],col=hexBlue) # This is NOT superuseful
+# Do not include Age or ID in the list of predictors.
+all_predictors <- setdiff(names(trainClean), c("Age", "ID","Dataset"))
+# Keep only numeric predictors
+numeric_predictors <- all_predictors[sapply(trainClean[ , all_predictors], is.numeric)]
+# Compute correlations with Age
+myCorrelations <- cor(trainClean[ , numeric_predictors], trainClean$Age, use = "complete.obs")
+myCorrelationsALL <- cor(trainClean[ , numeric_predictors])
+myCorrelationsALL
+## Graphical Correlation Matrix:
+symnum(myCorrelationsALL) 
+# Length and Diameter = B → correlation > 0.95 → extremely strong
+# Weight and Height = * → very strong correlation
+# Shell Weight is strongly or very strongly correlated with most others
+# Shucked Weight and Viscera Weight = + → strong correlation
+
+```
+## Transformed and Derived Variables
+Using raw Weight, the coefficient for slope was highly significant (<0.001) but difficult to interpret (Beta = 0.00 with a 95% confidence level of [0,0]) therefore, we explored transformations of weight (* 100, or natural log). The natural log improved the correlation with age, from 0.614 0.631.
+```{r transformations}
+# Log-transform the variables
+# Derived metrics == length * diameter = volume
+combinedData = combinedData %>%
+ mutate(
+ ### Log-transformed terms
+ log_Age = log(Age),
+ 
+ log_Length = log(Length),
+ log_Diameter = log(Diameter),
+ log_Height = log(Height),
+ log_Weight = log(Weight),
+ log_ShuckedWeight = log(Shucked.Weight),
+ log_VisceraWeight = log(Viscera.Weight),
+ log_ShellWeight = log(Shell.Weight),
+ ### Squared terms
+ length2 = Length^2,
+ diameter2 = Diameter^2,
+ height2 = Height^2,
+ weight2 = Weight^2,
+ shucked2 = Shucked.Weight^2,
+ viscera2 = Viscera.Weight^2,
+ shell2 = Shell.Weight^2,
+ ### Cubic terms
+ length3 = Length^3,
+ diameter3 = Diameter^3,
+ height3 = Height^3,
+ weight3 = Weight^3,
+ shucked3 = Shucked.Weight^3,
+ viscera3 = Viscera.Weight^3,
+ shell3 = Shell.Weight^3,
+ ### Interaction terms
+ dl.int = Diameter * Length,
+ dh.int = Diameter * Height,
+ dshuck.int = Diameter * Shucked.Weight,
+ dvisc.int = Diameter * Viscera.Weight,
+ dshell.int = Diameter * Shell.Weight,
+ hl.int = Length * Height,
+ hw.int = Height * Weight,
+ shellww = Shell.Weight * Weight,
+ shuckvisc = Shucked.Weight * Viscera.Weight,
+ shellshuck = Shell.Weight * Shucked.Weight,
+ shellvisc = Shell.Weight * Viscera.Weight,
+ # DERIVED variables
+ BodySize = Length * Diameter,
+ ShellDensity = Shell.Weight/Weight,
+ logShellDensity = log_ShellWeight/log_Weight,
+ BodySizeLog = log_Length * log_Diameter,
+ # Times 100 versions of base variables
+ Length_c = Length * 100,
+ Diameter_c = Diameter * 100,
+ Height_c = Height * 100,
+ Weight_c = Weight * 100,
+ ShuckedWeight_c = Shucked.Weight * 100,
+ VisceraWeight_c = Viscera.Weight * 100,
+ ShellWeight_c = Shell.Weight * 100,
+ BodySize_c = BodySize * 100
+ )
+```
+
+## Correlations 
+```{r corr}
+# names(trainClean)
+trainClean <- combinedData %>% filter(DataSet == "train")
+pRawAgeRawElse <- plot(trainClean[,c("Age", "Sex", "Length", "Diameter", "Height", "Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight")],col=hexBlue)
+pRawAgeSquared <- plot(trainClean[,c("Age", "Sex", "length2", "diameter2", "height2", "weight2", "shucked2", "viscera2", "shell2")],col=hexBlue)
+pRawAgeCubed <- plot(trainClean[,c("Age", "Sex", "length3", "diameter3", "height3", "weight3", "shucked3", "viscera3", "shell3")],col=hexBlue)
+pRawAgeDerived <- plot(trainClean[,c("Age", "Sex", "BodySize", "ShellDensity")],col=hexBlue)
+pRawAgeDerivedLog <- plot(trainClean[,c("Age", "Sex", "BodySizeLog", "logShellDensity")],col=hexBlue)
+pLogAgeSquared <- plot(trainClean[,c("log_Age", "Sex", "length2", "diameter2", "height2", "weight2", "shucked2", "viscera2", "shell2")],col=hexBlue)
+pLogAgeCube <- plot(trainClean[,c("log_Age", "Sex", "length3", "diameter3", "height3", "weight3", "shucked3", "viscera3", "shell3")],col=hexBlue)
+pLogAgeDerived <- plot(trainClean[,c("log_Age", "Sex", "BodySize", "ShellDensity")],col=hexBlue)
+pLogAgeDerivedLog <- plot(trainClean[,c("log_Age", "Sex", "BodySizeLog", "logShellDensity")],col=hexBlue)
+pRawAgeLogElse <- plot(trainClean[,c( "Age", "Sex", "log_Length", "log_Diameter", "log_Height", "log_Weight", "log_ShellWeight", "log_ShuckedWeight", "log_VisceraWeight")],col=hexBlue)
+pLogAgeLogElse <- plot(trainClean[,c("log_Age", "Sex", "log_Length", "log_Diameter", "log_Height", "log_Weight", "log_ShellWeight", "log_ShuckedWeight", "log_VisceraWeight")],col=hexBlue)
+
+
+train1Sex<- combinedData %>% filter(Sex == "Male")
+pRawAgeRawMale<- plot(train1Sex[,c("Age", "Length", "Diameter", "Height", "Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight")],col=hexBlue)
+train1Sex<- combinedData %>% filter(Sex == "Female")
+pRawAgeRawFemale<- plot(train1Sex[,c("Age", "Length", "Diameter", "Height", "Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight")],col=hexBlue)
+train1Sex<- combinedData %>% filter(Sex == "Indeterminate")
+pRawAgeRawInterdeterminate <- plot(train1Sex[,c("Age", "Length", "Diameter", "Height", "Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight")],col=hexBlue)
+pRawAgeRawMale
+pRawAgeRawFemale
+pRawAgeRawInterdeterminate
+
+pRawAgeRawElse
+pRawAgeSquared
+pRawAgeCubed
+pRawAgeDerived
+pRawAgeDerivedLog
+pLogAgeSquared
+pLogAgeCube
+pLogAgeDerived
+pLogAgeDerivedLog
+pRawAgeLogElse
+pLogAgeLogElse
+
+```
+
+## SLR -- Transformations
+MAE(SLR: Age ~ Raw Values): 1.442213 
+```{r slr-transformations}
+trainClean <- combinedData %>% filter(DataSet == "train")
+
+fit_SLR_untransformed <- glm(Age ~ Sex + Length + Diameter + Height + Weight + Shell.Weight + Shucked.Weight + Viscera.Weight, data = trainClean)
+
+tableCoefficients <- tbl_regression(fit_SLR_untransformed, exponentiate = FALSE)
+tableCoefficients 
+summary(fit_SLR_untransformed)
+cat("MAE(SLR: Age ~ Raw Values):", mean(abs(residuals(fit_SLR_untransformed))),"\n")
+```
+# Derive Shell Density and Body Size
+MAE(SLR Sex ~ Shell Density and Body Size): 0.1501884 
+```{r shell-density-body-size, eval = FALSE}
+combinedData$ShellDensity <- combinedData$log_ShellWeight / combinedData$log_Weight
+combinedData$BodySizeLog <- combinedData$log_Length * combinedData$log_Diameter
+combinedData$BodySize <- combinedData$Length * combinedData$Diameter
+
+trainClean <- combinedData %>% filter(DataSet == "train")
+fitDensityBodySize <- lm(log_Age ~ Sex + ShellDensity + BodySize + log_ShellWeight,data=trainClean)
+summary(fitDensityBodySize) # Multiple R-squared: 0.6214,	Adjusted R-squared: 0.6213 
+cat("MAE(SLR Sex ~ Shell Density and Body Size):", mean(abs(residuals(fitDensityBodySize))),"\n")
+# MAE = 0.1501884 
+```
+## Plot by Sex
+To demonstrate the necessity of modeling by interactions with Sex.
+```{r plot-by-sex}
+createPairsPlotBySex <- function(myVariables) {
+ plot <- ggpairs(
+ trainClean[ , myVariables],
+ mapping = aes(color = Sex),
+ upper = list(continuous = wrap("cor", size = 3)),
+ lower = list(continuous = wrap("points", alpha = 0.3, position = position_jitter(width = 0.09, height = 0.09))),
+ diag = list(continuous = wrap("densityDiag", alpha = 0.3))
+ ) +
+ theme(legend.position = "bottom") +
+ scale_color_manual(values = sex_colors) +
+ scale_fill_manual(values = sex_colors)
+ return(plot)
+}
+## Plot Correlations
+InterestingVariables <- c("Sex","log_Age", "Length", "Diameter", "Height", "Weight", "BodySize")
+Plot_Sex_and_DerivedVariables <- createPairsPlotBySex(InterestingVariables)
+suppressWarnings(print(Plot_Sex_and_DerivedVariables))
+
+```
+## Create Interaction Variables
+```{r create-interaction-variables}
+combinedData$Sex_Female <- ifelse(combinedData$Sex == "Female", 1, 0)
+combinedData$Sex_Male <- ifelse(combinedData$Sex == "Male", 1, 0)
+combinedData$Sex_Indeterminate <- ifelse(combinedData$Sex == "Indeterminate", 1, 0)
+combinedData$Sex_Female_BodySize <- combinedData$Sex_Female * combinedData$BodySize
+combinedData$Sex_Male_BodySize <- combinedData$Sex_Male * combinedData$BodySize
+combinedData$Sex_Indeterminate_BodySize <- combinedData$Sex_Indeterminate * combinedData$BodySize
+combinedData$Sex_Female_ShellDensity <- combinedData$Sex_Female * combinedData$ShellDensity
+combinedData$Sex_Male_ShellDensity <- combinedData$Sex_Male * combinedData$ShellDensity
+combinedData$Sex_Indeterminate_ShellDensity <- combinedData$Sex_Indeterminate * combinedData$ShellDensity
+
+trainClean <- combinedData %>% filter(DataSet == "train")
+
+```
+## OLSRR Step Forward
+```{r ols-step-forward, eval = FALSE}
+library(olsrr)
+# names(combinedData)
+
+fullModel <- lm(log_Age ~ Sex +
+ShellDensity + BodySize +
+log_Length + log_Diameter + log_Height + log_Weight + log_ShuckedWeight + log_VisceraWeight + log_ShellWeight +
+Sex_Female_BodySize + Sex_Male_BodySize + Sex_Indeterminate_BodySize +
+Sex_Female_ShellDensity + Sex_Male_ShellDensity + Sex_Indeterminate_ShellDensity,
+data = trainClean
+)
+
+# summary(fullModel) # Multiple R-squared: 0.695,	Adjusted R-squared: 0.6945
+# cat("MAE(everything):", mean(abs(residuals(fullModel))),"\n")
+
+stepForward_AIC <- ols_step_forward_aic(fullModel,include = NULL,exclude = NULL,progress = FALSE,details = FALSE)
+suppressWarnings(plot(stepForward_AIC, print_plot = TRUE, details = TRUE, digits = 3))
+writeLines(capture.output(print(stepForward_AIC)),"ols_step_forward_aic.txt")
+newModel = stepForward_AIC$model
+# summary(newModel) # Multiple R-squared: 0.5592,	Adjusted R-squared: 0.559 We Went BACKWARD :(
+cat("MAE(",deparse(formula(stepForward_AIC$model)),"):", mean(abs(residuals(stepForward_AIC$model))),"\n")
+```
+## OLSRR Step Backward
+```{r ols-step-backward, eval = FALSE}
+fullModel <- lm(log_Age ~ Sex +
+ ShellDensity + BodySize +
+ log_Length + log_Diameter + log_Height + log_Weight +
+ log_ShuckedWeight + log_VisceraWeight + log_ShellWeight ,
+ data = trainClean
+)
+stepBackward_AIC <- ols_step_backward_aic(fullModel, penter = 0.05, details = FALSE)
+suppressWarnings(plot(stepBackward_AIC, print_plot = TRUE, details = TRUE, digits = 3))
+
+writeLines(capture.output(print(stepBackward_AIC)),"ols_step_backward_aic.txt")
+newModel = stepBackward_AIC$model
+# summary(newModel) # Multiple R-squared: 0.6789,	Adjusted R-squared: 0.6787 :(
+cat("MAE(",deparse(formula(stepBackward_AIC$model)),"):", mean(abs(residuals(stepBackward_AIC$model))),"\n")
+
+```
+## OLSRR All Possible
+```{r ols-all-possible, eval = FALSE}
+# fullModel <- lm(log_Age ~ Sex + ShellDensity + Sex_Female_BodySize + Sex_Male_BodySize + Sex_Indeterminate_BodySize + log_Length + log_Diameter + log_Height + log_Weight + log_ShuckedWeight + log_VisceraWeight + log_ShellWeight,data = trainClean)
+
+# fullModel <- lm(log_Age ~ Sex + BodySize + ShellDensity + Sex_Female_BodySize + Sex_Male_BodySize + Sex_Indeterminate_BodySize + length2 + diameter2 + height2 + weight2 + shucked2 + viscera2 + shell2 + shucked3 + viscera3 + weight3 + shellshuck,data = trainClean)
+# fullModel <- lm(log_Age ~ Sex + BodySize + ShellDensity + Sex_Female_BodySize + Sex_Male_BodySize + height2 + weight2 + shucked2 + viscera2 + shell2 + shucked3 + viscera3 + weight3 + shellshuck,data = trainClean)
+# summary(fullModel)
+# fullModel <- lm(log_Age ~ Sex + BodySize + ShellDensity + Sex_Female_BodySize + Sex_Male_BodySize + height2 + weight2 + shucked2 + viscera2 + shell2 + shucked3 + shellshuck,data = trainClean)
+# summary(fullModel)
+# fullModel <- lm(log_Age ~ Sex + BodySize + Sex_Female_BodySize + Sex_Male_BodySize + height2 + weight2 + shucked2 + viscera2 + shell2 + shucked3 + shellshuck,data = trainClean)
+# summary(fullModel) # Last run 7:20 
+print(Sys.time())
+# length(fullModel$residuals) # Should match after NA omission
+
+all_possible <- ols_step_all_possible(fullModel, details = TRUE) 
+writeLines(capture.output(print(all_possible)),"ols_step_all_possible.txt")
+
+Results_Feature_Selection <- all_possible$result
+Results_Feature_Selection$mae <- NA_real_ # Add a null column for MAE
+# Just before the loop
+Results_Feature_Selection$predictors <- sapply(
+ Results_Feature_Selection$predictors,
+ function(x) paste(unlist(strsplit(as.character(x), "\\s+")), collapse = " ")
+)
+
+# loop through the models, calculating MAE as we go
+for (i in seq_len(nrow(Results_Feature_Selection))) {
+ predictor_string <- Results_Feature_Selection$predictors[i]
+ # Skip if predictor string is missing or empty
+ if (is.na(predictor_string) || predictor_string == "") next
+ predictors <- unlist(strsplit(trimws(predictor_string), "\\s*,\\s*"))
+ # predictors <- unlist(strsplit(predictor_string, "[,\\s]+"))
+ # print("predictors")
+ # print(predictors)
+ # gsub(pattern, replacement, x, ignore.case=FALSE, fixed=FALSE)
+ predictorsAndPluses <- gsub("\\s+", " + ", predictors)
+ # print(predictorsAndPluses)
+formula_str <- paste("log_Age ~", predictorsAndPluses)
+ # print("formula_str")
+model <- lm(as.formula(formula_str), data = trainClean)
+Results_Feature_Selection$mae[i] <- mean(abs(residuals(model)))
+}
+# 
+# # mindex = "Model Index",
+# # n = "Number of Predictors",
+# # predictors= "Predictors in the Model",
+# # aic = "AIC",
+# # sbic = "SBIC",
+# # sbc = "BIC",
+# # msep = "Estimated MSE of Prediction (Assuming Multivariate Normality)",
+# # rmse = "Root Mean Squared Error of the Model",
+# # rsquare = "Rsquare of the Model",
+# # adjr = "Adjusted Rsquare of the Model",
+# # cp = "Mallow's Cp",
+# # mae = "Mean Absolute Error"
+# mae_results <- Results_Feature_Selection[ , c("mindex", "n", "predictors", "mae", "aic", "sbic", "sbc","msep", "rmse", "rsquare", "adjr", "cp")]
+# mae_results_sorted <- mae_results[order(mae_results$mae), ]
+# View(mae_results_sorted)
+# 
+# write.csv(mae_results_sorted, "ols_step_all_possibleChloe.csv", row.names = FALSE)
+# 
+# # newModel = stepBackward_AIC$model
+# # # summary(newModel) # Multiple R-squared: 0.6789,	Adjusted R-squared: 0.6787 :(
+# # cat("MAE(",deparse(formula(stepBackward_AIC$model)),"):", mean(abs(residuals(stepBackward_AIC$model))),"\n")
+```
+# Objective A: Final Model
+Develop a robust predictive model to accurately predict crab age based on various features. 
+We aim to achieve the lowest possible Mean Absolute Error (MAE) on the test set, ensuring high precision in our predictions. Use the model identified above to predict age, then run it a LOT and fine-tune it.
+GOAL: Mean Absolute Error (MAE) = mean(abs(actual - predicted))
+## Simple Linear Regression
+We seek a model with the lowest MAE (mean of the absolute residuals).
+```{r slr-untransformed}
+fit_SLR_untransformed <- glm(Age ~ Sex + Length + Diameter + Height + Weight + Shell.Weight + Shucked.Weight + Viscera.Weight, data = trainClean)
+
+tableCoefficients <- tbl_regression(fit_SLR_untransformed, exponentiate = FALSE)
+tableCoefficients 
+```
+### Plots
+``` {r plot-final}
+library(ggplot2)
+library(broom)
+plot_assumptions <- function(model) {
+ library(ggplot2)
+ library(broom)
+ model_df <- augment(model)
+ model_df$Sex <- model$model$Sex # Pull Sex from model data
+ model_terms <- attr(model$terms, "term.labels")
+ # model_title <- paste("Predictors:", paste(model_terms, collapse = " + "))
+ response <- deparse(formula(model)[[2]]) # left-hand side
+ model_title <- paste("Model for", response, "~", paste(model_terms, collapse = " + "))
+ p_Residuals_v_Fitted <- ggplot(model_df, aes(.fitted, .resid, color = Sex)) +
+ geom_point() +
+ geom_hline(yintercept = 0, linetype = "dashed") +
+ scale_color_manual(values = sex_colors) +
+ labs(title = model_title,
+ subtitle = "Residuals vs Fitted",
+ x = "Fitted Values", y = "Residuals", color = "Sex")
+
+ p_QQ <- ggplot(model_df, aes(sample = .std.resid, color = Sex)) +
+ stat_qq() +
+ stat_qq_line(color = "black") +
+ scale_color_manual(values = sex_colors) +
+ labs(title = model_title,
+ subtitle = "Normal Q-Q Plot",
+ x = "Theoretical Quantiles", y = "Standardized Residuals", color = "Sex")
+
+ print(p_Residuals_v_Fitted)
+ print(p_QQ)
+}
+
+Model_All_Possible_Best <- lm(log_Age ~ Sex + BodySize + height2 + shell2 + shucked3 + shellshuck, data = trainClean)
+
+ summary(Model_All_Possible_Best)
+ pred2 <- predict(Model_All_Possible_Best, newdata = trainClean)
+ mae2 <- mean(abs(pred2 - trainClean$log_Age))
+ cat("MAE (reduced model, log‐age):", mae2, "\n")
+ cat("Approx. MAE on original age scale:", exp(mae2), "\n")
+ plot_assumptions(Model_All_Possible_Best)
+ 
+
+# 2) Reduced logged‐Age model
+Model_Absolute_Lowest_MAE <- lm(log_Age ~ Sex * Shucked.Weight + Diameter + Height + Weight + Shell.Weight + Viscera.Weight +
+ # only the squared & cubic terms you kept
+ height2 + weight2 + shucked2 + viscera2 + shell2 + shell3 +
+ # key interactions & size metrics
+ dh.int + shellww + shellshuck + shellvisc + ShellDensity,
+ data = trainClean)
+ summary(Model_Absolute_Lowest_MAE)
+ pred2 <- predict(Model_Absolute_Lowest_MAE, newdata = trainClean)
+ mae2 <- mean(abs(pred2 - trainClean$log_Age))
+ cat("MAE (reduced model, log‐age):", mae2, "\n")
+ cat("Approx. MAE on original age scale:", exp(mae2), "\n")
+ plot_assumptions(Model_Absolute_Lowest_MAE)
+Final_Model <- Model_Absolute_Lowest_MAE
+```
+
+## Correlations
+```{r correlations, eval = FALSE}
+install.packages("psych")
+library(psych)
+
+# Select only numeric columns, excluding "ID"
+numeric_vars <- names(trainClean)[sapply(trainClean, is.numeric)]
+numeric_vars <- setdiff(numeric_vars, "ID")
+result <- corr.test(trainClean[ , numeric_vars], use = "pairwise")
+cor_df <- as.data.frame(result$r)
+cor_df$Variable <- rownames(cor_df)
+cor_df <- cor_df[ , c("Variable", setdiff(names(cor_df), "Variable"))]
+View(cor_df) # tab-delimited table in Viewer pane
+
+```
+### Generate CSVs
+```{r final-csvs}
+trainClean <- combinedData %>% filter(DataSet == "train")
+testClean <- combinedData %>% filter(DataSet == "test")
+# generate csv for the RSHINY app 
+# intVersionNumber
+write.csv(trainClean, paste0("CrabsCleanTrain", intVersionNumber, ".csv"), row.names = FALSE)
+
+# generate csv of predictions from the competition data 
+names(testClean)[names(testClean) == "ID"] <- "id"
+# names(testClean) 
+
+predictions <- data.frame(Id = testClean$id,Age = predict(Final_Model, newdata = testClean))
+colnames(predictions)[2] <- "Age"
+write.csv(predictions, "CrabsPredictions8.csv", row.names = FALSE)
+
+```
+# Objective B: Mining Data for Insights
+Identify the key determinants of crab age by analyzing relationships between various crab metrics and age provide valuable insights to help scientists understand growth rate, reproductive cycles, and lifespan which can help commercial markets as well as scientific studies on climate change, effects of ocean pollution, shifts in predatory trends, etc.
+Viscera.Weight relative to Body Size predicts female fertility? (Roe?)
+```{r plot-plot-plot}
+library(reshape2) # For melt()
+predictors <- combinedData[, c("Sex", "BodySize", "height2", "shucked2", "shell2", "shucked3")]
+
+# Keep only numeric columns
+numeric_predictors <- predictors[sapply(predictors, is.numeric)]
+# Final_Model
+# Compute correlation matrix
+CorrelationMatrix <- cor(numeric_predictors, use = "complete.obs") # Creates a square matrix (table) of feature-to-feature correlations
+myCorrelations <- melt(CorrelationMatrix) # Melt() from the reshape2 package turns a matrix a long table so ggplot2 can plot it
+ggplot(myCorrelations, aes(Var1, Var2, fill = value)) +
+ geom_tile(color = "white") +
+ scale_fill_gradient2(low = hexBlue, high = hexRed, mid = "white", midpoint = 0, limit = c(-1,1), name = "Correlation") +
+ theme_minimal() +
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+ coord_fixed()
+par(mfrow = c(2, 2)) # 2x2 layout for plots
+plot(Final_Model)
+
+```
+## Chloe plots
+```{r more-plots}
+library(corrplot)
+
+# Age Histograms
+trainClean %>%
+ ggplot(aes(x = Age)) +
+ geom_histogram(binwidth = 1, fill = hexBlue, color = "white") 
+ labs(title = "Distribution of Crab Ages", x = "Age", y = "Count") +
+ theme_minimal(base_size = 14) +
+ theme(legend.position = "none")
+ 
+ 
+ # Faceted histogram, one for each sex
+trainClean %>%
+ ggplot(aes(x = Age, fill = Sex)) +
+ geom_histogram(binwidth = 1, color = "white") +
+ scale_fill_manual(values = sex_colors) +
+ facet_wrap(~ Sex) +
+ labs(title = "Distribution of Crab Ages by Sex", x = "Age", y = "Count") +
+ theme_minimal(base_size = 14) +
+ theme(legend.position = "none")
+
+# Does one sex live longer?
+ggplot(trainClean, aes(x = Sex, y = Age, fill = Sex)) + 
+ geom_boxplot() +
+ scale_fill_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "Age by Sex", x = "Sex", y = "Age")
+
+# Is one sex larger?
+ggplot(trainClean, aes(x = Sex, y = BodySize, fill = Sex)) + 
+ geom_boxplot() +
+ scale_fill_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "Body Size by Sex", x = "Sex", y = "Body Size")
+
+ggplot(trainClean, aes(x = Sex, y = Age, fill = Sex)) +
+ geom_violin(trim = FALSE) +
+ scale_fill_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "Violin Plot of Age by Sex", x = "Sex", y = "Age")
+
+# Correlation Plot (Numeric Only) Raw Variables
+trainClean %>%
+ select(Length, Diameter, Height, Weight, Shucked.Weight, Viscera.Weight, Shell.Weight, Age) %>%
+ cor(use = "complete.obs") %>%
+ corrplot(method = "color", type = "upper", tl.col = "black", addCoef.col = "white")
+ 
+# Correlation Plot (Numeric Only) Our Final Model == Sex + BodySize + height2 + shucked2 + shell2 + shucked3
+trainClean %>% select(BodySize, height2, shucked2, shell2, shucked3, Age) %>% cor() %>% corrplot(method = "color", type = "upper", tl.col = "black", addCoef.col = "white")
+
+# Plot of percentage of crabs by Sex 
+trainClean %>% 
+ group_by(Sex) %>% 
+ dplyr::summarize(count=n()) %>%
+ mutate(percent = (count / sum(count))*100) %>%
+ ggplot(aes(x=Sex, y = percent, fill=Sex)) + 
+ geom_bar(stat = "identity") +
+ geom_text(aes(label = paste0(round(percent,2),"%")), nudge_y = 4, size = 5) + 
+ scale_fill_manual(values = sex_colors)
+ theme_minimal(base_size = 14) + 
+ theme(legend.position = "none", text=element_text(family = "Corbel")) +
+ ggtitle("Percentage of Crabs by Sex") + 
+ xlab("Sex") + 
+ ylab("Percent") 
+
+# Plot Age vs. Weight
+# Create a new column for weight squared 
+ggplot(trainClean, aes(x = Weight, y = Age)) +
+ geom_point(alpha = 0.3, color = hexBlue) +
+ geom_smooth(method = "lm", formula = y ~ x + I(x^2), color = hexRed, se = FALSE) +
+ labs(
+ title = "Quadratic Fit: Weight vs Age",
+ subtitle = "Red = y ~ x + x²",
+ x = "Weight", y = "Age"
+ )
+ 
+ggplot(trainClean, aes(x = Sex, y = BodySize, fill = Sex)) +
+ geom_violin(trim = FALSE) +
+ scale_fill_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "Violin Plot of Body Size by Sex", x = "Sex", y = "Body Size (units³)")
+
+ # How do body measurements change with age?
+# Scatterplot: Age vs Body measurements, one plot per Sex
+
+trainClean %>%
+ pivot_longer(cols = c(Length, Diameter, Height, Weight, Shell.Weight, Shucked.Weight, Viscera.Weight),
+ names_to = "Measurement", values_to = "Value") %>%
+ ggplot(aes(x = Age, y = Value, color = Sex)) +
+ geom_point(alpha = 0.5) +
+ geom_smooth(method = "loess", se = FALSE, color = "black") +
+ facet_grid(Sex ~ Measurement, scales = "free_y") +
+ scale_color_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "How Body Measurements Change with Age by Sex",
+ x = "Age",
+ y = "Measurement Value",
+ color = "Sex")
+
+trainClean %>%
+ pivot_longer(cols = c(Length_c, Diameter_c, Height_c, Weight),
+ names_to = "Measurement", values_to = "Value") %>%
+ ggplot(aes(x = Age, y = Value, color = Sex)) +
+ geom_point(alpha = 0.5) +
+ geom_smooth(method = "loess", se = FALSE, color = "black") +
+ facet_grid(Sex ~ Measurement, scales = "free_y") +
+ scale_color_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "How Body Measurements Change with Age by Sex",
+ x = "Age",
+ y = "Measurement Value",
+ color = "Sex")
+
+ggplot(trainClean, aes(x = Age, y = BodySize, fill = Sex)) +
+ geom_boxplot() +
+ scale_fill_manual(values = sex_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "Body Size by Age and Sex", x = "Age", y = "Body Size", fill = "Sex")
+```
+### By Age GROUP
+```{r plot-by-age-group}
+# Create Age bins
+trainClean <- trainClean %>%
+ mutate(AgeGroup = case_when(
+ Age <= 8 ~ "Young",
+ Age <= 11 ~ "Adult",
+ TRUE ~ "Old"
+ ))
+
+# Define body features to compare
+features <- c("Length", "Diameter", "Height", "Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight")
+
+# Pivot and plot
+trainClean %>%
+ pivot_longer(cols = all_of(features), names_to = "Feature", values_to = "Value") %>%
+ ggplot(aes(x = AgeGroup, y = Value, fill = AgeGroup)) +
+ geom_boxplot() +
+ facet_wrap(~ Feature, scales = "free_y") +
+ scale_fill_manual(values = age_group_colors) +
+ theme_minimal(base_size = 14) +
+ labs(title = "Comparison of Body Features by Age Group", x = "Age Group", y = "Value", fill = "Age Group")
+```
+## Which variables change less as crabs age?
+```{r corr-year-over-year}
+# Correlation between Age and other numeric variables
+age_corr <- trainClean %>%
+ select(where(is.numeric)) %>%
+ summarise(across(everything(), ~ cor(Age, ., use = "complete.obs"))) %>%
+ pivot_longer(cols = everything(), names_to = "Variable", values_to = "Correlation") %>%
+ arrange(abs(Correlation))
+
+# View variables weakly correlated with Age (e.g., abs(correlation) < 0.1)
+age_corr %>% filter(abs(Correlation) < 0.5)
+```
+### Compare mean(variable) change year-over-year
+From this we see that most body size metrics level off around 20 years. 
+This is why our model fits less well as crab age increases beyond 20 years.
+```{r plot-year-over-year}
+basic_variables <- c("Length", "Diameter", "Height", "Weight", "Shucked.Weight", "Viscera.Weight", "Shell.Weight")
+
+# Scatterplot: Base variable values by Age and by Sex 
+trainClean %>%
+ filter(!is.na(Age)) %>%
+ pivot_longer(cols = all_of(basic_variables), names_to = "Variable", values_to = "Value") %>%
+ ggplot(aes(x = Age, y = Value, color = Sex)) +
+ geom_point(alpha = 0.3, size = 1) +
+ geom_smooth(method = "loess", se = FALSE, linewidth = 1, color = "black") +
+ scale_color_manual(values = sex_colors) +
+ facet_wrap(~ Variable, scales = "free_y") +
+ theme_minimal(base_size = 14) +
+ labs(title = "Metrics by Age and Sex",
+ x = "Age", y = "Value", color = "Sex")
+```
+
+

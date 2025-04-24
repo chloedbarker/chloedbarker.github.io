@@ -1,0 +1,508 @@
+---
+title: "ChloeBarkerTracyDowerStatsFinalProject"
+author: "Chloe Barker and Tracy Dower"
+date: "2025-04-13"
+output:  word_document
+always_allow_html: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "/Users/chloebarker/Downloads/SMU/CB_Website/chloedbarker.github.io.git/Predicting Sale Price Project")
+```
+# Install and load required packages
+```{r install_packeges_load_libraries}
+packages <- c("olsrr","ggplot2","boot","flextable","gtsummary","labelled","overviewR","stringr","tidyverse","dplyr","kableExtra","ggfortify","car")
+to_install <- packages[!packages %in% installed.packages()[,"Package"]]
+if (length(to_install)) install.packages(to_install)
+library(tidyverse) # includes dplyr and %>%
+library(ggplot2) # pretty plots
+library(gtsummary) # create publication-ready summary tables with minimal code
+library(flextable) # pretty tables
+library(labelled) # for set_variable_labels
+library(overviewR)
+library(dplyr) # dplyr is included in the tidyverse but it's acting funny, so load it explicitly
+library(readr)
+library(stringr)
+hexSmuBlue <- "#354CA1"
+hexSmuRed <- "#CC0035"
+```
+## Load Train and Test Data
+Select useful columns
+We want SalePrice plus only variables that are AVAILABLE in both datasets, otherwise they are useless as predictors.
+```{r load_data}
+train <- read_csv("train.csv", show_col_types = FALSE)
+test <- read_csv("test.csv", show_col_types = FALSE)
+train <- train %>% mutate(DataSet = "train")
+test <- test %>% mutate(DataSet = "test")
+combinedData <- bind_rows(train, test)
+# names(combinedData)
+```
+# Exploratory Data Analysis
+## Data Preparation
+### Correct missing or nonsense values
+Dr. Sadler reports that all missing are missing completely at random, MCAR.
+#### Garages
+```{r garages}
+library(dplyr)
+# If GarageCars==0 then set all Garage Categorical Variables = "No Garage"
+combinedData <- combinedData %>% mutate(across(c(GarageType, GarageYrBlt, GarageFinish, GarageQual, GarageCond), ~ifelse(GarageCars == 0, NA, .)))
+combinedData <- combinedData %>% mutate(across(c(GarageType, GarageFinish, GarageQual, GarageCond), ~ifelse(GarageCars == 0, NA, .))) %>%
+ mutate(GarageYrBlt = ifelse(GarageCars == 0, NA, GarageYrBlt))
+# Where ID = 2760, GarageYrBlt = 2207 which is nonsense, and YearBuilt (the year the home was built) is 2007, so we will assume that the garage was built the same year.
+combinedData$GarageYrBlt <- as.numeric(combinedData$GarageYrBlt) # NA will still be NA
+combinedData[combinedData$Id == 2760, "GarageYrBlt"] <- 2007
+combinedData$GarageArea[is.na(combinedData$GarageArea)] <- 0
+combinedData$GarageArea <- ifelse(is.na(combinedData$GarageArea),0,combinedData$GarageArea)
+combinedData$GarageExists <- ifelse(combinedData$GarageArea > 0, 1, 0)
+combinedData <- transform(combinedData, c_GarageArea = GarageArea / 100)
+combinedData$lc_GarageArea <- log(ifelse(combinedData$GarageArea == 0, 1, combinedData$GarageArea))
+# cat(sort(names(combinedData)), sep = "\n")
+```
+#### Transformations
+``` {r transformations}
+combinedData <- combinedData %>% mutate(lSalePrice = log(SalePrice))
+combinedData <- transform(combinedData, c_GrLivArea = GrLivArea / 100)
+combinedData <- combinedData %>% mutate(lc_GrLivArea = log(c_GrLivArea))
+```
+# Datedness = years since most recent of (YearBuilt, Year Remodeled)
+How long before the sale of the home was it last built or remodeled?
+``` {r dateness}
+combinedData$FreshDate = (combinedData$YrSold - pmax(combinedData$YrSold, combinedData$YearRemodAdd))
+# Not significant. Do not use.
+combinedData$YearFromRemodelToSale = (combinedData$YrSold - combinedData$FreshDate)
+combinedData$AgeofHouse = (combinedData$YrSold - combinedData$YearBuilt)
+```
+#### Lot Frontage
+Out of 2920 homes in our data (1460 in each set), 487 were missing data for LotFrontage:
+train: 259/1460 = 18%
+test: 228/1460 = 16%
+We explored various methods of predictive imputation of missing values for LotFrontage. We expected a strong relationship between LotFrontage and LotArea, but the relationship was weak ( R-squared: 0.1816). Accounting for LotArea/LotFrontage, GrLivArea, and Neighborhood raised our R-squared to 0.5744. We decided to impute the missing values based on the median by neighborhood.
+```{r LotFrontage}
+lot_data <- combinedData %>%
+ filter(LotArea <= quantile(LotArea, 1, na.rm = TRUE)) %>%
+ mutate(LotLength = LotArea / LotFrontage)
+library(ggplot2)
+ggplot(lot_data, aes(x = LotArea, y = LotFrontage)) +
+ geom_point(alpha = 0.5) +
+ geom_smooth(method = "lm", color = hexSmuBlue) +
+ labs(title = "Lot Area vs. Lot Frontage", x = "Lot Area ", y = "Lot Frontage (feet)") +
+ theme_minimal()
+model <- lm(LotFrontage ~ LotArea + GrLivArea + LotShape + Neighborhood, data = combinedData[!is.na(combinedData$LotFrontage), ])
+ # summary(model)
+model <- lm(LotFrontage ~ (LotArea/LotFrontage) + GrLivArea + Neighborhood, data = lot_data)
+ # summary(model) 
+ combinedData <- combinedData %>% group_by(Neighborhood) %>%
+ mutate(LotFrontage = ifelse(is.na(LotFrontage), median(LotFrontage, na.rm = TRUE), LotFrontage)) %>% ungroup()
+```
+#### Miscellaneous Missing Values
+Pools, Alleys, Basements, Masonry, Fireplaces, Electrical, Fences, MiscFeature
+``` {r misc-missing}
+# If PoolArea == 0 then PoolQC = "No Pool"
+combinedData <- combinedData %>% mutate(PoolQC = ifelse(PoolArea == 0, "No Pool", PoolQC))
+# If Alley is NA set Alley = "None"
+combinedData <- combinedData %>% mutate(Alley = ifelse(is.na(Alley), "None", Alley))
+# Handle basement NA values and consistency
+combinedData <- combinedData %>% mutate(BsmtTotalSF = BsmtFinSF1 + BsmtFinSF2 + BsmtUnfSF)
+# Where BsmtTotalSF == 0, set each categorical basement field = NA
+ rows <- which(combinedData$BsmtTotalSF==0)
+ cols <- c("BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2", "BsmtQual", "BsmtFullBath", "BsmtHalfBath")
+ combinedData[rows,cols] <-NA
+# Where BsmtTotalSF > 0, if BsmtExposure is NA, that's a data entry error, and it should be "No"
+ combinedData <- combinedData %>% mutate(BsmtExposure = ifelse(is.na(BsmtExposure) & BsmtTotalSF > 0, "No", BsmtExposure))
+ combinedData <- combinedData %>% mutate(BsmtFinType1 = ifelse(is.na(BsmtFinSF1) | BsmtFinSF1 == 0, "Unf", BsmtFinType1))
+# Where BsmtFinSF2 >0 and BsmtFinType2	NA, set BsmtFinType2="Unf"
+ combinedData <- combinedData %>% mutate(BsmtFinType2 = ifelse(is.na(BsmtFinType2) & BsmtFinSF2 > 0, "Unf", BsmtFinType2))
+# count rows where at least one of these fields is NA but not ALL of these fields are NA
+ sum(rowSums(is.na(combinedData[, c("BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2", "BsmtQual")])) > 0 &
+ rowSums(is.na(combinedData[, c("BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2", "BsmtQual")])) < 7)
+# Fix MasVnrType
+# Only 2 homes in our combined dataset had a value for MasVnrType other than none/NA when MasVnrArea when 0 or NA. So we set MasVnrArea = 0 when MasVnrArea = NA and MasVnrType = "None" to MasVnrArea = 0.
+combinedData <- combinedData %>% mutate(MasVnrArea = ifelse(is.na(MasVnrArea), 0, MasVnrArea))
+combinedData <- combinedData %>% mutate(MasVnrType = ifelse(MasVnrArea==0, "None" , MasVnrType))
+# If no Fireplaces, Fireplace quality = "No Fireplace"
+combinedData <- combinedData %>% mutate(FireplaceQu = ifelse(Fireplaces==0, "No Fireplace" , FireplaceQu))
+# 92% of homes in our dataset (2671 or 2919) had Sbrker for electrical type. 1 home had NA. We assumed Sbrker for that home.
+combinedData <- combinedData %>% mutate(Electrical = ifelse(is.na(Electrical), "SBrkr", Electrical))
+# Fence = Fence Quality. Many homes have no fence.
+combinedData <- combinedData %>% mutate(Fence = ifelse(is.na(Fence), "None" , Fence))
+# Most homes have no MiscFeature such as an elevator, 2nd Garage, large Shed, or Tennis Court.
+combinedData <- combinedData %>% mutate(MiscFeature = ifelse(is.na(MiscFeature ), "None" , MiscFeature ))
+```
+### Final check for missing values in combined data. Exclude from this check columns where NA is reasonable
+```{r combinedData-final-check}
+# Remove specified columns
+combinedData <- combinedData[, !(colnames(combinedData) %in% c("BsmtCond", "BsmtExposure", "BsmtFinSF1", "BsmtFinSF2",
+ "BsmtFinType1", "BsmtFinType2", "BsmtFullBath",
+ "BsmtHalfBath", "BsmtQual", "BsmtTotalSF", "BsmtUnfSF"))]
+FinalVariables <- c("DataSet","Id","SalePrice","lSalePrice", "AgeofHouse", "BldgType", "FullBath", "KitchenQualInt",
+ "lc_GrLivArea", "MSSubClass", "Neighborhood", "OverallQual",
+ "TotalQualityInt", "YearBuilt", "YrSold")
+final_cols <- intersect(FinalVariables, colnames(combinedData))
+na_counts <- colSums(is.na(combinedData[final_cols]))
+na_counts <- colSums(is.na(combinedData))
+na_counts <- na_counts[na_counts > 0]
+cat(paste(names(na_counts), na_counts, sep = "\t"), sep = "\n")
+ missing_combinedData_df <- combinedData %>%
+ summarise(across(everything(), ~sum(is.na(.)))) %>%
+ pivot_longer(everything(), names_to = "Variable", values_to = "Missing_Count") %>%
+ filter(Missing_Count > 0) %>%
+ mutate(Missing_Percent = round(Missing_Count / nrow(combinedData) * 100, 2)) %>%
+ arrange(desc(Missing_Count))
+ missing_combinedData_df
+sum(is.na(combinedData))
+```
+### Transform and derive variables
+### Add levels to categorical variables
+``` {r encode_levels}
+# names(combinedData)
+# nrow(combinedData)
+encode_levels <- function(myLevels, myVariables, myData) {
+ for (var in myVariables) {
+ new_var <- paste0(var, "Int")
+ mapped <- myLevels[as.character(myData[[var]])]
+ stopifnot(length(mapped) == nrow(combinedData))
+ myData[[new_var]] <- ifelse(is.na(mapped), 0, mapped)
+ }
+ return(myData)
+}
+```
+## Create Integers for Measures of Quality
+```{r quality-integers}
+# names(combinedData)
+myVariables <- c("ExterQual", "ExterCond", "HeatingQC","KitchenQual", "FireplaceQu", "GarageQual", "GarageCond", "PoolQC")
+# missing_vars <- setdiff(myVariables, names(combinedData))
+# print(missing_vars)
+myLevels <- c("Po" = 2, "Fa" = 2, "TA" = 3, "Gd" = 4, "Ex" = 5)
+ combinedData <- encode_levels(myLevels, myVariables, combinedData)
+# table(combinedData$KitchenQualInt, useNA = "ifany")
+ combinedData$KitchenQualInt <- ifelse(combinedData$KitchenQualInt > 1, combinedData$KitchenQualInt, 2)
+ combinedData <- combinedData %>% mutate(TotalQualityInt = ExterQualInt + ExterCondInt + PoolQCInt + GarageQualInt + GarageCondInt + HeatingQCInt + FireplaceQuInt + KitchenQualInt )
+# table(combinedData$KitchenQualInt, useNA = "ifany")
+```
+### Utility Access
+```{r utilities}
+ myLevels <- c("AllPub" = 4, "NoSewr" = 3, "NoSeWa" = 2, "ELO" = 1)
+ myVariables <- c("Utilities")
+ combinedData <- encode_levels(myLevels, myVariables, combinedData)
+```
+#### Recode N Y P as integers
+``` {r recode nyp}
+YesNo_map <- c("N" = 0, "P" = 0.5, "Y" = 1)
+combinedData$PavedDriveInt <- YesNo_map[as.character(combinedData$PavedDrive)]
+combinedData$CentralAirInt <- YesNo_map[as.character(combinedData$CentralAir)]
+```
+## Bedrooms and Bathrooms
+There were 12 homes with 0 values for FullBath and/or BedroomAbvGr. As these where all single-family homes, we assumed these were data entry errors and imputed the missing values by using linear regression for HouseStyle and GrLivArea. Additionally, the test dataset has more levels than the train data set so when FullBath = 4 set FullBath = 3.
+```{r bed-and-bath}
+bed_model <- lm(BedroomAbvGr ~ GrLivArea + HouseStyle, data = combinedData[combinedData$BedroomAbvGr > 0, ])
+bed_rows <- which(combinedData$BedroomAbvGr == 0)
+combinedData$BedroomAbvGr[bed_rows] <- round(predict(bed_model, newdata = combinedData[bed_rows, ]))
+bath_model <- lm(FullBath ~ GrLivArea + HouseStyle + BedroomAbvGr, data = combinedData[combinedData$FullBath > 0, ])
+bath_rows <- which(combinedData$FullBath == 0)
+combinedData$FullBath[bath_rows] <- round(predict(bath_model, newdata = combinedData[bath_rows, ]))
+# str(combinedData$FullBath)
+combinedData$FullBath[combinedData$FullBath > 3] <- 3
+```
+#### Simplify Home Exterior
+Simplify Home Exterior into fewer categories.
+| Original Exterior Values | Simplified Category |
+|--------------------------------------|----------------------|
+| Stone, Stucco | StoneOrStucco |
+| Wd Sdng, Wd Shng, WdShing | WoodShingle |
+| Brick, Brk Cmn, BrkComm, BrkFace | Brick |
+| All other values | Other |
+``` {r home-exterior}
+exterior_map <- function(x) {
+ case_when(
+ x %in% c("Stone", "Stucco") ~ "StoneOrStucco",
+ x %in% c("Wd Sdng", "Wd Shng", "WdShing") ~ "WoodShingle",
+ x %in% c("Brick", "Brk Cmn", "BrkComm", "BrkFace") ~ "Brick",
+ TRUE ~ "Other" # all other cases will be classified as "other"
+ )
+}
+combinedData$ExteriorSimplified <- exterior_map(combinedData$Exterior1st)
+```
+# Analysis 1: Century21Ames
+Linear Regression of Sale Price and GrLIvArea for Neighborhoods NAmes, Edwards and BrkSide.
+SalePrice by SquareFoot DEFINITELY varies by Neighborhood, so do the interactions.
+<!-- This has to come AFTER data cleanup and transformations and derived columns! -->
+```{r regress-Century21Ames}
+# Filter combined data to only the neighborhoods of interest
+dataCentury21Ames <- subset(combinedData, Neighborhood %in% c("NAmes", "Edwards", "BrkSide"))
+ggplot(dataCentury21Ames, aes(x = GrLivArea, y = SalePrice)) +
+geom_point(color = hexSmuBlue, alpha = 0.5) +
+ geom_smooth(method = "lm", se = FALSE, color = hexSmuRed) +
+ labs( title = "Sale Price v. Living Area", x = "Living Area (100 SqFt)", y = "Sale Price" )+
+ theme_minimal(base_size = 12) +
+ theme(plot.title = element_text(face = "bold"))
+modelCentury21Ames_SLR <- lm(lSalePrice ~ lc_GrLivArea, data = dataCentury21Ames)
+# summary(modelCentury21AmesSLR)
+# Regression with interaction:
+dataCentury21Ames$Neighborhood <- factor(dataCentury21Ames$Neighborhood)
+dataCentury21Ames$Neighborhood <- relevel(dataCentury21Ames$Neighborhood, ref = "NAmes") # Set NAmes as the reference Neighborhood
+modelCentury21Ames_MLR <- lm(lSalePrice ~ lc_GrLivArea * Neighborhood, data = dataCentury21Ames)
+# summary(modelCentury21Ames_MLR)
+ggplot(dataCentury21Ames, aes(x = lc_GrLivArea, y = lSalePrice, color = Neighborhood)) +
+ geom_point(alpha = 0.5) +
+ geom_smooth(method = "lm", se = FALSE) +
+ labs( title = "Sale Price v. Living Area by Neighborhood",
+ subtitle="With Interactions between Living Area and Neighborhood", x = "Living Area log(100 SqFt)", y = "Sale Price (log-transformed)" )
+ theme_minimal()
+```
+# ANALYSIS 1 QUESTION 2
+## Build your own ANOVA to answer 
+Is the relationship significantly different for different neighborhoods?
+The impact of each additional 100 ft^2 of living area on home sale price is significantly different per Neighborhood (F-statistic 8.649, p-value = 0.0002).
+```{r byoANOVA}
+# Simple Linear Regression
+tbl_regression(modelCentury21Ames_SLR, exponentiate = FALSE)
+# Multiple Linear Regression with Interaction
+tbl_regression(modelCentury21Ames_MLR, exponentiate = FALSE)
+# Test whether the full model is significantly better
+# anova(modelCentury21Ames_SLR, modelCentury21Ames_MLR) 
+modelCentury21Ames_SLR <- lm(log(SalePrice) ~ log(GrLivArea) + Neighborhood, data = dataCentury21Ames)
+modelCentury21Ames_MLR <- lm(log(SalePrice) ~ log(GrLivArea) * Neighborhood, data = dataCentury21Ames)
+# Compare models using ANOVA
+anova_results <- anova(modelCentury21Ames_SLR, modelCentury21Ames_MLR)
+# Display ANOVA comparison table
+library(kableExtra)
+anova_results %>%
+ kable(caption = "ANOVA: Does the Relationship Differ by Neighborhood?") %>%
+ kable_styling(full_width = FALSE, position = "left")
+```
+# Analysis 2
+## Explore other vairables
+```{r plot-eveything, message=FALSE, warning=FALSE}
+library(patchwork)
+train_clean <- combinedData %>% filter(DataSet == "train")
+cat_vars <- c("Alley", "BedroomAbvGr", "BldgType", "CentralAir", "Electrical", "ExterCond",
+ "Fireplaces", "Foundation", "FullBath", "GarageCars", "GarageQual", "HalfBath",
+ "HouseStyle", "KitchenQual", "LandContour", "LandSlope", "MSZoning", "Neighborhood",
+ "OverallCond", "OverallQual", "PoolQC", "RoofStyle", "SaleCondition", "SaleType",
+ "Utilities")
+num_vars <- c("MiscVal", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch","ScreenPorch","PoolArea", "GarageArea", "LotFrontage",
+ "LotArea", "MasVnrArea", "TotalBsmtSF", "YearBuilt", "YearRemodAdd", "YrSold", "c_GrLivArea", "lc_GrLivArea", "AgeofHouse",
+ "TotalQualityInt", "OverallQual", "MSSubClass")
+final_cols <- intersect( colnames(combinedData), cat_vars)
+final_cols <- intersect( colnames(combinedData), num_vars)
+# cat_vars <- names(combinedData)[ sapply(combinedData, function(x) { is.character(x) || is.factor(x) || (is.numeric(x) && length(unique(x)) < 5) })]
+# num_vars <- names(combinedData)[sapply(combinedData, function(x) is.numeric(x) && length(unique(x)) > 5)]
+# num_vars <- num_vars[!grepl("Int$", num_vars)]
+# num_vars <- num_vars[!grepl("_", num_vars)]
+# num_vars <- setdiff(num_vars, "Id")
+## Categorical Graph
+train_clean <- train_clean %>% mutate(across(all_of(cat_vars), as.factor))
+cat_var_stats <- map_df(cat_vars, function(v) {
+ f <- reformulate(v, response = "lSalePrice")
+ mod <- lm(f, data = train_clean)
+ tibble(var = v, adj_r2 = summary(mod)$adj.r.squared)
+})
+cat_var_stats %>%
+ arrange(desc(adj_r2)) %>%
+ slice_max(adj_r2, n = 10) %>%
+ mutate(var = fct_reorder(var, adj_r2)) %>%
+ ggplot(aes(adj_r2, var)) +
+ geom_col(fill = hexSmuRed) +
+ labs(x = "Adjusted R\u00B2",y = "Explanatory Variables",
+ title = "Adjusted R\u00B2 of Categoricals") +
+ theme_minimal(base_size = 12)
+## Specific Categorical Variable Graphs
+plot_box = function(df, var) {
+ medians = df %>% group_by(.data[[var]]) %>% summarize(median_price = median(lSalePrice, na.rm = TRUE)) %>%
+ arrange(median_price)
+ df[[var]] = factor(df[[var]], levels = medians[[var]])
+ ggplot(df, aes(x = .data[[var]], y = lSalePrice)) +
+ geom_boxplot(outlier.alpha = 0.2, width = 0.6, fill = hexSmuBlue) +
+ stat_summary(fun = median, geom = "point", shape = 21, size = 2, fill = hexSmuRed, color = hexSmuBlue) +
+ labs(title = paste("Log Sale Price vs", var), y = "log(Sale Price) ($)") +
+ theme_minimal(base_size = 12) +
+ theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "none")
+}
+# Insignificant variation
+ plot_box(train_clean, "Neighborhood") 
+ plot_box(train_clean, "MSSubClass") 
+ plot_box(train_clean, "FullBath") 
+ plot_box(train_clean, "OverallQual")
+ 
+# significant variation between levels
+ plot_box(train_clean, "MasVnrType") 
+ plot_box(train_clean, "ExterCond") 
+ plot_box(train_clean, "HouseStyle") 
+ plot_box(train_clean, "BedroomAbvGr")
+ 
+ ## Numeric Variables Graph
+train_clean <- train_clean %>% mutate(across(all_of(num_vars), as.numeric))
+num_var_stats <- map_df(num_vars, function(v) {
+ f = as.formula(paste("lSalePrice ~", v))
+ mod = lm(f, data = train_clean)
+ tibble(var = v,adj_r2 = summary(mod)$adj.r.squared)
+})
+num_var_stats %>%
+ arrange(desc(adj_r2)) %>%
+ mutate(var = fct_reorder(var, adj_r2)) %>%
+ ggplot(aes(adj_r2, var)) +
+ geom_col(fill = hexSmuBlue) +
+ labs(x = "Adjusted R\u00B2", y = "Explanatory Variables", title = "Adjusted R\u00B2 of Categorical Predictors for Sale Price")
+ theme_minimal(base_size = 12)
+## Specific Numeric Variable Graphs
+plot_scatter <- function(df, var) {
+ ggplot(df, aes(x = .data[[var]], y = lSalePrice)) +
+ geom_point(alpha = 0.5, color = hexSmuBlue) +
+ geom_smooth(method = "lm", se = FALSE, color = hexSmuRed, linewidth = 1) +
+ labs(title = paste("Log Sale Price vs", var),x = var,y = "log(SalePrice)") +
+ theme_minimal(base_size = 12)
+}
+# Significant Variation Visually
+plot_scatter(train_clean, "lc_GrLivArea") 
+plot_scatter(train_clean, "AgeofHouse") 
+plot_scatter(train_clean, "TotalQualityInt") 
+plot_scatter(train_clean, "lc_GarageArea")
+# Insignificant Variation Visually
+plot_scatter(train_clean, "MasVnrArea") 
+plot_scatter(train_clean, "YearRemodAdd") 
+plot_scatter(train_clean, "MSSubClass")
+```
+## Try various models
+```{r export-csvs}
+trainModel <- combinedData %>% filter(DataSet == "train")
+testModel <- combinedData %>% filter(DataSet == "test")
+# Limit Combine to the columns we found useful and then create CSVs for R.
+subsetData <- combinedData[,FinalVariables]
+trainFinal <- subsetData %>% filter(DataSet == "train")
+testFinal <- subsetData %>% filter(DataSet == "test")
+write.csv(trainFinal, "train_clean.csv", row.names = FALSE)
+write.csv(testFinal, "test_clean.csv", row.names = FALSE)
+```
+# Report
+## Variables Used
+```{r variable_labels}
+library(olsrr)
+# Attach nice labels to the data for pretty reporting
+myData <- subsetData %>%
+ set_variable_labels(
+ "SalePrice" = "Property's Sale Price in US Dollars",
+ "lc_GrLivArea" = "Ground Floor Living Area (100 Sq Ft, log transformed)",
+ "YearBuilt" = "Original Construction Date",
+ "YrSold" = "Year Sold",
+ "Neighborhood" = "Physical Locations Within Ames City Limits",
+ "AgeofHouse" = "Year Sold less Year Built",
+ "OverallQual" = "Overall Material And Finish Quality",
+ "BldgType" = "Type of Dwelling",
+ "TotalQualityInt" = "Exterior + Basement + Pool + Garage + Heating + Fireplace + Kitchen",
+ "FullBath" = "Full Bathrooms Above Grade",
+ "KitchenQualInt" = "Kitchen Quality",
+ "MSSubClass" = "Building Class"
+ )
+```
+## Final Model
+```{r try-mlr}
+library(gtsummary)
+library(gt)
+trainFinal <- read_csv("train_clean.csv", show_col_types = FALSE)
+testFinal <- read_csv("test_clean.csv", show_col_types = FALSE)
+# table(trainFinal$KitchenQualInt, useNA = "ifany")
+# table(testFinal$KitchenQualInt, useNA = "ifany")
+trainFinal$FullBath = as.factor(trainFinal$FullBath)
+ testFinal$FullBath = as.factor(testFinal$FullBath)
+trainFinal$MSSubClass = as.numeric(trainFinal$MSSubClass)
+ testFinal$MSSubClass = as.numeric(testFinal$MSSubClass)
+trainFinal$KitchenQualInt = as.factor(trainFinal$KitchenQualInt)
+ testFinal$KitchenQualInt = as.factor(testFinal$KitchenQualInt)
+run_model <- function(myModel, myModelName) {
+ tableCoefficients <- tbl_regression(myModel, exponentiate = FALSE)
+ RegressionTable<- as_gt(tableCoefficients) %>% gt::tab_header(title = myModelName)
+ return(RegressionTable)
+}
+# Simple Linear Regression
+model1 = lm(lSalePrice~OverallQual, data = trainFinal)
+# summary(model1) # Multiple R-squared: 0.6678,	Adjusted R-squared: 0.6676
+myModel1 <- run_model(model1, "Simple Linear Regression")
+myModel1
+# Multiple Linear Regression 1
+model2 = lm(lSalePrice~lc_GrLivArea + FullBath, data = trainFinal)
+# summary(model2) # Multiple R-squared: 0.561,	Adjusted R-squared: 0.5601
+myModel2 <- run_model(model2, "Multiple Linear Regression 1")
+myModel2
+# Multiple Linear Regression 2 -- # Multiple R-squared: 0.8637,	Adjusted R-squared: 0.8609
+model3 = lm(lSalePrice ~ OverallQual + Neighborhood + AgeofHouse + lc_GrLivArea + TotalQualityInt + MSSubClass, data = trainFinal)
+# summary(model3)
+myModel3 <- run_model(model2, "Multiple Linear Regression 2")
+myModel3
+# Multiple Linear Regression 3
+model4 = lm(lSalePrice ~ YrSold + OverallQual + MSSubClass + YearBuilt + BldgType + Neighborhood + lc_GrLivArea + TotalQualityInt + KitchenQualInt, data = trainFinal)
+# summary(model4) # Multiple R-squared: 0.8699,	Adjusted R-squared: 0.8665
+myModel4 <- run_model(model4, "Multiple Linear Regression 3")
+myModel4
+```
+### Address the Assumptions
+```{r plot-assumptions}
+
+library(ggfortify)
+library(broom)
+# Augment model for residual diagnostics
+aug <- augment(model4)
+resid_vals <- residuals(model4)
+# 2. Normal Q-Q Plot
+p_qqplot <- ggplot(aug, aes(sample = .std.resid)) +
+ stat_qq(color = hexSmuBlue) +
+ stat_qq_line(color = hexSmuRed, size = 1) +
+ ggtitle("Normal Q-Q Plot") +
+ xlab("Theoretical Quantiles") +
+ ylab("Standardized Residuals") +
+ theme_minimal(base_size = 12) +
+ theme(plot.title = element_text(face = "bold"))
+p_histogramResiduals <- ggplot(aug, aes(x = .resid)) +
+ geom_histogram(aes(y = ..density..), bins = 30, fill = hexSmuBlue, color = "white", alpha = 0.8) +
+ stat_function(fun = dnorm, args = list(mean = mean(resid_vals), sd = sd(resid_vals)),
+ color = hexSmuRed, size = 1) + 
+ ggtitle("Histogram of Residuals with Normal Curve") +
+ xlab("Residuals") +
+ ylab("Density") +
+ theme_minimal(base_size = 12) +
+ theme(plot.title = element_text(face = "bold"))
+p_cooks <- ggplot(aug, aes(seq_along(.cooksd), .cooksd)) +
+ geom_bar(stat = "identity", fill = hexSmuBlue) +
+ ggtitle("Cook's Distance") +
+ xlab("Observation") +
+ ylab("Cook's distance") +
+ theme_minimal(base_size = 12) +
+ theme(plot.title = element_text(face = "bold"))
+p_leverage <- ggplot(aug, aes(x = .hat, y = .std.resid)) +
+ geom_point(color = hexSmuBlue, alpha = 0.6) +
+ geom_hline(yintercept = 0, color = hexSmuRed) + 
+ geom_smooth(method = "loess", se = FALSE, color = hexSmuRed) +
+ xlab("Leverage") +
+ ylab("Standardized Residuals") +
+ ggtitle("Residuals vs Leverage") +
+ theme_minimal(base_size = 12) +
+ theme(plot.title = element_text(face = "bold"))
+```
+# Final Model Assumptions
+```{r plot-final-model}
+p_cooks
+p_qqplot
+p_histogramResiduals
+p_leverage
+```
+# Durbin Watson 
+```{r durbin-watson}
+library(car)
+# Calculate Durbin-Watson statistic
+durbinWatsonTest(model4)
+```
+# Create CSVs for Kaggle
+```{r Kaggle}
+# For submission to Kaggle for Kaggle Score
+pred = predict(model1, newdata = testFinal)
+ submission = data.frame(Id = testFinal$Id, SalePrice = exp(pred))
+ write.csv(submission, "submission_model1.csv", row.names = FALSE)
+pred = predict(model2, newdata = testFinal)
+ submission = data.frame(Id = testFinal$Id, SalePrice = exp(pred))
+ write.csv(submission, "submission_model2.csv", row.names = FALSE)
+pred = predict(model3, newdata = testFinal)
+ submission = data.frame(Id = testFinal$Id, SalePrice = exp(pred))
+ write.csv(submission, "submission_model3.csv", row.names = FALSE)
+pred = predict(model4, newdata = testFinal)
+ submission = data.frame(Id = testFinal$Id, SalePrice = exp(pred))
+ write.csv(submission, "submission_model4.csv", row.names = FALSE)
+```
