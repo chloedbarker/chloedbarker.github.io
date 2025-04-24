@@ -7,3 +7,9 @@ Predicting Crab Age by Body Metrics
 3. [RShiny Dashboard](https://dnunnally21.shinyapps.io/Crab_Final/)  
 4. [RMarkdown](CrabsProjectChloeDrewTracyA_Final.rmd)
 5. [PDF to Presentation](https://drive.google.com/file/d/1boYvF3gxqXu7xQUA_JNGIKjnzI4YYkMi/view?usp=sharing)
+
+# Attrition Project
+Predicting Attrition at Frito-Lay
+
+1. [PDF to Presentation](https://drive.google.com/file/d/19JHBzKC90YNcApNPGlOngN9XbnYClkGX/view?usp=sharing)
+2. [Presentation (video)](https://youtu.be/fbEB-BOKmEQ)
