@@ -8,7 +8,8 @@ output: word_document
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = "C:/Crabs/") # Set root directory so that all file paths default to C:/Crabs
 setwd("C:/Crabs") # Set working directory too for safety
-[Link Text](https://dnunnally21.shinyapps.io/Crab_Final/)
+
+[LinkApp](https://dnunnally21.shinyapps.io/Crab_Final/)
 ```
 # Load Required Libraries 
 Load libraries required for data manipulation, machine learning, and plotting
