@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# RStudio
+.Rproj.user/
+*.Rproj
+.Rhistory
+.RData
+
+# Jupyter/Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Office temp files
+~$*
+
+# Big media (GitHub limit)
+*.mp4
+*.mov

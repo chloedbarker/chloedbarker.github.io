@@ -1,0 +1,549 @@
+---
+title: "Hospitalization Stays Project"
+author: "Chloe Barker and Jack Korbitz"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(knitr)
+library(naniar)
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(olsrr)
+library(ggthemes)
+library(caret)
+library(RANN)
+library(showtext)
+library(corrplot)
+library(patchwork)
+```
+
+# Import Data 
+```{r}
+hospital_data=read.csv("/Users/chloebarker/Downloads/Hospital-Data-Project/Final Project 1/HospitalDurations.csv",stringsAsFactors = TRUE)
+# Factor conversion
+hospital_data$Med.Sc.Aff = factor(hospital_data$Med.Sc.Aff, levels = c(1, 2), labels = c("Yes", "No"))
+hospital_data$Region = factor(hospital_data$Region, levels = c(1,2,3,4), labels = c("NE", "NC", "S", "W"))
+# Check structure - two factors
+str(hospital_data)
+# Missing data check - no missing values 
+vis_miss(hospital_data)
+```
+
+
+## EDA: Overall Scatter Plots for Each Predictor
+```{r}
+long_data <- hospital_data %>% select(-ID, -Med.Sc.Aff, -Region) %>%
+  pivot_longer(cols = -Lgth.of.Sty,  
+    names_to = "Variable",
+    values_to = "Value")
+
+ggplot(long_data, aes(x = Value, y = log(Lgth.of.Sty))) +
+  geom_point(alpha = 0.6, color = "#0596a2") + geom_smooth(linewidth=.7,se=FALSE, color = "#E2583E") +
+  facet_wrap(~ Variable, scales = "free_x") +
+  theme_minimal() +
+  labs(title = "Length of Stay vs. Other Hospital Variables",
+    x = "Value of Other Variables",
+    y = "Length.of.Stay")
+```
+
+## EDA: Interactions
+```{R}
+# Infection Risk vs log(Length of Stay) by Region
+ggplot(hospital_data, aes(x = Avg.Pat , y = log(Lgth.of.Sty), color = Region)) +geom_point() +geom_smooth(method="lm", se=FALSE)+labs(title = "Infection Risk vs. log(Length of Stay) by Region", x = "Infection Risk",y = "Log(Length of Stay)") + theme_minimal()
+
+# Average Number of Patients vs log(Length of Stay) by Region
+ggplot(hospital_data, aes(x = Avg.Pat , y = log(Lgth.of.Sty), color = Region)) +geom_point() +geom_smooth(method="lm", se=FALSE)+labs(title = "Average Number of Patients vs. log(Length of Stay) by Region", x = "Average Number of Patients Per Day",y = "Log(Length of Stay)") + theme_minimal()
+
+# Average Number of Nurses vs log(Length of Stay) by Region
+ggplot(hospital_data, aes(x = Avg.Nur , y = log(Lgth.of.Sty), color = Region)) +geom_point() +geom_smooth(method="lm", se=FALSE)+labs(title = "Average Number of Nurses vs. log(Length of Stay) by Region", x = "Average Number of Full-time Nurses",y = "Log(Length of Stay)") + theme_minimal()
+```
+
+## EDA: Correlation Matrix
+```{r}
+hospital_data$log.Lgth.of.Sty = log(hospital_data$Lgth.of.Sty)
+numeric_hospital_data_log = hospital_data %>% select(where(is.numeric)) %>% select(-ID, -Lgth.of.Sty)
+ggcorr(numeric_hospital_data_log,label = TRUE,label_size = 4,size = 4,hjust = 0.75) + labs(title = "Correlation Matrix - log(Length of Stay)") + theme_minimal()
+```
+
+## EDA: Categorical Variables
+```{r}
+# Tables of Categorical Variables
+table(hospital_data$Region)
+table(hospital_data$Med.Sc.Aff)
+
+# Box Plots by Regions
+ggplot(hospital_data, aes(x = Region, y = Lgth.of.Sty, fill = Region)) + geom_boxplot() + labs(title = "Length of Stay by Region", y = "Length of Hospital Stay") + scale_fill_manual(values = c("#b6e3f1", "#f69380","#0596a2","#d6b6c8"))+ theme_bw(base_size = 14)
+
+# Box Plots by Med School Affiliation
+ggplot(hospital_data, aes(x = Med.Sc.Aff, y = Lgth.of.Sty, fill = Med.Sc.Aff)) + geom_boxplot(color = "black") + scale_fill_manual(values = c("#b6e3f1", "#f69380")) + labs(title = "Length of Stay by Medical School Affiliation",x = "Medical School Affiliation",y = "Length of Hospital Stay") + theme_bw(base_size = 14)
+
+# Histogram of Length of Stay faceted by Region
+hospital_data %>% ggplot(aes(x = Lgth.of.Sty)) + geom_histogram(binwidth = 0.25, fill = "#00648f", color = "white") +labs(title = "Distribution of Length of Stay by Region",x = "Length of Stay",y = "Count") + facet_wrap(~Region, ncol = 1) +theme_bw(base_size = 12)
+
+# Histogram of Length of Stay faceted by Med School Affiliation
+hospital_data %>% ggplot(aes(x = Lgth.of.Sty)) + geom_histogram(binwidth = 0.25, fill = "#00648f", color = "white") +labs(title = "Distribution of Length of Stay by Medical School Affiliation",x = "Length of Stay",y = "Count") + facet_wrap(~Med.Sc.Aff, ncol = 1) +theme_bw(base_size = 12)
+```
+
+## Categorical Variable Exploration
+```{r}
+## Categorical Graph
+cat_vars = c("Region", "Med.Sc.Aff")
+
+# Compute Adjusted R²
+cat_var_stats = map_df(cat_vars, function(v) {
+  f = as.formula(paste("log.Lgth.of.Sty ~", v))
+  mod = lm(f, data = hospital_data)
+  tibble(var = v, adj_r2 = summary(mod)$adj.r.squared)
+})
+
+# Plot
+cat_var_stats %>% arrange(desc(adj_r2)) %>% mutate(var = fct_reorder(var, adj_r2)) %>% ggplot(aes(adj_r2, var)) + geom_col(fill = "#e2583e") + labs(x = "Adjusted R²", y = "Categorical Predictor", title = "Adjusted R² of Categorical Predictors for log(Length of Stay)") + theme_minimal(base_size = 12) 
+
+plot_box = function(df, var) {
+  medians = df %>%
+    group_by(.data[[var]]) %>%
+    summarize(median_log_LOS = median(log.Lgth.of.Sty, na.rm = TRUE)) %>%
+    arrange(median_log_LOS)
+  df[[var]] = factor(df[[var]], levels = medians[[var]])
+  
+ggplot(df, aes(x = .data[[var]], y = log.Lgth.of.Sty)) + geom_boxplot(outlier.alpha = 0.2, width = 0.6, fill = "#00648f") + stat_summary(fun = median, geom = "point", shape = 21, size = 2, fill = "#f69380", color = "#00648f") + labs(title = paste("log(Length of Stay) vs.", var), y = "log(Length of Stay)") + theme_minimal(base_size = 12) + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none")
+}
+
+plot_box(hospital_data, "Region")| plot_box(hospital_data, "Med.Sc.Aff")
+```
+
+## EDA: Numeric Variables
+```{r}
+names(hospital_data)
+# Numeric predictor variables
+num_vars = c("Age", "Inf.Risk", "Rad.Cul.Rate", "R.CX.ray.Rat", "N.Beds", "Avg.Pat", "Avg.Nur", "Pct.Ser.Fac")
+
+# Calculate Adjusted R² for each numeric variable
+num_var_stats = map_df(num_vars, function(v) {
+  f = as.formula(paste("log.Lgth.of.Sty ~", v))
+  mod = lm(f, data = hospital_data)
+  tibble(var = v, adj_r2 = summary(mod)$adj.r.squared)
+})
+
+# Plot
+num_var_stats %>% arrange(desc(adj_r2)) %>% mutate(var = fct_reorder(var, adj_r2)) %>% ggplot(aes(adj_r2, var)) + geom_col(fill = "#00648f") + labs(x = "Adjusted R²", y = "Predictor", title = "Adjusted R² of Numeric Predictors for log(Length of Stay)") + theme_minimal(base_size = 12)
+
+## Specific Numeric Variable Graphs
+plot_scatter = function(df, var) {
+  ggplot(df, aes(x = .data[[var]], y = log.Lgth.of.Sty)) +
+    geom_point(alpha = 0.5, color = "#00648f") +
+    geom_smooth(se = FALSE, color = "#e2583e", linewidth = 1) +
+    labs(title = paste("log(Length of Stay) vs", var), x = var, y = "log(Length of Stay)") +
+    theme_minimal(base_size = 12)
+}
+
+(plot_scatter(hospital_data, "Age") | plot_scatter(hospital_data, "Avg.Nur")) /
+(plot_scatter(hospital_data, "N.Beds") | plot_scatter(hospital_data, "Inf.Risk"))
+
+(plot_scatter(hospital_data, "R.CX.ray.Rat") | plot_scatter(hospital_data, "Avg.Pat")) /
+(plot_scatter(hospital_data, "Rad.Cul.Rate") | plot_scatter(hospital_data, "Pct.Ser.Fac"))
+```
+
+# EDA: Scatterplots Length of Stay vs Explanatory Variables
+```{r}
+library(tidyverse)
+library(ggthemes)
+library(plotly)
+
+# Histogram of Length of Stay vs Age
+ggplot(hospital_data, aes(x = Age, y = log(Lgth.of.Sty))) +
+  geom_point(alpha = 0.6, color = "#00648f") +
+  geom_smooth(method = "lm", color = "#E2583E", se = FALSE) +
+  labs(title = "Age vs Log Length of Stay",
+       x = "Age",
+       y = "Log Length of Stay") +
+  theme_minimal()
+
+# Histogram of Length of Stay vs Infection Risk
+ggplot(hospital_data, aes(x = Inf.Risk, y = log(Lgth.of.Sty))) +
+  geom_point(alpha = 0.6, color = "#00648f") +
+  geom_smooth(method = "lm" , color = "#E2583E", se = FALSE) +
+  labs(title = "Infection Risk vs Log Length of Stay",
+       x = "Inf.Risk",
+       y = "Log Length of Stay") +
+  theme_minimal()
+
+# Histogram of Length of Stay vs Avg.Pat
+ggplot(hospital_data, aes(x = Avg.Pat, y = log(Lgth.of.Sty))) +
+  geom_point(alpha = 0.6, color = "#00648f") +
+  geom_smooth(method = "lm", color = "#E2583E", se = FALSE) +
+  labs(title = "Avg.Pat vs Log Length of Stay",
+       x = "Avg.Pat",
+       y = "Log Length of Stay") +
+  theme_minimal()
+
+# Histogram of Length of Stay vs Avg.Nur
+ggplot(hospital_data, aes(x = Avg.Nur, y = log(Lgth.of.Sty))) +
+  geom_point(alpha = 0.6, color = "#00648f") +
+  geom_smooth(method = "lm", color = "#E2583E", se = FALSE) +
+  labs(title = "Avg.Nur vs Log Length of Stay",
+       x = "Avg.Nur",
+       y = "Log Length of Stay") +
+  theme_minimal()
+```
+
+## Interaction 3D Plot 
+```{r}
+# 3d ggplot with Y= Length of Stay, X= Age, Z= Avg.Nur
+library(plotly)
+plot_ly(hospital_data, 
+        x = ~Age, 
+        y = ~Lgth.of.Sty, 
+        z = ~Inf.Risk, 
+        type = "scatter3d", 
+        mode = "markers",
+        marker = list(size = 6, 
+                      color = ~Lgth.of.Sty, 
+                      colorscale = "Plasma", 
+                      showscale = TRUE, 
+                      opacity = 0.9)) %>%
+  layout(title = "Age, Length of Stay, and Avg.Nur",
+         scene = list(xaxis = list(title = "Age"),
+                      yaxis = list(title = "Log Length of Stay"),
+                      zaxis = list(title = "Infection Risk")))
+```
+
+## Forward Stepwise Variable Selection
+```{r warning= FALSE}
+library(leaps)
+library(patchwork)
+library(ggplot2)
+library(ggthemes)
+
+Hospital_Duration <- read.csv('/Users/chloebarker/Downloads/Hospital-Data-Project/Final Project 1/HospitalDurations.csv', header = TRUE)
+reg.fwd=regsubsets(log(Lgth.of.Sty) ~.
+                  ,data=Hospital_Duration
+                  ,method="forward"
+                  ,nvmax=11)
+
+
+summary(reg.fwd)$adjr2
+summary(reg.fwd)$rss
+summary(reg.fwd)$bic
+
+# Extract summary stats
+bics <- summary(reg.fwd)$bic
+adjr2 <- summary(reg.fwd)$adjr2
+rss <- summary(reg.fwd)$rss
+
+# Create data frame for plotting
+df <- data.frame(
+  predictors = 1:length(bics),
+  BIC = bics,
+  AdjR2 = adjr2,
+  RSS = rss
+)
+
+# BIC plot
+p1 <- ggplot(df, aes(x = predictors, y = BIC)) +
+  geom_line() +
+  geom_point(aes(x = which.min(BIC), y = min(BIC)), color = "red", shape = 10, size = 3) +
+  labs(x = "# of predictors", y = "BIC") +
+  theme_stata()
+
+# Adjusted R2 plot
+p2 <- ggplot(df, aes(x = predictors, y = AdjR2)) +
+  geom_line() +
+  geom_point(aes(x = which.max(AdjR2), y = max(AdjR2)), color = "red", shape = 10, size = 3) +
+  labs(x = "# of predictors", y = "Adjusted R-squared") +
+  theme_stata()
+
+# RSS plot
+p3 <- ggplot(df, aes(x = predictors, y = RSS)) +
+  geom_line() +
+  geom_point(aes(x = which.min(RSS), y = min(RSS)), color = "red", shape = 10, size = 3) +
+  labs(x = "# of predictors", y = "train RSS") +
+  theme_stata()
+
+# Combine all three plots in one row
+p1 + p2 + p3
+
+coef(reg.fwd,5) # Set to the BIC # of selected variables
+```
+
+## OBJ 1 MLR Model 1
+```{r}
+library(boot)
+hospital_data = read.csv('/Users/chloebarker/Downloads/Hospital-Data-Project/Final Project 1/HospitalDurations.csv', header = TRUE)
+hospital_data$Med.Sc.Aff = factor(hospital_data$Med.Sc.Aff, levels = c(1, 2), labels = c("Yes", "No"))
+hospital_data$Region = factor(hospital_data$Region, levels = c(1,2,3,4), labels = c("NE", "NC", "S", "W"))
+hospital_data$log.Lgth.of.Sty = log(hospital_data$Lgth.of.Sty)
+
+set.seed(2025)
+splitIndex = createDataPartition(hospital_data$log.Lgth.of.Sty, p = 0.8, list = FALSE)
+train = hospital_data[splitIndex, ]
+test = hospital_data[-splitIndex, ]
+
+# Additivive model
+model = lm(log.Lgth.of.Sty ~ Region + Avg.Pat + Age + Inf.Risk + Avg.Nur, data = train)
+summary(model)
+par(mfrow=c(2,2))
+plot(model)
+par(mfrow = c(1,1))
+
+library(lmboot)
+
+# Paired bootstrap
+set.seed(1234)
+boot.p <- paired.boot(log.Lgth.of.Sty ~ Region + Avg.Pat + Age + Inf.Risk + Avg.Nur, B = 1000, seed = 1234, data = train)
+
+# 95% bootstrap percentile CI
+ci_table = t(apply(boot.p$bootEstParam, 2, quantile, probs = c(0.025, 0.975)))
+ci_table
+```
+
+# Variable Creation
+```{r}
+hospital_data2 = read.csv("/Users/chloebarker/Downloads/Hospital-Data-Project/Final Project 1/HospitalDurations.csv")
+hospital_data2$Med.Sc.Aff = factor(hospital_data2$Med.Sc.Aff, levels = c(1, 2), labels = c("Yes", "No"))
+hospital_data2$Region = factor(hospital_data2$Region, levels = 1:4, labels = c("NE", "NC", "S", "W"))
+hospital_data2$log.Lgth.of.Sty = log(hospital_data2$Lgth.of.Sty)
+
+hospital_data2 = hospital_data2 %>% mutate(
+  Inf.Risk2 = Inf.Risk^2,
+  Inf.Risk3 = Inf.Risk^3,
+  Inf.Risk4 = Inf.Risk^4,
+  N.Beds2 = N.Beds^2,
+  N.Beds3 = N.Beds^3,
+  N.Beds4 = N.Beds^4,
+  Avg.Nur2 = Avg.Nur^2,
+  Avg.Nur3 = Avg.Nur^3,
+  Age2 = Age^2,
+  Age3 = Age^3,
+  Age4 = Age^4,
+  Avg.Pat2 = Avg.Pat^2,
+  Avg.Pat3 = Avg.Pat^3,
+  Avg.Pat4 = Avg.Pat^4,
+  Avg.Pat5 = Avg.Pat^5,
+  R.CX.ray.Rat2 = R.CX.ray.Rat^2,
+  R.CX.ray.Rat3 = R.CX.ray.Rat^3,
+  R.CX.ray.Rat4 = R.CX.ray.Rat^4,
+  Rad.Cul.Rate2 = R.Cul.Rat^2,
+  Rad.Cul.Rate3 = R.Cul.Rat^3,
+  Rad.Cul.Rate4 = R.Cul.Rat^4,
+  Rad.Cul.Rate5 = R.Cul.Rat^5,
+  Pct.Ser.Fac2 = Pct.Ser.Fac^2,
+  Pct.Ser.Fac3 = Pct.Ser.Fac^3,
+  Pct.Ser.Fac4 = Pct.Ser.Fac^4)
+
+hospital_data2 <- hospital_data2 %>% select(-ID, -Lgth.of.Sty)
+```
+
+## Lasso Regression for Model 2
+```{r}
+x=model.matrix(log.Lgth.of.Sty~.,hospital_data2)[,-1]
+y=hospital_data2$log.Lgth.of.Sty
+
+library(glmnet)
+set.seed(1234)
+
+cv.out=cv.glmnet(x,y,alpha=1)
+plot(cv.out)
+bestlambda<-cv.out$lambda.1se
+coef(cv.out,s=bestlambda)
+```
+
+## OBJ 2: Recursive Feature Elimination (RFE) for Model 2
+```{r}
+# Train/test split
+set.seed(2025)
+splitIndex = createDataPartition(hospital_data2$log.Lgth.of.Sty, p = 0.8, list = FALSE)
+train2 = hospital_data2[splitIndex,]
+test2 = hospital_data2[-splitIndex,]
+
+# Model 2: Random Forest
+# Define the control using a random forest selection function
+ctrl <- rfeControl(functions = rfFuncs, method = "boot")
+
+# Run RFE
+rfe_result <- rfe(
+  x = train2[, setdiff(names(train2), "log.Lgth.of.Sty")],
+  y = train2$log.Lgth.of.Sty,
+  sizes = c(5, 10, 15, 20),  # Number of variables to test
+  rfeControl = ctrl
+)
+
+# View top predictors
+predictors(rfe_result)
+```
+
+## OBJ 2 MLR Model 2
+```{r}
+# Complex MLR
+model_complex= lm(log.Lgth.of.Sty ~ 
+                        Inf.Risk * Region +
+                        Avg.Pat * Region +
+                        Avg.Nur * Region +
+                        Age2 +
+                        Avg.Pat4 + Avg.Pat3 +
+                        Rad.Cul.Rate5 + 
+                        Pct.Ser.Fac + Pct.Ser.Fac3 +  
+                        R.CX.ray.Rat + R.CX.ray.Rat2 + R.CX.ray.Rat3 + R.CX.ray.Rat4 , data = train2)
+
+summary(model_complex)
+
+par(mfrow = c(2, 2))
+plot(model_complex, main = "Complex Model Residuals")
+par(mfrow = c(1, 1))
+
+# Residual plot
+plot(model_complex$residuals, main = "Residuals Plot", ylab = "Residuals", xlab = "Index", col = "#354CA1")
+```
+
+## OBJ 2 NON-parametric Model 3: KNN Model
+```{r}
+hospital_data1 = hospital_data2
+set.seed(2025)
+hospital_data1$log.Lgth.of.Sty = log(hospital_data1$Lgth.of.Sty)
+splitIndex = createDataPartition(hospital_data1$log.Lgth.of.Sty, p = 0.8, list = FALSE)
+train1 = hospital_data1[splitIndex,]
+test1 = hospital_data1[-splitIndex,]
+
+
+fitControl<-trainControl(method="repeatedcv",number=10,repeats=10) 
+knn.fit<-train(log.Lgth.of.Sty ~ Region * Avg.Pat + Age + Inf.Risk + Avg.Nur + R.CX.ray.Rat,
+                  data=train1,
+                  method="knn",
+                  trControl=fitControl)
+print(knn.fit)
+plot(knn.fit)
+knn.fit
+
+knn.fit2<-train(log.Lgth.of.Sty ~ Region * Avg.Pat + Age + Inf.Risk + Avg.Nur + R.CX.ray.Rat,
+               data=train1,
+               method="knn",
+               trControl=fitControl,
+               tuneGrid=expand.grid(k=c(1:10,20,30))
+)
+
+knn.fit2
+plot(knn.fit2)
+knn.fit2$results
+
+```
+
+# Overall Comparison of Metrics 
+```{r}
+set.seed(123)
+splitIndex = createDataPartition(hospital_data2$log.Lgth.of.Sty, p = 0.8, list = FALSE)
+train2 = hospital_data2[splitIndex, ]
+test2 = hospital_data2[-splitIndex, ]
+
+base_model = lm(log.Lgth.of.Sty ~ Region + Avg.Pat + Age + Inf.Risk + Avg.Nur, data = train2)
+summary(base_model)
+
+complex_model = lm(log.Lgth.of.Sty ~ 
+                        Inf.Risk * Region +
+                        Avg.Pat * Region +
+                        Avg.Nur * Region +
+                        Age + Age2 +
+                        Avg.Pat4 + Avg.Pat3 + Avg.Pat5 +
+                        Rad.Cul.Rate5 + 
+                        Pct.Ser.Fac + Pct.Ser.Fac3 +  
+                        R.CX.ray.Rat + R.CX.ray.Rat2 + R.CX.ray.Rat3 + R.CX.ray.Rat4 , data = train2)
+summary(complex_model)
+
+
+# Predictions
+pred_base = predict(base_model, newdata = test2)
+pred_complex = predict(complex_model, newdata = test2)
+pred_knn = predict(knn.fit2, newdata = test1)
+
+# MSE Comparison
+mse_base = mean((test2$log.Lgth.of.Sty - pred_base)^2)
+mse_complex = mean((test2$log.Lgth.of.Sty - pred_complex)^2)
+mse_knn = mean((test1$log.Lgth.of.Sty - pred_knn)^2)
+
+# RMSE
+rmse_base = sqrt(mse_base)
+rmse_complex = sqrt(mse_complex)
+rmse_knn = sqrt(mse_knn)
+
+# Adjusted R² Comparison
+adj_r2_base = summary(base_model)$adj.r.squared
+adj_r2_complex = summary(complex_model)$adj.r.squared
+adj_r2_knn = cor(test1$log.Lgth.of.Sty, pred_knn)^2  # R² for k-NN
+
+# MAE
+mae_base = mean(abs(test2$log.Lgth.of.Sty - pred_base))
+mae_complex = mean(abs(test2$log.Lgth.of.Sty - pred_complex))
+mae_knn = mean(abs(test1$log.Lgth.of.Sty - pred_knn))
+
+# AIC
+aic_base = AIC(base_model)
+aic_complex = AIC(complex_model)
+aic_knn = ""  # AIC for k-NN is not directly available, using model fit
+
+# BIC
+bic_base = BIC(base_model)
+bic_complex = BIC(complex_model)
+bic_knn = ""  # BIC for k-NN is not directly available, using model fit
+
+# Table of Results
+model_compare = tibble(
+  Model = c("Base MLR", "Complex MLR", "k-NN"),
+  MSE = c(mse_base, mse_complex, mse_knn),
+  RMSE = c(rmse_base, rmse_complex, rmse_knn),
+  Adj_R2 = c(adj_r2_base, adj_r2_complex, adj_r2_knn),
+  MAE = c(mae_base, mae_complex, mae_knn),
+  AIC = c(aic_base, aic_complex, aic_knn),
+  BIC = c(bic_base, bic_complex, bic_knn)
+)
+
+print(model_compare)
+```
+
+## APPENDIX
+## Random Forest Model
+```{r}
+# Train/test split
+set.seed(2025)
+splitIndex = createDataPartition(hospital_data2$log.Lgth.of.Sty, p = 0.8, list = FALSE)
+train2 = hospital_data2[splitIndex,]
+test2 = hospital_data2[-splitIndex,]
+
+# Model 2: Random Forest
+# Define the control using a random forest selection function
+ctrl <- rfeControl(functions = rfFuncs, method = "boot")
+
+# Run RFE
+rfe_result <- rfe(
+  x = train2[, setdiff(names(train2), "log.Lgth.of.Sty")],
+  y = train2$log.Lgth.of.Sty,
+  sizes = c(5, 10, 15, 20),  # Number of variables to test
+  rfeControl = ctrl
+)
+
+# View top predictors
+predictors(rfe_result)
+
+# Train model with selected variables and Region interaction
+selected_vars <- predictors(rfe_result)
+formula <- as.formula(
+  paste("log.Lgth.of.Sty ~ (", paste(selected_vars, collapse = " + "), ") * Region")
+)
+
+model2 <- train(formula,
+  data = train2,
+  method = "rf",
+  tuneLength = 5,
+  trControl = trainControl(method = "boot")
+)
+
+print(model2)
+
+
+```

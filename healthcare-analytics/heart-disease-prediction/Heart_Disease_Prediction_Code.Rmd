@@ -1,0 +1,710 @@
+---
+title: "Final Project"
+author: 'MSDS 6372: Chloe Barker and Jack Pehlke'
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message = FALSE,warning = FALSE)
+library(dplyr)
+library(forcats)
+library(knitr)
+library(naniar)
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(janitor)
+library(olsrr)
+library(ggthemes)
+library(caret)
+library(RANN)
+library(showtext)
+library(corrplot)
+library(patchwork)
+library(scales)
+# Font for visuals
+font_add(family = "Open Sans", regular = "OpenSans-SemiBold.ttf")
+showtext_auto()
+par(family = "Open Sans")
+library(extrafont)
+par(family = "Open Sans")
+```
+
+### Data Preparation
+```{r}
+heart_data <- read.csv("heart_2020_cleaned.csv", header = TRUE)
+heart_data$HeartDisease <- factor(heart_data$HeartDisease, levels = c("No","Yes"), labels= c("No","Yes"))
+heart_data$HeartDisease <- relevel(heart_data$HeartDisease, ref = "Yes") # "Yes" group the positive reference group
+cat_vars <- c("Smoking", "AlcoholDrinking", "Stroke", "DiffWalking","Sex","AgeCategory", "Race", "Diabetic", "PhysicalActivity", "GenHealth","Asthma", "KidneyDisease", "SkinCancer")
+num_vars <- c("BMI", "PhysicalHealth", "MentalHealth", "SleepTime","AgeCategory.num","GenHealth.num")
+#Potential New Variables
+genhealth_levels<- c("Poor", "Fair","Good", "Very good","Excellent")
+age_levels<- c("18-24","25-29","30-34","35-39","40-44","45-49","50-54","55-59","60-64","65-69","70-74","75-79","80 or older")
+heart_data <- heart_data %>%
+  mutate(GenHealth.num = as.numeric(factor(GenHealth, levels = genhealth_levels, ordered = TRUE)),
+    AgeCategory.num = as.numeric(factor(AgeCategory, levels = age_levels, ordered = TRUE)))
+heart_data <- heart_data %>% mutate(across(all_of(cat_vars), as.factor))
+heart_data <- heart_data %>% mutate(across(all_of(num_vars), as.numeric))
+# Make new dataset
+factor_cols <- sapply(heart_data,is.factor)# Identify factor columns
+level_counts <- sapply(heart_data[,factor_cols, drop = FALSE], nlevels)# Count levels
+ordered_factor_col_names <- names(level_counts)[order(level_counts)]# Order factor columns(by # of levels)
+non_factor_col_names <- names(heart_data)[!factor_cols] # Get non-factor column names
+new_col_order <- c(ordered_factor_col_names, non_factor_col_names) # Combine
+data_sorted <- heart_data[,new_col_order] # Reorder the data frame columns
+write.csv(data_sorted, "heart2020_data_sorted.csv",row.names = FALSE)
+```
+
+### Data Setup
+```{r}
+heart_data = read.csv("heart2020_data_sorted.csv",header=TRUE)
+heart_data <- heart_data %>% mutate(across(all_of(cat_vars), as.factor))
+heart_data <- heart_data %>% mutate(across(all_of(num_vars), as.numeric))
+```
+
+### Overall Dataset
+```{r}
+# Table of percent and number counts 
+heart = heart_data %>% group_by(HeartDisease) %>% 
+  summarise(n = n()) %>% 
+  mutate(percent=round(n/sum(n),4)*100)
+heart
+```
+
+### Data Split
+```{r}
+library(caret)
+set.seed(4)
+trainIndex <- createDataPartition(heart_data$HeartDisease, p = 0.8, list = FALSE) # to get balance of yes/no
+trainHeart <- heart_data[trainIndex, ]
+testHeart <- heart_data[-trainIndex, ]
+write.csv(trainHeart, "trainHeart.csv",row.names = FALSE)
+write.csv(testHeart, "testHeart.csv",row.names = FALSE)
+
+trainHeart <- read.csv("trainHeart.csv")
+testHeart <- read.csv("testHeart.csv")
+trainHeart$HeartDisease <- factor(trainHeart$HeartDisease, levels = c("No","Yes"))
+testHeart$HeartDisease <- factor(testHeart$HeartDisease, levels = c("No","Yes"))
+table(trainHeart$HeartDisease)
+table(testHeart$HeartDisease)
+```
+
+### EDA: Training Dataset
+```{r}
+# Table of percent and number counts 
+heartTrain = trainHeart %>% group_by(HeartDisease) %>% 
+  summarise(n = n()) %>% 
+  mutate(percent=round(n/sum(n),4)*100)
+heartTrain
+
+# Percent of disease (yes/no)
+ggplot(heartTrain,aes(x=HeartDisease,y=percent,colour=HeartDisease))+geom_bar(aes(fill=HeartDisease),show.legend=F,stat="identity")+ylab("Percentage") + scale_fill_manual(values = c("Yes" = "#CC0035", "No" = "#354CA1")) + theme_minimal(base_family = "Open Sans") + xlab("Heart Disease Status")
+
+trainHeart$HeartDisease.num = as.numeric(ifelse(trainHeart$HeartDisease=="Yes",1,0))
+numeric_data <- trainHeart %>% select(where(is.numeric))
+numeric_data %>% filter(HeartDisease.num == "0") %>% summary()
+numeric_data %>% filter(HeartDisease.num == "1") %>% summary()
+```
+
+### Correlation Plot and Table (Numeric Only)
+```{r}
+colors <- colorRampPalette(c("#354CA1", "white", "#CC0035"))(200)
+
+# Correlation Table
+numeric_data %>%
+  cor() %>%
+  round(2)
+
+# Correlation Plot
+numeric_data %>%
+  cor() %>%
+  corrplot(method = "color", type = "upper", col = colors, tl.col = "black", addCoef.col = "black",number.cex = 0.9)
+```
+
+### Scatterplot Matrix of Numeric Variables
+```{r, eval=FALSE}
+numeric_data$HeartDisease = trainHeart$HeartDisease
+numeric_data$HeartDisease <- factor(numeric_data$HeartDisease,levels = c("No","Yes"))
+numeric_data$HeartDisease <- relevel(numeric_data$HeartDisease, ref = "Yes")
+numeric_datapair = numeric_data  %>% select(-HeartDisease.num)
+
+smu_colors <- c("No" = "#354CA1", "Yes" = "#CC0035")
+p <- ggpairs(numeric_datapair,mapping = aes(colour = HeartDisease),lower = list(continuous = wrap("points", alpha = 0.3, size = 0.1)))
+
+p + scale_color_manual(values = smu_colors) + scale_fill_manual(values  = smu_colors)
+```
+
+### Box Plots of Numeric Predictors
+```{r}
+smu2 <- c("Yes"="#CC0035","No"="#B0B7C3")
+a = trainHeart %>% ggplot(aes(x=BMI, y=HeartDisease, fill = HeartDisease)) + geom_boxplot(show.legend = FALSE)+ scale_fill_manual(values = smu2) + theme_minimal(base_family = "Open Sans")
+b = trainHeart %>% ggplot(aes(x=SleepTime, y=HeartDisease, fill = HeartDisease)) + geom_boxplot(show.legend = FALSE)+ scale_fill_manual(values = smu2)+theme_minimal(base_family = "Open Sans")
+c = trainHeart %>% ggplot(aes(x=PhysicalHealth, y=HeartDisease, fill = HeartDisease)) + geom_boxplot(show.legend = FALSE)+ scale_fill_manual(values = smu2)+theme_minimal(base_family = "Open Sans")
+d = trainHeart %>% ggplot(aes(x=MentalHealth, y=HeartDisease, fill = HeartDisease)) + geom_boxplot(show.legend = FALSE)+ scale_fill_manual(values = smu2)+ theme_minimal(base_family = "Open Sans")
+e = trainHeart %>% ggplot(aes(x=AgeCategory.num, y=HeartDisease, fill = HeartDisease)) + geom_boxplot(show.legend = FALSE)+ scale_fill_manual(values = smu2)+theme_minimal(base_family = "Open Sans")
+f = trainHeart %>% ggplot(aes(x=GenHealth.num, y=HeartDisease, fill = HeartDisease)) + geom_boxplot(show.legend = FALSE)+ scale_fill_manual(values = smu2)+theme_minimal(base_family = "Open Sans")
+
+# More visual differences
+(e|a)/(c|f)
+
+# Less visual differences
+(d|b)
+```
+
+### Variables with more than two levels: EDA
+```{r}
+# g1: AgeCategory
+g1<-trainHeart %>% 
+  group_by(AgeCategory,HeartDisease) %>%
+  summarise(cnt=n()) %>%
+  mutate(perc=round(cnt/sum(cnt),4))%>%
+  arrange(desc(perc))
+g1
+
+# g2: GenHealth
+g2<-trainHeart %>% 
+  group_by(GenHealth,HeartDisease) %>%
+  summarise(cnt=n()) %>%
+  mutate(perc=round(cnt/sum(cnt),4))%>%
+  arrange(desc(perc))
+g2
+
+# g3: Diabetic
+g3<-trainHeart %>% 
+  group_by(Diabetic,HeartDisease) %>%
+  summarise(cnt=n()) %>%
+  mutate(perc=round(cnt/sum(cnt),4))%>%
+  arrange(desc(perc))
+g3
+
+# g4: Race
+g4 <- trainHeart %>%
+  group_by(Race, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+g4
+```
+
+### Proportion plots grouped by HeartDisease
+```{r}
+g1g <- ggplot(g1[c(14:26),], aes(x = reorder(AgeCategory, -perc), y = perc, fill = AgeCategory)) +
+  geom_bar(stat = "identity", show.legend = FALSE) + ylab("Proportion of Disease") +xlab("Age Category")+
+  theme_minimal(base_family = "Open Sans") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g2g <- ggplot(g2[c(6:10),], aes(x = reorder(GenHealth, -perc), y = perc, fill = GenHealth)) +
+  geom_bar(stat = "identity", show.legend = FALSE) + ylab("Proportion of Disease") + xlab("General Health") + theme_minimal(base_family = "Open Sans")
+
+g3g <- ggplot(g3[c(5:8),], aes(x = reorder(Diabetic, -perc), y = perc, fill = Diabetic)) +
+  geom_bar(stat = "identity", show.legend = FALSE) + ylab("Proportion of Disease") + xlab("Diabetic") +
+  theme_minimal(base_family = "Open Sans") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+g4g <- ggplot(g4[c(7:12),], aes(x = reorder(Race, -perc), y = perc, fill = Race)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +ylab("Proportion of Disease") + xlab("Race") +
+  theme_minimal(base_family = "Open Sans") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+(g1g | g2g) / (g3g | g4g)
+```
+
+### Binary Categorical Predictors EDA 
+```{r}
+# b1: Smoking
+b1<-trainHeart %>% 
+  group_by(Smoking,HeartDisease) %>%
+  summarise(cnt=n()) %>%
+  mutate(perc=round(cnt/sum(cnt),4))%>%
+  arrange(desc(perc))
+b1
+
+# b2:AlcoholDrinking
+b2<-trainHeart %>% 
+  group_by(AlcoholDrinking,HeartDisease) %>%
+  summarise(cnt=n()) %>%
+  mutate(perc=round(cnt/sum(cnt),4))%>%
+  arrange(desc(perc))
+b2
+
+# b3: Stroke
+b3 <- trainHeart %>% 
+  group_by(Stroke, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b3
+
+# b4: DiffWalking
+b4 <- trainHeart %>% 
+  group_by(DiffWalking, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b4
+
+# b5: Sex
+b5 <- trainHeart %>% 
+  group_by(Sex, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b5
+
+# b6: PhysicalActivity
+b6 <- trainHeart %>% 
+  group_by(PhysicalActivity, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b6
+
+# b7: Asthma
+b7 <- trainHeart %>% 
+  group_by(Asthma, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b7
+
+# b8: KidneyDisease
+b8 <- trainHeart %>% 
+  group_by(KidneyDisease, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b8
+
+# b9: SkinCancer
+b9 <- trainHeart %>% 
+  group_by(SkinCancer, HeartDisease) %>%
+  summarise(cnt = n()) %>%
+  mutate(perc = round(cnt / sum(cnt), 4)) %>%
+  arrange(desc(perc))
+b9
+```
+
+### Proportion plots grouped by HeartDisease
+```{r}
+b1b <- ggplot(b1[c(3:4),], aes(x = reorder(Smoking, -perc), y = perc, fill = Smoking)) +
+  geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) +
+  labs(x = "Smoking Status", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b2b <- ggplot(b2[c(3:4),], aes(x = reorder(AlcoholDrinking, -perc), y = perc, fill = AlcoholDrinking)) + geom_bar(stat = "identity", show.legend = FALSE)+ scale_fill_manual(values = smu2) + labs(x = "Alcohol Drinking", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b3b <- ggplot(b3[c(3:4),], aes(x = reorder(Stroke, -perc), y = perc, fill = Stroke)) + geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) + labs(x = "Stroke", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b4b <- ggplot(b4[c(3:4),], aes(x = reorder(DiffWalking, -perc), y = perc, fill = DiffWalking)) + geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) + labs(x = "Difficulty Walking", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b5b <- ggplot(b5[c(3:4),], aes(x = reorder(Sex, -perc), y = perc, fill = Sex)) + geom_bar(stat = "identity", show.legend = FALSE) + labs(x = "Sex", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b6b <- ggplot(b6[c(3:4),], aes(x = reorder(PhysicalActivity, -perc), y = perc, fill = PhysicalActivity)) + geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) + labs(x = "Physical Activity", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b7b <- ggplot(b7[c(3:4),], aes(x = reorder(Asthma, -perc), y = perc, fill = Asthma)) + geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) + labs(x = "Asthma", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b8b <- ggplot(b8[c(3:4),], aes(x = reorder(KidneyDisease, -perc), y = perc, fill = KidneyDisease)) + geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) + labs(x = "Kidney Disease", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+b9b <- ggplot(b9[c(3:4),], aes(x = reorder(SkinCancer, -perc), y = perc, fill = SkinCancer)) +
+  geom_bar(stat = "identity", show.legend = FALSE) + scale_fill_manual(values = smu2) +
+  labs(x = "Skin Cancer", y = "Proportion with Heart Disease") + theme_minimal(base_family = "Open Sans")
+
+(b1b | b7b |b9b) / (b3b | b4b| b8b)
+(b6b|b2b)
+b5b
+```
+
+### Categorical Variables: Heart Disease Proportions
+```{r}
+cat_vars <- c("Smoking", "AlcoholDrinking", "Stroke", "DiffWalking","Sex","AgeCategory", "Race", "Diabetic", "PhysicalActivity", "GenHealth","Asthma", "KidneyDisease", "SkinCancer")
+
+library(purrr)
+cat_var_stats <- map_dfr(cat_vars, function(v) {
+  prop <- trainHeart %>% group_by(.data[[v]]) %>%
+    summarize(p_heart = mean(HeartDisease == "Yes", na.rm = TRUE)) %>%
+    summarize(max_diff = max(p_heart) - min(p_heart))
+  tibble(var = v, max_diff = prop$max_diff)
+})
+
+cat_var_stats %>% arrange(desc(max_diff)) %>%
+  slice_max(max_diff, n = 15) %>%
+  mutate(var = fct_reorder(var, max_diff)) %>%
+  ggplot(aes(max_diff, var)) +geom_col(fill = "#CC0035") + labs(x = "Max Difference in % Heart Disease (Yes)", y = "Variable", title = "Categorical Predictors with Strongest Variation") + theme_minimal(base_family = "Open Sans",base_size = 12)
+```
+
+### Scatterplot Matrix 
+```{r}
+head(trainHeart)
+num.trainHeart = trainHeart[c(1,15:18)]
+head(num.trainHeart)
+num.trainHeart$HeartDisease <- factor(num.trainHeart$HeartDisease, levels = c("No","Yes"))
+
+smu_colors <- c("No" = "#354CA1", "Yes" = "#CC0035")
+p <- ggpairs(num.trainHeart,mapping = aes(color = HeartDisease, fill = HeartDisease),lower = list(continuous = wrap("points", alpha = 0.3, size = 0.1)),diag  = list(continuous = wrap("densityDiag", alpha = 0.4))) + theme(axis.text.x = element_text(size = 4), axis.text.y = element_text(size = 5))
+
+p + scale_color_manual(values = smu_colors) + scale_fill_manual(values  = smu_colors)
+```
+
+## OBJECTIVE 1: Objective 1: Display the ability to perform EDA and build a logistic regression model for interpretation purposes using the training data. Perform your multiple logistic regression analysis and provide interpretation of the regression coefficients and confidence intervals for relevant predictor variables. 
+
+### Logistic Regression Model
+```{r}
+trainHeart$HeartDisease <- factor(trainHeart$HeartDisease, levels = c("No","Yes"))
+
+logistic <- glm(HeartDisease~PhysicalHealth + BMI + AgeCategory + GenHealth + Smoking + AlcoholDrinking + Stroke + DiffWalking + Sex + Race +Diabetic + PhysicalActivity + Asthma + KidneyDisease + SkinCancer + MentalHealth + SleepTime,data=trainHeart,family="binomial")
+summary(logistic)
+AIC(logistic) # AIC: 116151
+
+simple <- glm(HeartDisease~PhysicalHealth + BMI + AgeCategory + GenHealth + Smoking + AlcoholDrinking + Stroke + DiffWalking + Sex + Race +Diabetic + Asthma + KidneyDisease + SkinCancer + MentalHealth + SleepTime,data=trainHeart,family="binomial")
+#summary(simple)
+AIC(simple)  # AIC: 115989.1
+
+# Estimate for odds ratio
+exp(cbind("Odds ratio" = coef(simple), confint.default(simple, level = 0.95)))
+
+#1 Unit increase odds ratio: 
+exp(0.0090482)
+
+# VIF
+library(car)
+vif(simple)
+
+# effect plots
+library(sjPlot)
+library(sjmisc)
+
+a1=plot_model(simple,type="pred",terms=c("BMI[all]"))
+a2=plot_model(simple,type="pred",terms=c("MentalHealth[all]"))
+a3=plot_model(simple,type="pred",terms=c("PhysicalHealth[all]"))
+a4=plot_model(simple,type="pred",terms=c("SleepTime[all]"))
+
+(a1|a2)/(a3|a4)
+```
+
+## Objective 2:  Build 4-5 additional classification models to compare to your model in objective 1.  The goal of this objective is to build a model where prediction performance is prioritized.
+
+### Scatter Plots for Interactions
+```{r}
+ggplot(trainHeart,aes(x=BMI,y=AgeCategory.num, color = HeartDisease))+geom_point(alpha = 0.5, size = 0.3)+ scale_color_manual(values = smu_colors)
+ggplot(trainHeart,aes(x=PhysicalHealth,y=MentalHealth, color = HeartDisease))+geom_point(alpha = 0.5, size = 0.3)+ scale_color_manual(values = smu_colors)
+ggplot(trainHeart,aes(x=MentalHealth,y=SleepTime, color = HeartDisease))+geom_point(alpha = 0.5, size = 0.3)+ scale_color_manual(values = smu_colors)
+ggplot(trainHeart,aes(x=SleepTime,y=PhysicalHealth, color = HeartDisease))+geom_point(alpha = 0.5, size = 0.3)+ scale_color_manual(values = smu_colors)
+```
+
+### Feature Selection for Non-Additive Model
+```{r}
+fitControl<-trainControl(method="repeatedcv",number=5,repeats=1,classProbs=TRUE, summaryFunction=mnLogLoss)
+set.seed(1234)
+
+# Feature Selection
+logistic.fit1<-train(HeartDisease ~ GenHealth + AgeCategory + Sex + poly(BMI, 3) + poly(PhysicalHealth, 3) + poly(MentalHealth, 3) + poly(SleepTime, 3) + poly(BMI, 3):GenHealth + poly(PhysicalHealth, 3):GenHealth + poly(MentalHealth, 3):GenHealth + poly(SleepTime, 3):GenHealth + poly(BMI, 3):AgeCategory + poly(PhysicalHealth, 3):AgeCategory + poly(MentalHealth, 3):AgeCategory + poly(SleepTime, 3):AgeCategory + GenHealth:AgeCategory + GenHealth:Sex + AgeCategory:Sex + Stroke + KidneyDisease + Diabetic + DiffWalking + Smoking + AlcoholDrinking + Race + PhysicalActivity + Asthma + SkinCancer,data=trainHeart,
+               method="glmnet",
+               trControl=fitControl,
+               metric="logLoss")
+coef(logistic.fit1$finalModel,logistic.fit1$finalModel$lambdaOpt)
+
+# Feature Selection After Dropping Features Above
+logistic.fit2 <- train(HeartDisease ~ poly(BMI, 2) + poly(PhysicalHealth, 2) + poly(MentalHealth, 2) + poly(SleepTime, 3) + poly(BMI, 2):GenHealth + poly(PhysicalHealth, 2):GenHealth + poly(MentalHealth, 2):GenHealth + poly(SleepTime, 2):GenHealth + poly(BMI, 2):AgeCategory + poly(PhysicalHealth, 2):AgeCategory + poly(MentalHealth, 2):AgeCategory + poly(SleepTime, 3):AgeCategory + GenHealth:AgeCategory + GenHealth:Sex + AgeCategory:Sex + AgeCategory + GenHealth + Smoking + AlcoholDrinking + Stroke + DiffWalking + Sex + Race + Diabetic + PhysicalActivity + Asthma + KidneyDisease + SkinCancer,
+  data = trainHeart,
+  method = "glmnet",
+  trControl = fitControl,
+  metric = "logLoss")
+
+logistic.fit2
+coef(logistic.fit2$finalModel, logistic.fit2$finalModel$lambdaOpt)
+```
+
+### Complex Logistic Regression Model
+```{r}
+# Additive Model for Comparison
+simple <- glm(HeartDisease~PhysicalHealth + BMI + AgeCategory + GenHealth + Smoking + AlcoholDrinking + Stroke + DiffWalking + Sex + Race +Diabetic + Asthma + KidneyDisease + SkinCancer + MentalHealth + SleepTime + PhysicalActivity ,data=trainHeart,family="binomial")
+
+# Complex 1: 
+complex1 <- glm(HeartDisease ~ GenHealth + AgeCategory + Sex + GenHealth:AgeCategory + GenHealth:BMI + AgeCategory:Sex + Stroke + KidneyDisease + Diabetic + DiffWalking + Smoking + AlcoholDrinking + Race + PhysicalActivity + Asthma + SkinCancer + BMI + PhysicalHealth + MentalHealth + SleepTime,data = trainHeart, family = "binomial")
+
+# Complex 2:
+complex2 <- glm(HeartDisease ~ poly(BMI, 2) + poly(PhysicalHealth, 2) + poly(MentalHealth, 2) + poly(SleepTime, 3) + poly(BMI, 2):GenHealth + poly(PhysicalHealth, 2):GenHealth + poly(MentalHealth, 2):GenHealth + poly(SleepTime, 2):GenHealth + poly(BMI, 2):AgeCategory + poly(PhysicalHealth, 2):AgeCategory + poly(MentalHealth, 2):AgeCategory + poly(SleepTime, 3):AgeCategory + GenHealth:AgeCategory + GenHealth:Sex + AgeCategory:Sex + AgeCategory + GenHealth + Smoking + AlcoholDrinking + Stroke + DiffWalking + Sex + Race + Diabetic + PhysicalActivity + Asthma + KidneyDisease + SkinCancer, data = trainHeart, family = "binomial")
+
+AIC(simple)
+AIC(complex1)
+AIC(complex2)
+
+# effect plots
+library(sjPlot)
+library(sjmisc)
+
+a5=plot_model(complex2,type="pred",terms=c("BMI[all]"))
+a6=plot_model(complex2,type="pred",terms=c("MentalHealth[all]"))
+a7=plot_model(complex2,type="pred",terms=c("PhysicalHealth[all]"))
+a8=plot_model(complex2,type="pred",terms=c("SleepTime[all]"))
+
+(a5|a6)/(a7|a8)
+```
+
+### Sampling for KNN/QDA/LDA
+```{r}
+library(pROC)
+
+#Sample 10%
+set.seed(1234)
+sample_pct <- 0.10
+train_sample_size <- floor(nrow(trainHeart) * sample_pct)
+test_sample_size <- floor(nrow(testHeart) * sample_pct)
+
+train_indices <- sample(seq_len(nrow(trainHeart)), size = train_sample_size)
+test_indices <- sample(seq_len(nrow(testHeart)), size = test_sample_size)
+
+trainHeart_sample <- trainHeart[train_indices, ]
+testHeart_sample <- testHeart[test_indices, ]
+
+#Identify numeric columns present in BOTH sets
+numeric_cols <- intersect(
+  names(trainHeart_sample)[sapply(trainHeart_sample, is.numeric)],
+  names(testHeart_sample)[sapply(testHeart_sample, is.numeric)]
+)
+
+#Extract only shared numeric columns from both sets
+train_numeric <- trainHeart_sample[, numeric_cols]
+test_numeric  <- testHeart_sample[, numeric_cols]
+
+#Use preProcess to compute scaling from training data only
+scale_params <- preProcess(train_numeric, method = c("center", "scale"))
+
+#Apply scaling to both train and test
+train_scaled <- predict(scale_params, train_numeric)
+test_scaled  <- predict(scale_params, test_numeric)
+
+#Add back the target variable
+train_scaled$HeartDisease <- factor(trainHeart_sample$HeartDisease, levels = c("No", "Yes"))
+test_scaled$HeartDisease  <- factor(testHeart_sample$HeartDisease, levels = c("No", "Yes"))
+
+#Model Control
+fitControl <- trainControl(method = "repeatedcv",
+                           number = 5,
+                           repeats = 1,
+                           classProbs = TRUE,
+                           summaryFunction = mnLogLoss)
+
+```
+
+### KNN/LDA/QDA Models
+``` {r}
+#KNN Model
+set.seed(1234)
+grid <- expand.grid(k = c(3,5,7)) 
+knn.fit <- train(HeartDisease ~ PhysicalHealth + BMI + MentalHealth + SleepTime,
+                 data = train_scaled,
+                 method = "knn",
+                 trControl = fitControl,
+                 metric = "logLoss",
+                 tuneGrid = grid)
+
+#LDA Model
+lda.fit <- train(HeartDisease ~ PhysicalHealth + BMI + MentalHealth + SleepTime,
+                 data = train_scaled,
+                 method = "lda",
+                 trControl = fitControl,
+                 metric = "logLoss")
+
+#QDA Model
+qda.fit <- train(HeartDisease ~ PhysicalHealth + BMI + MentalHealth + SleepTime,
+                 data = train_scaled,
+                 method = "qda",
+                 trControl = fitControl,
+                 metric = "logLoss")
+
+```
+
+### ROC/AUC 
+```{r}
+#ROC and AUC
+actual <- test_scaled$HeartDisease
+pred.knn <- predict(knn.fit, test_scaled, type = "prob")[, "Yes"]
+pred.lda <- predict(lda.fit, test_scaled, type = "prob")[, "Yes"]
+pred.qda <- predict(qda.fit, test_scaled, type = "prob")[, "Yes"]
+
+roc.knn <- roc(actual, pred.knn, levels = c("No", "Yes"))
+roc.lda <- roc(actual, pred.lda, levels = c("No", "Yes"))
+roc.qda <- roc(actual, pred.qda, levels = c("No", "Yes"))
+
+plot(roc.lda, col = "blue", lwd = 2, main = "ROC Curves: LDA, KNN, QDA")
+plot(roc.knn, col = "red", lwd = 2, add = TRUE)
+plot(roc.qda, col = "green", lwd = 2, add = TRUE)
+legend("bottomright", legend = c("LDA", "KNN", "QDA"),
+       col = c("blue", "red", "green"), lwd = 2)
+
+cat("AUC LDA:", auc(roc.lda), "\n")
+cat("AUC KNN:", auc(roc.knn), "\n")
+cat("AUC QDA:", auc(roc.qda), "\n")
+
+actual <- test_scaled$HeartDisease
+
+#Visualize More Plots
+
+# LDA
+pred.lda <- predict(lda.fit, test_scaled, type = "prob")[, "Yes"]
+roc.lda <- roc(actual, pred.lda, levels = c("No", "Yes"))
+plot(roc.lda, col = "blue", lwd = 2, main = "ROC Curve: LDA")
+cat("AUC LDA:", auc(roc.lda), "\n")
+
+# KNN
+pred.knn <- predict(knn.fit, test_scaled, type = "prob")[, "Yes"]
+roc.knn <- roc(actual, pred.knn, levels = c("No", "Yes"))
+plot(roc.knn, col = "red", lwd = 2, main = "ROC Curve: KNN")
+cat("AUC KNN:", auc(roc.knn), "\n")
+
+# QDA
+pred.qda <- predict(qda.fit, test_scaled, type = "prob")[, "Yes"]
+roc.qda <- roc(actual, pred.qda, levels = c("No", "Yes"))
+plot(roc.qda, col = "green", lwd = 2, main = "ROC Curve: QDA")
+cat("AUC QDA:", auc(roc.qda), "\n")
+```
+
+### Confusion Matrices 
+```{r}
+# Confusion Matrices
+threshold <- 0.1 
+
+library(caret)
+
+# Logistic models 
+simple_probs <- predict(simple, trainHeart, type = "response")
+simple.pred <- factor(ifelse(simple_probs > threshold, "Yes", "No"), levels = c("No", "Yes"))
+
+complex1_probs <- predict(complex1, trainHeart, type = "response")
+complex1.pred <- factor(ifelse(complex1_probs > threshold, "Yes", "No"), levels = c("No", "Yes"))
+
+complex2_probs <- predict(complex2, trainHeart, type = "response")
+complex2.pred <- factor(ifelse(complex2_probs > threshold, "Yes", "No"), levels = c("No", "Yes"))
+
+# LDA predictions
+lda_probs <- predict(lda.fit, train_scaled, type = "prob")[, "Yes"]
+lda.pred <- factor(ifelse(lda_probs > threshold, "Yes", "No"), levels = c("No", "Yes"))
+
+# QDA predictions
+qda_probs <- predict(qda.fit, train_scaled, type = "prob")[, "Yes"]
+qda.pred <- factor(ifelse(qda_probs > threshold, "Yes", "No"), levels = c("No", "Yes"))
+
+# KNN predictions 
+knn_probs <- predict(knn.fit, train_scaled, type = "prob")[, "Yes"]
+knn.pred <- factor(ifelse(knn_probs > threshold, "Yes", "No"), levels = c("No", "Yes"))
+
+# Now create confusion matrices as before
+cm.simple <- confusionMatrix(simple.pred, trainHeart$HeartDisease, positive = "Yes")
+cm.complex1 <- confusionMatrix(complex1.pred, trainHeart$HeartDisease, positive = "Yes")
+cm.complex2 <- confusionMatrix(complex2.pred, trainHeart$HeartDisease, positive = "Yes")
+cm.lda <- confusionMatrix(lda.pred, train_scaled$HeartDisease, positive = "Yes")
+cm.qda <- confusionMatrix(qda.pred, train_scaled$HeartDisease, positive = "Yes")
+cm.knn <- confusionMatrix(knn.pred, train_scaled$HeartDisease, positive = "Yes")
+
+# Print confusion matrices
+cat("Confusion Matrix: Simple Logistic Regression\n")
+print(cm.simple)
+cat("\nConfusion Matrix: Complex Logistic Regression 1\n")
+print(cm.complex1)
+cat("\nConfusion Matrix: Complex Logistic Regression 2\n")
+print(cm.complex2)
+cat("\nConfusion Matrix: LDA\n")
+print(cm.lda)
+cat("\nConfusion Matrix: QDA\n")
+print(cm.qda)
+cat("\nConfusion Matrix: KNN\n")
+print(cm.knn)
+
+model_names <- c("Simple", "Complex1", "Complex2", "LDA", "QDA", "KNN")
+
+accuracies <- c(
+  cm.simple$overall["Accuracy"],
+  cm.complex1$overall["Accuracy"],
+  cm.complex2$overall["Accuracy"],
+  cm.lda$overall["Accuracy"],
+  cm.qda$overall["Accuracy"],
+  cm.knn$overall["Accuracy"]
+)
+
+sensitivities <- c(
+  cm.simple$byClass["Sensitivity"],
+  cm.complex1$byClass["Sensitivity"],
+  cm.complex2$byClass["Sensitivity"],
+  cm.lda$byClass["Sensitivity"],
+  cm.qda$byClass["Sensitivity"],
+  cm.knn$byClass["Sensitivity"]
+)
+
+specificities <- c(
+  cm.simple$byClass["Specificity"],
+  cm.complex1$byClass["Specificity"],
+  cm.complex2$byClass["Specificity"],
+  cm.lda$byClass["Specificity"],
+  cm.qda$byClass["Specificity"],
+  cm.knn$byClass["Specificity"]
+)
+
+performance_table <- data.frame(
+  Model = model_names,
+  Accuracy = round(accuracies, 4),
+  Sensitivity = round(sensitivities, 4),
+  Specificity = round(specificities, 4)
+)
+
+print(performance_table)
+
+cat("AUC LDA:", auc(roc.lda), "\n")
+cat("AUC QDA:", auc(roc.qda), "\n")
+cat("AUC KNN:", auc(roc.knn), "\n")
+
+```
+
+### Logistic Simple/Complex Model Metrics
+```{R}
+# Logistic Simple/Complex Model Metrics with 0.3 threshold
+# Function to compute metrics for a given model and dataset
+get_metrics <- function(model, data, positive_class = "Yes", threshold = 0.3) {
+  # Predict probabilities
+  probs <- predict(model, newdata = data, type = "response")
+  
+  # Convert to predicted class using custom cutoff
+  preds <- ifelse(probs >= threshold, positive_class, "No")
+  
+  # Convert to factors with same levels as actuals
+  actual <- factor(data$HeartDisease, levels = c("No", positive_class))
+  preds  <- factor(preds, levels = c("No", positive_class))
+  
+  # Confusion matrix
+  cm <- confusionMatrix(preds, actual, positive = positive_class)
+  
+  # Extract metrics
+  sens <- cm$byClass["Sensitivity"]
+  spec <- cm$byClass["Specificity"]
+  ppv  <- cm$byClass["Pos Pred Value"]
+  npv  <- cm$byClass["Neg Pred Value"]
+  
+  # Prevalence
+  prevalence <- mean(actual == positive_class)
+  
+  # AUROC
+  roc_obj <- roc(actual, probs, levels = c("No", positive_class))
+  auc_val <- auc(roc_obj)
+  
+  return(data.frame(
+    Sensitivity = sens,
+    Specificity = spec,
+    Prevalence = prevalence,
+    PPV = ppv,
+    NPV = npv,
+    AUROC = auc_val
+  ))
+}
+
+# Apply to each model
+metrics_simple   <- get_metrics(simple,   trainHeart, threshold = 0.1)
+metrics_complex1 <- get_metrics(complex1, trainHeart, threshold = 0.1)
+metrics_complex2 <- get_metrics(complex2, trainHeart, threshold = 0.1)
+
+# Combine results
+results <- rbind(
+  Simple   = metrics_simple,
+  Complex1 = metrics_complex1,
+  Complex2 = metrics_complex2
+)
+
+print(results)
+```
