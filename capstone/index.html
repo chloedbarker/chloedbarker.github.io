@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Capstone | Chloe Barker</title>
+  <style>
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      max-width:900px;margin:60px auto;padding:0 20px;line-height:1.6;
+    }
+    a{ text-decoration:none; color:#000; }
+    .muted{ color:#666; font-size:0.95rem; }
+    .pill{ display:inline-block; border:1px solid #e6e6e6; border-radius:999px; padding:6px 10px; margin:6px 6px 0 0; }
+    .card{ border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:16px 0; }
+    ul{ padding-left:18px; }
+    hr{ border:none; border-top:1px solid #eee; margin:26px 0; }
+  </style>
+</head>
+<body>
+
+  <h1>Capstone: Texas Water Quality & Dementia Prevalence</h1>
+  <p class="muted">
+    An end-to-end data science project combining environmental monitoring data with county-level health outcomes
+    to explore potential associations across Texas.
+  </p>
+
+  <div>
+    <span class="pill">Python</span>
+    <span class="pill">SQL / MySQL</span>
+    <span class="pill">Pandas / GeoPandas</span>
+    <span class="pill">Data Engineering</span>
+    <span class="pill">Modeling</span>
+    <span class="pill">Geospatial Analytics</span>
+  </div>
+
+  <div class="card">
+    <h2>Problem</h2>
+    <p class="muted">
+      Environmental exposures and drinking/groundwater quality vary widely across Texas counties.
+      This capstone investigates whether patterns in groundwater constituents (e.g., lithium and other parameters)
+      align with county-level dementia prevalence measures—while documenting a reproducible pipeline and database design.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Data</h2>
+    <ul>
+      <li><strong>Water quality:</strong> Texas Water Development Board (TWDB) groundwater / well datasets (parameter measurements over time).</li>
+      <li><strong>Health outcome:</strong> County-level dementia prevalence (e.g., NORC Dementia DataHub / CDC-derived sources, depending on final dataset).</li>
+      <li><strong>Geography:</strong> Texas county boundaries (FIPS-based joins; shapefiles for choropleths).</li>
+    </ul>
+    <p class="muted">
+      Key engineering constraint: consistent county identifiers (FIPS) across sources and a documented merge strategy.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Approach</h2>
+    <ul>
+      <li><strong>Ingestion & cleaning:</strong> standardized dates, handled missingness, validated county naming/FIPS consistency.</li>
+      <li><strong>Database design:</strong> relational schema for well metadata + parameter observations (ER diagram + SQL scripts).</li>
+      <li><strong>Feature engineering:</strong> aggregated measurements by county/parameter/time windows; created map-ready tables.</li>
+      <li><strong>Exploration:</strong> choropleths and summary statistics to identify spatial patterns and outliers.</li>
+      <li><strong>Modeling:</strong> baseline regression / multivariate models (and extensions as appropriate) with clear evaluation.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Results (high-level)</h2>
+    <ul>
+      <li>Built a reproducible pipeline to merge environmental + health data at the county level.</li>
+      <li>Produced interactive maps and summary views to explore spatial variation of key water parameters.</li>
+      <li>Documented assumptions, limitations, and next steps for causal interpretation (correlation ≠ causation).</li>
+    </ul>
+    <p class="muted">
+      (Optional later: add 2–3 bullet “headline findings” once your final model + interpretation are locked.)
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Artifacts</h2>
+    <ul>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone">View capstone folder on GitHub</a></li>
+      <li><a href="../databases-sql/">Related: Database/SQL deliverables</a></li>
+      <li><a href="../index.html">Back to Home</a></li>
+    </ul>
+    <p class="muted">
+      We can replace/add direct links here (paper PDF, slides PDF, maps, notebooks) once we confirm filenames.
+    </p>
+  </div>
+
+  <hr />
+
+  <p class="muted">
+    If you’re reviewing this as a recruiter: the strongest signal is the end-to-end workflow—
+    data engineering + reproducible analysis + clear communication with maps, diagrams, and deliverables.
+  </p>
+
+</body>
+</html>
+
+
