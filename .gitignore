@@ -19,3 +19,4 @@ __pycache__/
 # Big media (GitHub limit)
 *.mp4
 *.mov
+databases-sql/water-quality-project/db_config.json
