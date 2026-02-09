@@ -11,10 +11,14 @@ max-width: 900px;
 margin: 60px auto;
 padding: 0 20px;
 line-height: 1.6;
-    }
+color: #333;
+}
 h1 { margin-bottom: 0; }
+h2 { font-size: 1.4rem; margin-bottom: 8px; }
+h3 { font-size: 1.1rem; margin-top: 0; margin-bottom: 12px; }
 .sub { margin-top: 6px; color: #444; }
 .muted { color: #666; font-size: 0.95rem; }
+
 .header-section {
 display: flex;
 align-items: center;
@@ -32,6 +36,35 @@ border: 2px solid #e6e6e6;
 .header-text {
 flex: 1;
 }
+
+.contact-links {
+display: flex;
+gap: 20px;
+margin-top: 12px;
+flex-wrap: wrap;
+}
+.contact-links a {
+color: #007bff;
+text-decoration: none;
+font-size: 0.9rem;
+}
+.contact-links a:hover {
+text-decoration: underline;
+}
+
+.about-section {
+background-color: #f8f9fa;
+border-left: 3px solid #007bff;
+padding: 16px 20px;
+margin: 24px 0;
+border-radius: 4px;
+}
+.about-section p {
+margin: 8px 0;
+font-size: 0.95rem;
+line-height: 1.6;
+}
+
 .credentials {
 background-color: #f8f9fa;
 border-left: 3px solid #007bff;
@@ -53,17 +86,65 @@ line-height: 1.5;
 .credentials strong {
 color: #222;
 }
+
+.featured-projects {
+margin: 32px 0;
+}
+.featured-projects h2 {
+margin-bottom: 16px;
+}
+.project-highlight {
+border: 1px solid #e6e6e6;
+border-radius: 12px;
+padding: 18px;
+margin-bottom: 16px;
+background-color: #fff;
+transition: box-shadow 0.2s;
+}
+.project-highlight:hover {
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.project-highlight h3 {
+color: #007bff;
+margin-bottom: 8px;
+}
+.project-highlight .tech-stack {
+color: #666;
+font-size: 0.85rem;
+margin-bottom: 10px;
+font-style: italic;
+}
+.project-highlight .metrics {
+display: flex;
+gap: 20px;
+margin-top: 12px;
+flex-wrap: wrap;
+}
+.metric {
+background-color: #e7f3ff;
+padding: 6px 12px;
+border-radius: 6px;
+font-size: 0.85rem;
+color: #0056b3;
+font-weight: 600;
+}
+
 .grid {
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 gap: 14px;
 margin-top: 18px;
-    }
+}
 .card {
 border: 1px solid #e6e6e6;
 border-radius: 12px;
 padding: 14px;
-    }
+transition: box-shadow 0.2s;
+}
+.card:hover {
+box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 .wip-badge {
 display: inline-block;
 background-color: #fff3cd;
@@ -74,23 +155,95 @@ font-size: 0.8rem;
 font-weight: 600;
 margin-left: 6px;
 }
+
 a { color: inherit; text-decoration: none; }
 ul { padding-left: 18px; }
+
+@media (max-width: 600px) {
+.header-section {
+flex-direction: column;
+text-align: center;
+}
+.contact-links {
+justify-content: center;
+}
+.metrics {
+justify-content: center;
+}
+}
 </style>
 </head>
 <body>
+
 <div class="header-section">
 <img src="headshot.png" alt="Chloe Barker" class="headshot">
 <div class="header-text">
 <h1>Chloe Barker</h1>
-<p class="sub"><strong>Data Science Portfolio</strong> · Python · R · SQL · ML · Analytics</p>
+<p class="sub"><strong>Data Scientist</strong> | M.S. Data Science Student at SMU</p>
+<div class="contact-links">
+<a href="mailto:chloedbarkerr@icloud.com">Email</a>
+<a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
+<a href="https://github.com/chloedbarker" target="_blank">GitHub</a>
+<a href="tel:214-733-7514">214-733-7514</a>
+</div>
 </div>
 </div>
 
-<p class="muted">
-    Welcome! This portfolio highlights selected projects across machine learning, predictive analytics,
-    databases/SQL, and data storytelling.
+<div class="about-section">
+<h3>About Me</h3>
+<p>
+I am currently pursuing an M.S. in Data Science at Southern Methodist University (expected August 2026). I have background in biological research from UT Austin. I specialize in machine learning, predictive modeling, and healthcare analytics—leveraging Python, R, and SQL to transform complex datasets into actionable insights. I am seeking opportunities and look forward to hearing from you.
 </p>
+</div>
+
+<div class="featured-projects">
+<h2>Featured Projects</h2>
+
+<div class="project-highlight">
+<h3>Texas Groundwater Quality Database & Geospatial Analysis</h3>
+<p class="tech-stack">MySQL · Python · GeoPandas · Folium</p>
+<p class="muted">
+Designed and implemented a normalized MySQL database (64 tables, 3NF) for Texas groundwater quality data spanning two decades across 254 counties. 
+Integrated with Python to create choropleth maps identifying contamination hotspots for public health research.
+</p>
+<div class="metrics">
+<span class="metric">64 Tables</span>
+<span class="metric">254 Counties</span>
+<span class="metric">20+ Years Data</span>
+<span class="metric">3NF Normalization</span>
+</div>
+</div>
+
+<div class="project-highlight">
+<h3>Unsupervised Learning: Clustering & Association Rule Mining</h3>
+<p class="tech-stack">Python · scikit-learn · Pandas · Apriori · FP-Growth</p>
+<p class="muted">
+Implemented and compared 6 clustering algorithms on 100K health records. Conducted association rule mining on 541K retail transactions, 
+discovering 79 actionable product bundling rules with lift values up to 24 for merchandising strategies.
+</p>
+<div class="metrics">
+<span class="metric">6 Algorithms</span>
+<span class="metric">100K Records</span>
+<span class="metric">79 Rules Found</span>
+<span class="metric">Lift up to 24</span>
+</div>
+</div>
+
+<div class="project-highlight">
+<h3>Heart Disease Prediction Model</h3>
+<p class="tech-stack">R · Python · scikit-learn · CDC BRFSS Data</p>
+<p class="muted">
+Analyzed 300,000+ CDC records to build classification models predicting heart disease risk. 
+Compared KNN, LDA, QDA, and logistic regression approaches, achieving AUC > 0.80 with comprehensive feature engineering and model evaluation.
+</p>
+<div class="metrics">
+<span class="metric">300K+ Records</span>
+<span class="metric">AUC > 0.80</span>
+<span class="metric">4 Model Types</span>
+<span class="metric">Healthcare Impact</span>
+</div>
+</div>
+</div>
 
 <div class="credentials">
 <h3>Education & Technical Skills</h3>
@@ -99,44 +252,52 @@ ul { padding-left: 18px; }
 <p><strong>Core Skills:</strong> Python (pandas, NumPy, scikit-learn), R (tidyverse, caret, ggplot2), SQL, Machine Learning (Classification, Regression, Feature Engineering), Tableau, Power BI, Git/GitHub</p>
 </div>
 
+<h2 style="margin-top: 32px; margin-bottom: 16px;">All Projects</h2>
+
 <div class="grid">
 <div class="card">
-<h2>Machine Learning</h2>
-<p class="muted">Supervised/unsupervised modeling, evaluation, and applied prediction tasks.</p>
-<p><a href="machine-learning/">Open section →</a></p>
+<h3>Machine Learning</h3>
+<p class="muted">Supervised/unsupervised modeling, clustering, classification, and algorithm optimization.</p>
+<p><a href="machine-learning/">Explore projects →</a></p>
 </div>
+
 <div class="card">
-<h2>Predictive Analytics</h2>
-<p class="muted">Predictive modeling projects using healthcare datasets and performance metrics.</p>
-<p><a href="predictive-analytics/">Open section →</a></p>
+<h3>Predictive Analytics</h3>
+<p class="muted">Healthcare modeling, employee attrition analysis, and regression-based predictions.</p>
+<p><a href="predictive-analytics/">Explore projects →</a></p>
 </div>
+
 <div class="card">
-<h2>Databases & SQL</h2>
-<p class="muted">Relational design, SQL workflows, and database-driven analytics deliverables.</p>
-<p><a href="databases-sql/">Open section →</a></p>
+<h3>Databases & SQL</h3>
+<p class="muted">Relational database design, query optimization, and ETL workflows.</p>
+<p><a href="databases-sql/">Explore projects →</a></p>
 </div>
+
 <div class="card">
-<h2>Data Storytelling</h2>
-<p class="muted">Presentations, infographics, and communication for non-technical audiences.</p>
-<p><a href="data-storytelling/">Open section →</a></p>
+<h3>Data Storytelling</h3>
+<p class="muted">Visualizations, presentations, and insights for non-technical stakeholders.</p>
+<p><a href="data-storytelling/">Explore projects →</a></p>
 </div>
+
 <div class="card">
-<h2>Capstone <span class="wip-badge">In Progress</span></h2>
-<p class="muted">End-to-end data science project: Texas water quality and dementia prevalence analysis.</p>
+<h3>Capstone <span class="wip-badge">In Progress</span></h3>
+<p class="muted">Texas water quality and dementia prevalence analysis using geospatial methods.</p>
 <p><a href="capstone/">View details →</a></p>
 </div>
+
 <div class="card">
-<h2>Resume & Overview</h2>
-<p class="muted">Resume and one-page project overview.</p>
-<ul>
+<h3>Resume & Overview</h3>
+<p class="muted">Downloadable resume and project summary documents.</p>
+<ul style="margin-top: 8px;">
 <li><a href="resume/Chloe_Barker_Resume.pdf">Resume (PDF) →</a></li>
 <li><a href="resume/Projects_Overview.pdf">Projects Overview (PDF) →</a></li>
 </ul>
 </div>
 </div>
 
-<p style="margin-top: 22px;">
-<a href="https://github.com/chloedbarker/chloedbarker.github.io">GitHub (Portfolio Repository)</a>
+<p style="margin-top: 32px; text-align: center; color: #666; font-size: 0.9rem;">
+<a href="https://github.com/chloedbarker/chloedbarker.github.io" style="color: #007bff;">View Portfolio Source Code on GitHub</a>
 </p>
+
 </body>
 </html>
