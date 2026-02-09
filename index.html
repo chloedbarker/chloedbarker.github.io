@@ -22,10 +22,11 @@ gap: 24px;
 margin-bottom: 20px;
 }
 .headshot {
-width: 150px;
-height: 150px;
+width: 180px;
+height: 180px;
 border-radius: 50%;
 object-fit: cover;
+object-position: center top;
 border: 2px solid #e6e6e6;
 }
 .header-text {
@@ -42,6 +43,16 @@ border: 1px solid #e6e6e6;
 border-radius: 12px;
 padding: 14px;
     }
+.wip-badge {
+display: inline-block;
+background-color: #fff3cd;
+color: #856404;
+padding: 3px 7px;
+border-radius: 4px;
+font-size: 0.8rem;
+font-weight: 600;
+margin-left: 6px;
+}
 a { color: inherit; text-decoration: none; }
 ul { padding-left: 18px; }
 </style>
@@ -54,12 +65,10 @@ ul { padding-left: 18px; }
 <p class="sub"><strong>Data Science Portfolio</strong> · Python · R · SQL · ML · Analytics</p>
 </div>
 </div>
-
 <p class="muted">
     Welcome! This portfolio highlights selected projects across machine learning, healthcare analytics,
     databases/SQL, and data storytelling.
 </p>
-
 <div class="grid">
 <div class="card">
 <h2>Machine Learning</h2>
@@ -82,6 +91,11 @@ ul { padding-left: 18px; }
 <p><a href="data-storytelling/">Open section →</a></p>
 </div>
 <div class="card">
+<h2>Capstone <span class="wip-badge">In Progress</span></h2>
+<p class="muted">End-to-end data science project: Texas water quality and dementia prevalence analysis.</p>
+<p><a href="capstone/">View details →</a></p>
+</div>
+<div class="card">
 <h2>Resume & Overview</h2>
 <p class="muted">Resume and one-page project overview.</p>
 <ul>
@@ -90,7 +104,6 @@ ul { padding-left: 18px; }
 </ul>
 </div>
 </div>
-
 <p style="margin-top: 22px;">
 <a href="https://github.com/chloedbarker/chloedbarker.github.io">GitHub (Portfolio Repository)</a>
 </p>
