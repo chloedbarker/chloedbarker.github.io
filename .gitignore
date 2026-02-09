@@ -20,3 +20,4 @@ __pycache__/
 *.mp4
 *.mov
 databases-sql/water-quality-project/db_config.json
+.DS_Store
