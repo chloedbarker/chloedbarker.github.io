@@ -21,3 +21,4 @@ __pycache__/
 *.mov
 databases-sql/water-quality-project/db_config.json
 .DS_Store
+capstone/data/All_Counties_Water_Quality_with_COUNTY_NAME.csv
