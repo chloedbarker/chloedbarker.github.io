@@ -4,285 +4,451 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Chloe Barker | Data Science Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-max-width: 900px;
-margin: 60px auto;
-padding: 0 20px;
-line-height: 1.6;
-color: #333;
-}
-h1 { margin-bottom: 0; }
-h2 { font-size: 1.4rem; margin-bottom: 8px; }
-h3 { font-size: 1.1rem; margin-top: 0; margin-bottom: 12px; }
-.sub { margin-top: 6px; color: #444; }
-.muted { color: #666; font-size: 0.95rem; }
+  :root {
+    --navy: #0f2b4a;
+    --blue: #1a5fa8;
+    --blue-mid: #2d7dd2;
+    --blue-light: #e8f2fc;
+    --blue-pale: #f3f8fe;
+    --accent: #3b9eff;
+    --text: #1c2b3a;
+    --muted: #5a7080;
+    --border: #d5e6f5;
+    --white: #ffffff;
+    --card-shadow: 0 2px 12px rgba(15,43,74,0.08);
+    --card-hover-shadow: 0 6px 24px rgba(15,43,74,0.14);
+  }
 
-.header-section {
-display: flex;
-align-items: center;
-gap: 24px;
-margin-bottom: 20px;
-}
-.headshot {
-width: 180px;
-height: 180px;
-border-radius: 50%;
-object-fit: cover;
-object-position: center top;
-border: 2px solid #e6e6e6;
-}
-.header-text { flex: 1; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.contact-links {
-display: flex;
-gap: 20px;
-margin-top: 12px;
-flex-wrap: wrap;
-}
-.contact-links a {
-color: #007bff;
-text-decoration: none;
-font-size: 0.9rem;
-}
-.contact-links a:hover { text-decoration: underline; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #f0f6fd 0%, #fafcff 60%, #eef4fb 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 48px 20px 64px;
+  }
 
-.about-section {
-background-color: #f8f9fa;
-border-left: 3px solid #007bff;
-padding: 16px 20px;
-margin: 24px 0;
-border-radius: 4px;
-}
-.about-section p {
-margin: 8px 0;
-font-size: 0.95rem;
-line-height: 1.6;
-}
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+  }
 
-.credentials {
-background-color: #f8f9fa;
-border-left: 3px solid #007bff;
-padding: 16px 20px;
-margin: 20px 0;
-border-radius: 4px;
-}
-.credentials h3 {
-margin-top: 0;
-margin-bottom: 12px;
-font-size: 1rem;
-color: #333;
-}
-.credentials p {
-margin: 8px 0;
-font-size: 0.9rem;
-line-height: 1.5;
-}
-.credentials strong { color: #222; }
+  /* ── Header ── */
+  .header-section {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 16px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    box-shadow: var(--card-shadow);
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.05s;
+  }
 
-.grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 14px;
-margin-top: 18px;
-}
+  .headshot {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 3px solid var(--blue-light);
+    box-shadow: 0 0 0 4px var(--border);
+    flex-shrink: 0;
+  }
 
-/* Standard clickable card */
-a.card {
-display: block;
-border: 1px solid #e6e6e6;
-border-radius: 12px;
-padding: 14px;
-transition: box-shadow 0.2s, border-color 0.2s;
-color: #333;
-text-decoration: none;
-cursor: pointer;
-}
-a.card:hover {
-box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-border-color: #c0d8f5;
-}
-a.card h3 {
-color: #007bff;
-margin-bottom: 6px;
-}
+  .header-text h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
 
-/* Capstone featured card */
-a.card-featured {
-display: block;
-border: 1px solid #c3d9f7;
-border-radius: 12px;
-padding: 18px;
-background: linear-gradient(135deg, #f0f7ff 0%, #fafeff 100%);
-transition: box-shadow 0.2s, border-color 0.2s;
-grid-column: 1 / -1;
-color: #333;
-text-decoration: none;
-cursor: pointer;
-}
-a.card-featured:hover {
-box-shadow: 0 4px 14px rgba(0,100,200,0.12);
-border-color: #90bef0;
-}
-a.card-featured h3 { color: #0056b3; margin-bottom: 6px; }
-.capstone-body {
-display: flex;
-gap: 24px;
-flex-wrap: wrap;
-margin-top: 10px;
-}
-.capstone-desc { flex: 2; min-width: 200px; }
-.capstone-pills {
-flex: 1;
-min-width: 160px;
-display: flex;
-flex-direction: column;
-gap: 6px;
-justify-content: center;
-}
-.cap-pill {
-background: #e7f0fb;
-color: #0056b3;
-border-radius: 6px;
-padding: 4px 10px;
-font-size: 0.82rem;
-font-weight: 500;
-}
-.capstone-label {
-display: inline-block;
-background: #0056b3;
-color: #fff;
-font-size: 0.75rem;
-font-weight: 600;
-padding: 2px 8px;
-border-radius: 4px;
-letter-spacing: 0.04em;
-margin-bottom: 6px;
-}
+  .sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-bottom: 14px;
+    margin-top: 4px;
+  }
 
-ul { padding-left: 18px; }
+  .contact-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
 
-@media (max-width: 600px) {
-.header-section { flex-direction: column; text-align: center; }
-.contact-links { justify-content: center; }
-a.card-featured { grid-column: auto; }
-}
+  .contact-links a {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.83rem;
+    font-weight: 500;
+    background: var(--blue-light);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+
+  .contact-links a:hover {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+
+  /* ── Info blocks ── */
+  .info-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px 20px 28px;
+    margin-bottom: 14px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .info-block::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--blue-mid), var(--accent));
+    border-radius: 4px 0 0 4px;
+  }
+
+  .info-block h3 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    margin-bottom: 10px;
+  }
+
+  .info-block p {
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 5px;
+  }
+
+  .info-block p:last-child { margin-bottom: 0; }
+  .info-block strong { color: var(--navy); font-weight: 600; }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    margin: 24px 0 12px;
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.28s;
+  }
+
+  /* ── Grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  /* ── Standard cards ── */
+  a.card {
+    display: block;
+    text-decoration: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    color: var(--text);
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  a.card:hover {
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--blue-mid);
+    transform: translateY(-2px);
+  }
+
+  a.card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 7px;
+  }
+
+  a.card:hover h3 { color: var(--navy); }
+
+  .muted {
+    color: var(--muted);
+    font-size: 0.87rem;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    padding-left: 16px;
+    font-size: 0.84rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* ── Featured capstone card ── */
+  a.card-featured {
+    display: block;
+    text-decoration: none;
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--navy) 0%, #1a4a80 100%);
+    border: 1px solid #1a4a80;
+    border-radius: 14px;
+    padding: 26px 28px;
+    color: var(--white);
+    box-shadow: 0 4px 20px rgba(15,43,74,0.2);
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.32s;
+  }
+
+  a.card-featured:hover {
+    box-shadow: 0 8px 32px rgba(15,43,74,0.28);
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .capstone-label {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  a.card-featured h3 {
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+
+  .capstone-body {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .capstone-desc { flex: 2; min-width: 200px; }
+
+  .capstone-desc p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .capstone-pills {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .cap-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.92);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 32px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.52s;
+  }
+
+  .footer a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer a:hover { text-decoration: underline; }
+
+  /* ── Staggered card delays ── */
+  .grid a:nth-child(2) { animation-delay: 0.36s; }
+  .grid a:nth-child(3) { animation-delay: 0.40s; }
+  .grid a:nth-child(4) { animation-delay: 0.44s; }
+  .grid a:nth-child(5) { animation-delay: 0.48s; }
+
+  .info-block:nth-of-type(1) { animation-delay: 0.12s; }
+  .info-block:nth-of-type(2) { animation-delay: 0.18s; }
+  .info-block:nth-of-type(3) { animation-delay: 0.24s; }
+
+  /* ── Animation ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 620px) {
+    .header-section { flex-direction: column; text-align: center; padding: 22px 18px; }
+    .contact-links { justify-content: center; }
+    .grid { grid-template-columns: 1fr; }
+    a.card-featured { grid-column: auto; }
+    body { padding: 24px 14px 48px; }
+    .header-text h1 { font-size: 1.6rem; }
+  }
 </style>
 </head>
 <body>
+<div class="container">
 
-<div class="header-section">
-  <img src="headshot.png" alt="Chloe Barker" class="headshot">
-  <div class="header-text">
-    <h1>Chloe Barker</h1>
-    <p class="sub"><strong>Data Scientist</strong> | M.S. Data Science Student at SMU</p>
-    <div class="contact-links">
-      <a href="/cdn-cgi/l/email-protection#9cfff4f0f3f9f8fefdeef7f9eeeedcf5fff0f3e9f8b2fff3f1">Email</a>
-      <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
-      <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
-      <a href="resume/Chloe_Barker_Resume.pdf">Resume</a>
-      <a href="resume/Projects_Overview.pdf">Projects One-Pager</a>
-      <a href="tel:214-733-7514">214-733-7514</a>
+  <!-- Header -->
+  <div class="header-section">
+    <img src="headshot.png" alt="Chloe Barker" class="headshot">
+    <div class="header-text">
+      <h1>Chloe Barker</h1>
+      <p class="sub"><strong style="color:var(--navy)">Data Scientist</strong> &nbsp;·&nbsp; M.S. Data Science Student at SMU</p>
+      <div class="contact-links">
+        <a href="/cdn-cgi/l/email-protection#9cfff4f0f3f9f8fefdeef7f9eeeedcf5fff0f3e9f8b2fff3f1">Email</a>
+        <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
+        <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
+        <a href="resume/Chloe_Barker_Resume.pdf">Resume</a>
+        <a href="resume/Projects_Overview.pdf">Projects One-Pager</a>
+        <a href="tel:214-733-7514">214-733-7514</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="about-section">
-  <h3>About</h3>
-  <p>
-    Chloe Barker is currently pursuing an M.S. in Data Science at Southern Methodist University (expected August 2026). She has a background in biological research from UT Austin and specializes in machine learning, predictive modeling, and healthcare analytics — leveraging Python, R, and SQL to transform complex datasets into actionable insights. She is seeking opportunities and looks forward to connecting with potential employers and collaborators.
-  </p>
-</div>
+  <!-- About -->
+  <div class="info-block">
+    <h3>About</h3>
+    <p>
+      Chloe Barker is currently pursuing an M.S. in Data Science at Southern Methodist University (expected August 2026). She has a background in biological research from UT Austin and specializes in machine learning, predictive modeling, and healthcare analytics — leveraging Python, R, and SQL to transform complex datasets into actionable insights. She is seeking opportunities and looks forward to connecting with potential employers and collaborators.
+    </p>
+  </div>
 
-<div class="credentials">
-  <h3>Technical Skills</h3>
-  <p><strong>Programming Languages:</strong> Python (pandas, NumPy, scikit-learn), R (tidyverse, caret, ggplot2), SQL</p>
-  <p><strong>Machine Learning:</strong> Classification, Regression, Clustering, Feature Engineering, Model Evaluation</p>
-  <p><strong>Data Visualization:</strong> Tableau, Power BI, ggplot2, matplotlib, seaborn</p>
-  <p><strong>Tools & Technologies:</strong> Git/GitHub, Jupyter, RStudio, MySQL, GeoPandas, Folium, Visual Studio Code</p>
-  <p><strong>Artificial Intelligence:</strong> Claude Code, ChatGPT, Gemini</p>
-</div>
+  <!-- Technical Skills -->
+  <div class="info-block">
+    <h3>Technical Skills</h3>
+    <p><strong>Programming Languages:</strong> Python (pandas, NumPy, scikit-learn), R (tidyverse, caret, ggplot2), SQL</p>
+    <p><strong>Machine Learning:</strong> Classification, Regression, Clustering, Feature Engineering, Model Evaluation</p>
+    <p><strong>Data Visualization:</strong> Tableau, Power BI, ggplot2, matplotlib, seaborn</p>
+    <p><strong>Tools & Technologies:</strong> Git/GitHub, Jupyter, RStudio, MySQL, GeoPandas, Folium, Visual Studio Code</p>
+    <p><strong>Artificial Intelligence:</strong> Claude Code, ChatGPT, Gemini</p>
+  </div>
 
-<div class="credentials">
-  <h3>Education</h3>
-  <p><strong>Southern Methodist University</strong> | M.S. in Data Science (Expected Aug 2026) | GPA: 3.95</p>
-  <p><strong>The University of Texas at Austin</strong> | B.S.A. in Biology, Minor in Health Communication | GPA: 3.77</p>
-</div>
+  <!-- Education -->
+  <div class="info-block">
+    <h3>Education</h3>
+    <p><strong>Southern Methodist University</strong> &nbsp;|&nbsp; M.S. in Data Science (Expected Aug 2026) &nbsp;|&nbsp; GPA: 3.95</p>
+    <p><strong>The University of Texas at Austin</strong> &nbsp;|&nbsp; B.S.A. in Biology, Minor in Health Communication &nbsp;|&nbsp; GPA: 3.77</p>
+  </div>
 
-<div class="grid">
+  <!-- Projects -->
+  <div class="section-label">Projects</div>
 
-  <a class="card-featured" href="capstone/">
-    <span class="capstone-label">MS Capstone</span>
-    <h3>Groundwater Lithium &amp; Dementia Prevalence in Texas</h3>
-    <div class="capstone-body">
-      <div class="capstone-desc">
-        <p class="muted" style="margin:0;">
-          An end-to-end epidemiological data science study investigating whether naturally occurring
-          groundwater lithium concentrations are associated with county-level dementia prevalence
-          across Texas — using OLS regression with HC3 robust standard errors, permutation testing,
-          bootstrap confidence intervals, and geospatial analysis.
-        </p>
+  <div class="grid">
+
+    <a class="card-featured" href="capstone/">
+      <span class="capstone-label">MS Capstone</span>
+      <h3>Groundwater Lithium &amp; Dementia Prevalence in Texas</h3>
+      <div class="capstone-body">
+        <div class="capstone-desc">
+          <p>
+            An end-to-end epidemiological data science study investigating whether naturally occurring
+            groundwater lithium concentrations are associated with county-level dementia prevalence
+            across Texas — using OLS regression with HC3 robust standard errors, permutation testing,
+            bootstrap confidence intervals, and geospatial analysis.
+          </p>
+        </div>
+        <div class="capstone-pills">
+          <span class="cap-pill">Python · GeoPandas</span>
+          <span class="cap-pill">OLS · HC3 Robust SEs</span>
+          <span class="cap-pill">Permutation Testing</span>
+          <span class="cap-pill">Bootstrap CIs</span>
+          <span class="cap-pill">Public Health Research</span>
+        </div>
       </div>
-      <div class="capstone-pills">
-        <span class="cap-pill">Python · GeoPandas</span>
-        <span class="cap-pill">OLS · HC3 Robust SEs</span>
-        <span class="cap-pill">Permutation Testing</span>
-        <span class="cap-pill">Bootstrap CIs</span>
-        <span class="cap-pill">Public Health Research</span>
-      </div>
-    </div>
-  </a>
+    </a>
 
-  <a class="card" href="predictive-analytics/">
-    <h3>Predictive Analytics</h3>
-    <p class="muted">Healthcare modeling, employee attrition analysis, regression-based predictions, and heart disease prediction.</p>
-    <ul style="margin-top: 8px; font-size: 0.9rem;">
-      <li>R, Python, scikit-learn</li>
-      <li>KNN, LDA, QDA, Logistic Regression</li>
-      <li>Feature Engineering, Model Evaluation</li>
-      <li>ROC/AUC Analysis</li>
-    </ul>
-  </a>
+    <a class="card" href="predictive-analytics/">
+      <h3>Predictive Analytics</h3>
+      <p class="muted">Healthcare modeling, employee attrition analysis, regression-based predictions, and heart disease prediction.</p>
+      <ul>
+        <li>R, Python, scikit-learn</li>
+        <li>KNN, LDA, QDA, Logistic Regression</li>
+        <li>Feature Engineering, Model Evaluation</li>
+        <li>ROC/AUC Analysis</li>
+      </ul>
+    </a>
 
-  <a class="card" href="machine-learning/">
-    <h3>Machine Learning</h3>
-    <p class="muted">Unsupervised learning, clustering algorithms, association rule mining, and classification optimization.</p>
-    <ul style="margin-top: 8px; font-size: 0.9rem;">
-      <li>Python, scikit-learn, Pandas</li>
-      <li>K-Means, DBSCAN, Hierarchical Clustering</li>
-      <li>Apriori, FP-Growth</li>
-      <li>Pattern Discovery, Anomaly Detection</li>
-    </ul>
-  </a>
+    <a class="card" href="machine-learning/">
+      <h3>Machine Learning</h3>
+      <p class="muted">Unsupervised learning, clustering algorithms, association rule mining, and classification optimization.</p>
+      <ul>
+        <li>Python, scikit-learn, Pandas</li>
+        <li>K-Means, DBSCAN, Hierarchical Clustering</li>
+        <li>Apriori, FP-Growth</li>
+        <li>Pattern Discovery, Anomaly Detection</li>
+      </ul>
+    </a>
 
-  <a class="card" href="databases-sql/">
-    <h3>Databases & SQL</h3>
-    <p class="muted">Relational database design, query optimization, ETL workflows, and geospatial analysis.</p>
-    <ul style="margin-top: 8px; font-size: 0.9rem;">
-      <li>MySQL, Database Normalization (3NF)</li>
-      <li>Python, GeoPandas, Folium</li>
-      <li>Query Optimization, ETL Pipelines</li>
-      <li>Geospatial Mapping & Analysis</li>
-    </ul>
-  </a>
+    <a class="card" href="databases-sql/">
+      <h3>Databases & SQL</h3>
+      <p class="muted">Relational database design, query optimization, ETL workflows, and geospatial analysis.</p>
+      <ul>
+        <li>MySQL, Database Normalization (3NF)</li>
+        <li>Python, GeoPandas, Folium</li>
+        <li>Query Optimization, ETL Pipelines</li>
+        <li>Geospatial Mapping & Analysis</li>
+      </ul>
+    </a>
 
-  <a class="card" href="data-storytelling/">
-    <h3>Data Storytelling</h3>
-    <p class="muted">Visualizations, presentations, and insights for non-technical stakeholders.</p>
-    <ul style="margin-top: 8px; font-size: 0.9rem;">
-      <li>Tableau, Power BI</li>
-      <li>ggplot2, matplotlib, seaborn</li>
-      <li>Dashboard Design</li>
-      <li>Executive Communication</li>
-    </ul>
-  </a>
+    <a class="card" href="data-storytelling/">
+      <h3>Data Storytelling</h3>
+      <p class="muted">Visualizations, presentations, and insights for non-technical stakeholders.</p>
+      <ul>
+        <li>Tableau, Power BI</li>
+        <li>ggplot2, matplotlib, seaborn</li>
+        <li>Dashboard Design</li>
+        <li>Executive Communication</li>
+      </ul>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/chloedbarker/chloedbarker.github.io">View Portfolio Source Code on GitHub</a>
+  </div>
 
 </div>
-
-<p style="margin-top: 32px; text-align: center; color: #666; font-size: 0.9rem;">
-  <a href="https://github.com/chloedbarker/chloedbarker.github.io" style="color: #007bff;">View Portfolio Source Code on GitHub</a>
-</p>
-
 </body>
 </html>
