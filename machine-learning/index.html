@@ -4,53 +4,173 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Machine Learning Projects | Chloe Barker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-max-width: 900px;
-margin: 60px auto;
-padding: 0 20px;
-line-height: 1.6;
-    }
-a { text-decoration: none; color: #000; }
-.card {
-border: 1px solid #e6e6e6;
-border-radius: 12px;
-padding: 16px;
-margin-bottom: 16px;
-    }
-.muted { color: #666; font-size: 0.95rem; }
-ul { padding-left: 18px; }
+  :root {
+    --navy: #0f2b4a;
+    --blue: #1a5fa8;
+    --blue-mid: #2d7dd2;
+    --blue-light: #e8f2fc;
+    --accent: #3b9eff;
+    --text: #1c2b3a;
+    --muted: #5a7080;
+    --border: #d5e6f5;
+    --white: #ffffff;
+    --card-shadow: 0 2px 12px rgba(15,43,74,0.08);
+    --card-hover-shadow: 0 6px 24px rgba(15,43,74,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #f0f6fd 0%, #fafcff 60%, #eef4fb 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 48px 20px 64px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  .page-header {
+    margin-bottom: 28px;
+    animation: fadeUp 0.4s ease both;
+    animation-delay: 0.05s;
+  }
+
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .page-header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+    animation: fadeUp 0.4s ease both;
+    animation-delay: 0.10s;
+  }
+
+  .card:hover {
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--blue-mid);
+    transform: translateY(-2px);
+  }
+
+  .card h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .card ul li a {
+    display: inline-block;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.84rem;
+    font-weight: 500;
+    background: var(--blue-light);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+
+  .card ul li a:hover {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+
+  .back-link-bottom {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    animation: fadeUp 0.4s ease both;
+    animation-delay: 0.15s;
+  }
+
+  .back-link-bottom:hover { text-decoration: underline; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 14px 48px; }
+    .page-header h1 { font-size: 1.5rem; }
+  }
 </style>
 </head>
 <body>
-<h1>Machine Learning Projects</h1>
-<p class="muted">
-    Selected projects focusing on unsupervised learning, clustering algorithms,
-    association rule mining, and pattern discovery.
-</p>
+<div class="container">
 
-<div class="card">
-<h2>Unsupervised Learning: Clustering & Association Rule Mining</h2>
-<p class="muted">
-      Comprehensive analysis comparing 6 clustering algorithms (K-Means, HAC, GMM, DBSCAN, 
-      Spectral, Graph-based) on 100K health records and association rule mining on 541K 
-      retail transactions using Apriori and FP-Growth algorithms.
-</p>
-<ul>
-<li>
-<a href="unsupervised-learning-lab/Final_Report_Overview.pdf">
-          Report (PDF)
-</a>
-</li>
-<li>
-<a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning/unsupervised-learning-lab">
-          View code on GitHub
-</a>
-</li>
-</ul>
+  <a class="back-link" href="../index.html">← Back to Home</a>
+
+  <div class="page-header">
+    <h1>Machine Learning Projects</h1>
+    <p>Selected projects focusing on unsupervised learning, clustering algorithms, association rule mining, and pattern discovery.</p>
+  </div>
+
+  <div class="card">
+    <h2>Unsupervised Learning: Clustering & Association Rule Mining</h2>
+    <p class="muted">Comprehensive analysis comparing 6 clustering algorithms (K-Means, HAC, GMM, DBSCAN, Spectral, Graph-based) on 100K health records and association rule mining on 541K retail transactions using Apriori and FP-Growth algorithms.</p>
+    <ul>
+      <li><a href="unsupervised-learning-lab/Final_Report_Overview.pdf">Report (PDF)</a></li>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning/unsupervised-learning-lab">View code on GitHub</a></li>
+    </ul>
+  </div>
+
+  <a class="back-link-bottom" href="../index.html">← Back to Home</a>
+
 </div>
-
-<p><a href="../index.html">← Back to Home</a></p>
 </body>
 </html>
