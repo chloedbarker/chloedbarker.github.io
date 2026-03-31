@@ -4,137 +4,220 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Predictive Analytics | Chloe Barker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-max-width: 900px;
-margin: 60px auto;
-padding: 0 20px;
-line-height: 1.6;
-    }
-a { text-decoration: none; color: #000; }
-a:hover { text-decoration: underline; }
-.card {
-border: 1px solid #e6e6e6;
-border-radius: 12px;
-padding: 16px;
-margin-bottom: 16px;
-    }
-.muted { color: #666; font-size: 0.95rem; }
-ul { padding-left: 18px; }
+  :root {
+    --navy: #0f2b4a;
+    --blue: #1a5fa8;
+    --blue-mid: #2d7dd2;
+    --blue-light: #e8f2fc;
+    --accent: #3b9eff;
+    --text: #1c2b3a;
+    --muted: #5a7080;
+    --border: #d5e6f5;
+    --white: #ffffff;
+    --card-shadow: 0 2px 12px rgba(15,43,74,0.08);
+    --card-hover-shadow: 0 6px 24px rgba(15,43,74,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #f0f6fd 0%, #fafcff 60%, #eef4fb 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 48px 20px 64px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── Back link ── */
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  /* ── Page header ── */
+  .page-header {
+    margin-bottom: 28px;
+    animation: fadeUp 0.4s ease both;
+    animation-delay: 0.05s;
+  }
+
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .page-header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 760px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .card:hover {
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--blue-mid);
+    transform: translateY(-2px);
+  }
+
+  .card h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  /* ── Pill links ── */
+  .card ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .card ul li a {
+    display: inline-block;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.84rem;
+    font-weight: 500;
+    background: var(--blue-light);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+
+  .card ul li a:hover {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+
+  /* ── Bottom back link ── */
+  .back-link-bottom {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .back-link-bottom:hover { text-decoration: underline; }
+
+  /* ── Stagger ── */
+  .card:nth-child(1) { animation-delay: 0.10s; }
+  .card:nth-child(2) { animation-delay: 0.15s; }
+  .card:nth-child(3) { animation-delay: 0.20s; }
+  .card:nth-child(4) { animation-delay: 0.25s; }
+  .card:nth-child(5) { animation-delay: 0.30s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 14px 48px; }
+    .page-header h1 { font-size: 1.5rem; }
+  }
 </style>
 </head>
 <body>
-<h1>Predictive Analytics</h1>
-<p class="muted">
-    Graduate-level predictive modeling projects applying classification and regression techniques — including logistic regression, linear regression, and ensemble methods — to real-world datasets across healthcare, human resources, and real estate domains. Each project emphasizes model development, feature engineering, validation, and interpretation of results.
-</p>
+<div class="container">
 
-<div class="card">
-<h2>Heart Disease Prediction</h2>
-<p class="muted">
-      Classification modeling to predict heart disease risk using survey and
-      health indicators with model evaluation and performance metrics.
-</p>
-<ul>
-<li>
-<a href="heart-disease-prediction/Heart_Disease_Prediction_Slides.pdf">
-          Slides (PDF)
-</a>
-</li>
-<li>
-<a href="heart-disease-prediction/Heart_Disease_Prediction_Project.pdf">
-          Report (PDF)
-</a>
-</li>
-<li>
-<a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/heart-disease-prediction">
-          View code on GitHub
-</a>
-</li>
-</ul>
+  <a class="back-link" href="../index.html">← Back to Home</a>
+
+  <div class="page-header">
+    <h1>Predictive Analytics</h1>
+    <p>Graduate-level predictive modeling projects applying classification and regression techniques — including logistic regression, linear regression, and ensemble methods — to real-world datasets across healthcare, human resources, and real estate domains. Each project emphasizes model development, feature engineering, validation, and interpretation of results.</p>
+  </div>
+
+  <div class="card">
+    <h2>Heart Disease Prediction</h2>
+    <p class="muted">Classification modeling to predict heart disease risk using survey and health indicators with model evaluation and performance metrics.</p>
+    <ul>
+      <li><a href="heart-disease-prediction/Heart_Disease_Prediction_Slides.pdf">Slides (PDF)</a></li>
+      <li><a href="heart-disease-prediction/Heart_Disease_Prediction_Project.pdf">Report (PDF)</a></li>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/heart-disease-prediction">View code on GitHub</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Hospital Length of Stay Prediction</h2>
+    <p class="muted">Regression modeling to predict patient length of stay with feature engineering, validation, and clinical interpretability.</p>
+    <ul>
+      <li><a href="hospital-length-of-stay-prediction/Hospital_Length_of_Stay_Slides.pdf">Slides (PDF)</a></li>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/hospital-length-of-stay-prediction">View code on GitHub</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Employee Attrition Prediction</h2>
+    <p class="muted">Classification modeling to predict employee turnover risk using HR data, feature importance analysis, and retention strategy recommendations.</p>
+    <ul>
+      <li><a href="employee-attrition-prediction/Chloe_Barker_Frito_Lay_EDA.pdf">Slides (PDF)</a></li>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/employee-attrition-prediction">View code on GitHub</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Sale Price Prediction</h2>
+    <p class="muted">Regression modeling to predict real estate sale prices using property features, linear regression, and feature engineering for pricing optimization.</p>
+    <ul>
+      <li><a href="sale-price-prediction/Sale_Price_Project_Report.pdf">Report (PDF)</a></li>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/sale-price-prediction">View code on GitHub</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Crab Age Prediction</h2>
+    <p class="muted">Regression modeling to predict crab age from physical measurements using multiple linear regression and model validation techniques.</p>
+    <ul>
+      <li><a href="crab-age-prediction/Crab_Age_Prediction_Slides.pdf">Slides (PDF)</a></li>
+      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/crab-age-prediction">View code on GitHub</a></li>
+    </ul>
+  </div>
+
+  <a class="back-link-bottom" href="../index.html">← Back to Home</a>
+
 </div>
-
-<div class="card">
-<h2>Hospital Length of Stay Prediction</h2>
-<p class="muted">
-      Regression modeling to predict patient length of stay with feature
-      engineering, validation, and clinical interpretability.
-</p>
-<ul>
-<li>
-<a href="hospital-length-of-stay-prediction/Hospital_Length_of_Stay_Slides.pdf">
-          Slides (PDF)
-</a>
-</li>
-<li>
-<a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/hospital-length-of-stay-prediction">
-          View code on GitHub
-</a>
-</li>
-</ul>
-</div>
-
-<div class="card">
-<h2>Employee Attrition Prediction</h2>
-<p class="muted">
-      Classification modeling to predict employee turnover risk using HR data,
-      feature importance analysis, and retention strategy recommendations.
-</p>
-<ul>
-<li>
-<a href="employee-attrition-prediction/Chloe_Barker_Frito_Lay_EDA.pdf">
-          Slides (PDF)
-</a>
-</li>
-<li>
-<a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/employee-attrition-prediction">
-          View code on GitHub
-</a>
-</li>
-</ul>
-</div>
-
-<div class="card">
-<h2>Sale Price Prediction</h2>
-<p class="muted">
-      Regression modeling to predict real estate sale prices using property features,
-      linear regression, and feature engineering for pricing optimization.
-</p>
-<ul>
-<li>
-<a href="sale-price-prediction/Sale_Price_Project_Report.pdf">
-          Report (PDF)
-</a>
-</li>
-<li>
-<a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/sale-price-prediction">
-          View code on GitHub
-</a>
-</li>
-</ul>
-</div>
-
-<div class="card">
-<h2>Crab Age Prediction</h2>
-<p class="muted">
-      Regression modeling to predict crab age from physical measurements using
-      multiple linear regression and model validation techniques.
-</p>
-<ul>
-<li>
-<a href="crab-age-prediction/Crab_Age_Prediction_Slides.pdf">
-          Slides (PDF)
-</a>
-</li>
-<li>
-<a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/crab-age-prediction">
-          View code on GitHub
-</a>
-</li>
-</ul>
-</div>
-
-<p><a href="../index.html">← Back to Home</a></p>
 </body>
 </html>
