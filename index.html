@@ -143,6 +143,60 @@
   .info-block p:last-child { margin-bottom: 0; }
   .info-block strong { color: var(--navy); font-weight: 600; }
 
+  /* ── Certifications ── */
+  .cert-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--blue-pale);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: var(--text);
+    transition: box-shadow 0.18s, border-color 0.18s;
+  }
+
+  .cert-item:hover {
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--blue-mid);
+  }
+
+  .cert-badge {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .cert-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cert-issuer {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--blue-mid);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .cert-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
   /* ── Section label ── */
   .section-label {
     font-size: 0.72rem;
@@ -308,6 +362,7 @@
   .info-block:nth-of-type(1) { animation-delay: 0.12s; }
   .info-block:nth-of-type(2) { animation-delay: 0.18s; }
   .info-block:nth-of-type(3) { animation-delay: 0.24s; }
+  .info-block:nth-of-type(4) { animation-delay: 0.28s; }
 
   /* ── Animation ── */
   @keyframes fadeUp {
@@ -341,7 +396,6 @@
         <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
         <a href="resume/Chloe_Barker_Resume.pdf">Resume</a>
         <a href="resume/Projects_Overview.pdf">Projects One-Pager</a>
-        <a href="tel:214-733-7514">214-733-7514</a>
       </div>
     </div>
   </div>
@@ -350,18 +404,18 @@
   <div class="info-block">
     <h3>About</h3>
     <p>
-      Chloe Barker is currently pursuing an M.S. in Data Science at Southern Methodist University (expected August 2026). She has a background in biological research from UT Austin and specializes in machine learning, predictive modeling, and healthcare analytics — leveraging Python, R, and SQL to transform complex datasets into actionable insights. She is seeking opportunities and looks forward to connecting with potential employers and collaborators.
+      I'm a data scientist completing my M.S. in Data Science at Southern Methodist University (expected August 2026), with a background in biological research from UT Austin. I specialize in machine learning, predictive modeling, and healthcare analytics — leveraging Python, R, and SQL to transform complex datasets into actionable insights. My work spans epidemiological research, time series forecasting, natural language processing, and geospatial analysis. I'm actively seeking full-time data science roles and welcome connections with potential employers and collaborators.
     </p>
   </div>
 
   <!-- Technical Skills -->
   <div class="info-block">
     <h3>Technical Skills</h3>
-    <p><strong>Programming Languages:</strong> Python (pandas, NumPy, scikit-learn), R (tidyverse, caret, ggplot2), SQL</p>
-    <p><strong>Machine Learning:</strong> Classification, Regression, Clustering, Feature Engineering, Model Evaluation</p>
+    <p><strong>Programming Languages:</strong> Python (pandas, NumPy, scikit-learn), R (tidyverse, caret, tswge, ggplot2), SQL</p>
+    <p><strong>Machine Learning:</strong> Classification, Regression, Clustering, Feature Engineering, Model Evaluation, NLP (TF-IDF, Cosine Similarity, POS Tagging, NLTK)</p>
+    <p><strong>Time Series Analysis:</strong> ARMA, ARIMA, ARUMA, VAR Modeling, Rolling ASE, Spectral Analysis</p>
     <p><strong>Data Visualization:</strong> Tableau, Power BI, ggplot2, matplotlib, seaborn</p>
-    <p><strong>Tools & Technologies:</strong> Git/GitHub, Jupyter, RStudio, MySQL, GeoPandas, Folium, Visual Studio Code</p>
-    <p><strong>Artificial Intelligence:</strong> Claude Code, ChatGPT, Gemini</p>
+    <p><strong>Tools &amp; Technologies:</strong> Git/GitHub, Jupyter, RStudio, MySQL, GeoPandas, Folium, Visual Studio Code, Claude Code, ChatGPT, Gemini</p>
   </div>
 
   <!-- Education -->
@@ -369,6 +423,20 @@
     <h3>Education</h3>
     <p><strong>Southern Methodist University</strong> &nbsp;|&nbsp; M.S. in Data Science (Expected Aug 2026) &nbsp;|&nbsp; GPA: 3.95</p>
     <p><strong>The University of Texas at Austin</strong> &nbsp;|&nbsp; B.S.A. in Biology, Minor in Health Communication &nbsp;|&nbsp; GPA: 3.77</p>
+  </div>
+
+  <!-- Certifications -->
+  <div class="info-block">
+    <h3>Certifications</h3>
+    <div class="cert-grid">
+      <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank">
+        <img class="cert-badge" src="certifications/DS_-_Badge_with_outline.png" alt="DataCamp Certified Data Scientist badge">
+        <div class="cert-info">
+          <span class="cert-issuer">DataCamp</span>
+          <span class="cert-name">Certified Data Scientist</span>
+        </div>
+      </a>
+    </div>
   </div>
 
   <!-- Projects -->
@@ -421,13 +489,13 @@
     </a>
 
     <a class="card" href="databases-sql/">
-      <h3>Databases & SQL</h3>
+      <h3>Databases &amp; SQL</h3>
       <p class="muted">Relational database design, query optimization, ETL workflows, and geospatial analysis.</p>
       <ul>
         <li>MySQL, Database Normalization (3NF)</li>
         <li>Python, GeoPandas, Folium</li>
         <li>Query Optimization, ETL Pipelines</li>
-        <li>Geospatial Mapping & Analysis</li>
+        <li>Geospatial Mapping &amp; Analysis</li>
       </ul>
     </a>
 
