@@ -1,0 +1,475 @@
+---
+title: "Time Series Project: Forecasting Eli Lilly (LLY) Stock Price"
+author: "Chloe Barker"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+## Presentation Video  
+[Click here to view](https://youtu.be/XV_TQtgP0gY)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,fig.width = 7, fig.height = 4)
+library(tswge)
+library(quantmod)
+library(vars)
+library(nnfor)
+library(ggplot2)
+library(dplyr)
+library(forecast)
+library(knitr)
+```
+
+## Client Scenario
+
+A healthcare-focused investment fund is evaluating a long-term position in Eli Lilly (LLY), driven by growth in its GLP-1 drug pipeline. The fund requires forecasts at two horizons:
+
+- Short-term (3 months): Inform quarterly position sizing and rebalancing decisions
+- Long-term (12 months): Support annual fund reporting and strategic allocation decisions
+
+**Response variable:** Monthly log-adjusted closing price of LLY
+
+**Explanatory variables:**
+
+- XLV (Health Care ETF): captures sector-wide movement
+- NVO (Novo Nordisk): direct GLP-1 competitor
+
+## Data Preparation
+
+We pull monthly adjusted closing prices from Yahoo Finance starting January 2015. We take log prices to stabilize variance and make returns interpretable as continuously compounded percentages, which is a standard transformation in financial time series.
+
+
+```{r}
+# Pull data
+getSymbols(c("LLY", "XLV", "NVO"), src = "yahoo", from = "2015-01-01", to = Sys.Date())
+
+# Convert to monthly
+lly_monthly <- to.monthly(LLY, indexAt = "lastof", OHLC = FALSE)
+xlv_monthly <- to.monthly(XLV, indexAt = "lastof", OHLC = FALSE)
+nvo_monthly <- to.monthly(NVO, indexAt = "lastof", OHLC = FALSE)
+
+dates <- index(lly_monthly)
+
+# Log transform
+lly_log <- log(as.numeric(lly_monthly$LLY.Adjusted))
+xlv_log <- log(as.numeric(xlv_monthly$XLV.Adjusted))
+nvo_log <- log(as.numeric(nvo_monthly$NVO.Adjusted))
+
+# Summary
+n <- length(lly_log)
+cat("Number of monthly observations:", n, "\n")
+cat("Date range:",format(min(dates)), "to",format(max(dates)),"\n")
+```
+
+## Exploratory Data Analysis
+
+### LLY Log Price
+
+```{r,results='hide'}
+plotts.sample.wge(lly_log)
+```
+
+**Interpretation:** The realization shows a clear and persistent upward trend with no tendency to return to a fixed mean. This is classic nonstationary wandering behavior, driven by LLY's explosive GLP-1 growth beginning around 2022. The ACF is strictly positive and decays very slowly as lag increases, which is the hallmark of a (1-B) factor: damped exponential behavior with no sinusoidal component. The spectral density has a sharp spike at f=0, confirming the upward drift dominates the series. A first difference will be needed to move forward.
+
+### Differenced Series
+
+```{r,results='hide'}
+lly_diff <- artrans.wge(lly_log, phi.tr = 1)
+plotts.sample.wge(lly_diff)
+```
+
+**Interpretation:** After applying a first difference, the realization fluctuates around a near-zero mean with no wandering behavior. There are a few larger spikes that are likely tied to earnings events or FDA announcements, but no sustained deviation. The ACF cuts off quickly with almost no bars outside the limits, and the spectral density is relatively flat. This confirms a single (1-B) factor is sufficient to achieve stationarity.
+
+### NVO and XLV Log Prices
+
+```{r, results='hide'}
+# NVO
+plotts.sample.wge(nvo_log)
+nvo_diff <- artrans.wge(nvo_log, phi.tr = 1)
+# XLV
+plotts.sample.wge(xlv_log)
+xlv_diff <- artrans.wge(xlv_log, phi.tr = 1)
+```
+
+**Interpretation:** Both NVO and XLV exhibit the same behavior as LLY. The realizations show persistent upward trends with no mean reversion. The ACFs are strictly positive and slowly dampening, damped exponential behavior, and both spectral densities peak sharply at f=0. This is expected for financial prices, which generally behave as random walks. After first differencing, both look stationary.
+
+### Cross-Correlation Analysis
+
+```{r}
+ccf(xlv_log, lly_log, lag.max = 75, main = "Cross-Correlation: XLV vs LLY (log prices)")
+ccf(nvo_log, lly_log, lag.max = 75, main = "Cross-Correlation: NVO vs LLY (log prices)")
+```
+
+**Interpretation:** Both XLV and NVO show strong correlation with LLY at lag 0, meaning the series tend to move together at the same time. However, since these are log price series (which are nonstationary), these correlations should be interpreted cautiously. 
+
+The lack of a clear leading relationship suggests that neither XLV nor NVO consistently leads LLY. Instead, they appear to co-move. This motivates the use of a VAR model, which allows variables to be jointly modeled rather than assuming a strict leading/lagging relationship.
+
+## Model 1: ARMA (Univariate, on First-Differenced Series)
+
+### Model Identification
+
+Since the log returns appeared stationary in our EDA, we fit an ARMA model to `lly_diff` using `aic5.wge()` to search over p and q values.
+
+```{r}
+aic_result <- aic5.wge(lly_diff, p = 0:8, q = 0:3)
+```
+
+AIC selected ARMA(0,0) as the top model, suggesting that log returns behave very similarly to white noise with little serial dependence. AR(4) produced a nearly identical AIC value (-5.144 vs. -5.150), so it was also considered as a nearby alternative. Because the differences in AIC are very small, there is limited predictable structure in the series overall. This result is consistent with financial theory, where asset returns are often difficult to predict and behave approximately like white noise.
+
+### Model Fit
+
+```{r, results='hide'}
+arma_fit <- est.arma.wge(lly_diff, p = 4, q = 0)
+plotts.sample.wge(arma_fit$res, arlimits = TRUE)
+qqnorm(arma_fit$res); qqline(arma_fit$res)
+```
+
+The residuals look like white noise with no meaningful structure remaining. The QQ plot shows approximate normality with slight heavy tails, which is typical for monthly stock returns.
+
+### Forecasts
+
+```{r}
+# Short-term: 3-month forecast
+arma_fore_short <- fore.arma.wge(lly_diff, phi = arma_fit$phi, theta = arma_fit$theta,n.ahead = 3, lastn = TRUE)
+arma_ase_short <- mean((arma_fore_short$f - tail(lly_diff, 3))^2)
+cat("ARMA Short-term (3-month) ASE:", round(arma_ase_short, 6), "\n")
+# 0.00602
+
+# Long-term: 12-month forecast
+arma_fore_long <- fore.arma.wge(lly_diff, phi = arma_fit$phi, theta = arma_fit$theta, n.ahead = 12, lastn = TRUE)
+arma_ase_long <- mean((arma_fore_long$f - tail(lly_diff, 12))^2)
+cat("ARMA Long-term (12-month) ASE:", round(arma_ase_long, 6), "\n")
+# 0.010399
+```
+
+### Rolling Window RMSE
+
+```{r}
+arma_rw_short <- roll.win.rmse.wge(lly_diff, horizon = 3,phi = arma_fit$phi, theta = arma_fit$theta)
+# Rolling Window RMSE: 0.068 (128 windows)
+
+arma_rw_long <- roll.win.rmse.wge(lly_diff, horizon = 12, phi = arma_fit$phi, theta = arma_fit$theta)
+# Rolling Window RMSE: 0.074 (119 windows)
+```
+
+### Discussion
+
+The ARMA model produced a short-term ASE of 0.006 and a long-term ASE of 0.010. Since the model is fit on log returns, these forecasts are essentially predicting near-zero returns each month, which aligns with the ARMA(0,0) result. The rolling window RMSE values (0.068 short-term and 0.074 long-term) indicate that prediction errors are relatively stable but still fairly large in percentage terms. This reinforces the idea that monthly stock returns contain very little predictable structure.
+
+---
+
+## Model 2: ARIMA(4,1,0) — Univariate, on Log Price Level
+
+Rather than modeling the differenced series, we fit an ARIMA model with d = 1 directly to the log price. This lets us produce forecasts on the log price scale, which is more interpretable for a financial client. We already confirmed one difference is sufficient, so we filter and run AIC.
+
+```{r, results='hide'}
+lly_diff <- artrans.wge(lly_log, phi.tr = 1)
+aic_arima <- aic5.wge(lly_diff, p = 0:8, q = 0:3)
+```
+
+### Model Fit
+
+```{r, results='hide'}
+arima_fit <- est.arma.wge(lly_diff, p = 4)
+plotts.sample.wge(arima_fit$res, arlimits = TRUE)
+```
+
+### Forecasts
+
+```{r}
+# Short-term: 3-month forecast
+arima_fore_short <- fore.aruma.wge(lly_log, phi = arima_fit$phi, d = 1,n.ahead = 3, lastn = TRUE)
+arima_ase_short <- mean((arima_fore_short$f - tail(lly_log, 3))^2)
+cat("ARIMA Short-term ASE:", round(arima_ase_short, 4), "\n")
+# 0.0041
+
+# Long-term: 12-month forecast
+arima_fore_long <- fore.aruma.wge(lly_log, phi = arima_fit$phi, d = 1, n.ahead = 12, lastn = TRUE)
+arima_ase_long <- mean((arima_fore_long$f - tail(lly_log, 12))^2)
+cat("ARIMA Long-term ASE:", round(arima_ase_long, 4), "\n")
+# 0.355
+```
+
+### Rolling Window RMSE
+
+```{r}
+arima_rw_short <- roll.win.rmse.wge(lly_log, horizon = 3, phi = arima_fit$phi, d = 1)
+# Rolling Window RMSE: 0.169 (127 windows)
+
+arima_rw_long <- roll.win.rmse.wge(lly_log, horizon = 12, phi = arima_fit$phi, d = 1)
+# Rolling Window RMSE: 0.492 (118 windows)
+```
+
+### Discussion
+
+The ARIMA model performed well short-term (ASE = 0.004) but struggled at the 12-month horizon (ASE = 0.355). The rolling window RMSE tells the same story: 0.169 short-term and 0.492 long-term. In log price units, an RMSE of 0.492 at 12 months corresponds to roughly 49% forecast error on average. This is not surprising — the ARIMA model projects the recent trend forward, and LLY had an extremely volatile run during the GLP-1 boom. The short-term forecast is much more reliable, which is consistent with what we would expect from a random walk type model.
+
+---
+
+## Model 3: VAR — Multivariate with XLV (Health Care Sector ETF)
+
+A Vector Autoregression (VAR) treats LLY and XLV as jointly determined. Each variable is explained by lagged values of both series. This is appropriate because broad healthcare sector moves captured by XLV influence LLY, and large LLY moves can themselves shift the ETF. We use log price levels with `type = "const"` to capture drift and `season = 12` for any calendar effects.
+
+```{r}
+n_test_long <- 12
+n_test_short <- 3
+n_train <- n - n_test_long
+
+lly_xlv_full <- data.frame(LLY = lly_log, XLV = xlv_log)
+lly_xlv_train <- lly_xlv_full[1:n_train, ] # 124 obs
+lly_xlv_test <- lly_xlv_full[(n_train + 1):n, ] # 12 obs
+
+VARselect(lly_xlv_train, lag.max = 12, type = "const", season = 12)
+# AIC, HQ, SC, FPE all selected p = 1
+
+var1_fit <- VAR(lly_xlv_train, p = 3, type = "const", season = 12)
+```
+
+VARselect() suggested p = 1 across all criteria. We also estimated p = 3 to allow for additional short-term dynamics. Results show that LLY.l1 is the only consistently significant predictor in the LLY equation, suggesting LLY's own past values dominate its behavior. The XLV lags are not statistically significant, indicating that the sector ETF may not add much predictive information beyond LLY's own history. Overall, while LLY and XLV move together, XLV does not meaningfully improve forecasts of LLY in this specification.
+
+### Forecasts
+
+```{r}
+var1_preds <- predict(var1_fit, n.ahead = 12)
+var1_lly_fore <- data.frame(var1_preds$fcst$LLY)
+
+var1_ase_short <- mean((var1_lly_fore$fcst[1:3] - lly_xlv_test$LLY[1:3])^2)
+var1_ase_long <- mean((var1_lly_fore$fcst - lly_xlv_test$LLY)^2)
+cat("VAR1 Short-term ASE:", round(var1_ase_short, 6), "\n")  # 0.069563
+cat("VAR1 Long-term ASE:",round(var1_ase_long,  6), "\n")  # 0.044851
+
+fanchart(var1_preds, names = "LLY")
+```
+
+```{r}
+time_index <- 1:n
+test_index <- (n_train + 1):n
+
+var1_plot_df <- data.frame(
+  t = test_index,
+  fcst = var1_lly_fore$fcst,
+  lower = var1_lly_fore$lower,
+  upper = var1_lly_fore$upper)
+
+ggplot() + geom_line(aes(x = time_index, y = lly_log), color = "black") +
+  geom_line(aes(x = t, y = fcst), data = var1_plot_df, color = "blue", linewidth = 1) +
+  geom_ribbon(aes(x = t, ymin = lower, ymax = upper), data = var1_plot_df,fill = "blue", alpha = 0.2) +
+  labs(title = "VAR Model 1 (LLY + XLV): 12-Month Forecast",x = "Month Index", y = "Log LLY Price") + theme_bw()
+```
+
+### Discussion
+
+VAR1 has a short-term ASE of 0.070 and a long-term ASE of 0.045. On the log price scale, the long-term RMSE is sqrt(0.045) ≈ 0.21, meaning forecasts are off by roughly 21% on average at 12 months. The fan chart shows prediction intervals widening appropriately over time. Compared to ARIMA, VAR1 actually performs better at the long-term horizon — using XLV as a co-determined variable helps anchor the forecast near realistic price levels rather than just projecting the recent explosive trend forward.
+
+---
+
+## Model 4: VAR — Multivariate with NVO (GLP-1 Competitor)
+
+We swap XLV for NVO to test whether the direct GLP-1 competitor contains more useful information about LLY than the broad sector ETF. If NVO and LLY are engaged in direct competition, news about one could be a leading indicator for the other.
+
+```{r}
+lly_nvo_full  <- data.frame(LLY = lly_log, NVO = nvo_log)
+lly_nvo_train <- lly_nvo_full[1:n_train, ]
+lly_nvo_test  <- lly_nvo_full[(n_train + 1):n, ]
+
+VARselect(lly_nvo_train, lag.max = 12, type = "const", season = 12)
+# AIC selected p = 5; SC selected p = 1
+
+var2_fit <- VAR(lly_nvo_train, p = 3, type = "const", season = 12)
+```
+
+### Forecasts
+
+```{r}
+var2_preds <- predict(var2_fit, n.ahead = n_test_long)
+var2_lly_fore <- data.frame(var2_preds$fcst$LLY)
+
+var2_ase_short <- mean((var2_lly_fore$fcst[1:3] - lly_nvo_test$LLY[1:3])^2)
+var2_ase_long  <- mean((var2_lly_fore$fcst - lly_nvo_test$LLY)^2)
+cat("VAR2 Short-term ASE:", round(var2_ase_short, 6), "\n")  # 0.061615
+cat("VAR2 Long-term ASE:",  round(var2_ase_long,  6), "\n")  # 0.037499
+
+fanchart(var2_preds, names = "LLY")
+```
+
+```{r}
+var2_plot_df <- data.frame(
+  t = test_index,
+  fcst  = var2_lly_fore$fcst,
+  lower = var2_lly_fore$lower,
+  upper = var2_lly_fore$upper)
+
+ggplot() + geom_line(aes(x = time_index, y = lly_log), color = "black") +
+  geom_line(aes(x = t, y = fcst), data = var2_plot_df, color = "darkgreen", linewidth = 1) +
+  geom_ribbon(aes(x = t, ymin = lower, ymax = upper), data = var2_plot_df,fill = "darkgreen", alpha = 0.2) +
+  labs(title = "VAR Model 2 (LLY + NVO): 12-Month Forecast",x = "Month Index", y = "Log LLY Price") + theme_bw()
+```
+
+### Discussion
+
+Similar to VAR1, LLY.l1 is the strongest predictor of LLY. The NVO lags are not statistically significant at conventional levels, although some coefficients are closer to significance than in the XLV model. This suggests that while NVO does not strongly predict LLY in a linear sense, it may still capture some additional variation related to competitive dynamics that is not fully reflected in the sector ETF.
+
+---
+
+## Model 5: Neural Network (MLP)
+
+The MLP model from the `nnfor` package is a nonlinear, data-driven approach. We use XLV as an external regressor with `difforder = 1` to match our ARIMA decision on nonstationarity. We force a lag of 1 on XLV so that the predictor is always available when forecasting ahead. Setting `reps = 50` with `comb = "median"` trains 50 networks and combines their predictions, reducing sensitivity to random initialization.
+
+```{r, results='hide'}
+lly_train_ts <- ts(lly_log[1:n_train])
+lly_test_vals <- lly_log[(n_train + 1):n]
+
+xlv_xreg <- data.frame(XLV = xlv_log)
+xlv_train <- xlv_xreg[1:n_train, , drop = FALSE]
+xlv_test <- xlv_xreg[(n_train + 1):n, , drop = FALSE]
+xlv_all <- rbind(xlv_train, xlv_test)
+
+set.seed(42)
+# difforder = 1 filters out the (1-B) nonstationarity, matching our ARIMA decision.
+# allow.det.season = FALSE: not imposing seasonal dummies on monthly stock data.
+# XLV lagged by 1 month so the predictor is reliably available in a real-time forecasting scenario.
+xlv_lags_list <- list()
+xlv_lags_list$XLV <- c(1)
+
+mlp_fit <- mlp(lly_train_ts, difforder = 1,allow.det.season= FALSE,reps= 50,comb = "median", xreg = xlv_train, xreg.lags = xlv_lags_list)
+```
+
+```{r}
+print(mlp_fit)
+plot(mlp_fit)
+```
+
+The network automatically selected lags 3 and 4 of LLY along with lag 1 of XLV. Five hidden nodes were used, keeping the model relatively simple and reducing overfitting risk on our 124-observation training set.
+
+### Forecasts
+
+```{r}
+mlp_fore_long <- forecast(mlp_fit, h = n_test_long, xreg = xlv_all)
+plot(mlp_fore_long, main = "MLP 12-Month Forecast (LLY Log Price)")
+
+mlp_ase_long  <- mean((as.numeric(mlp_fore_long$mean) - lly_test_vals)^2)
+mlp_ase_short <- mean((as.numeric(mlp_fore_long$mean)[1:3] - lly_test_vals[1:3])^2)
+cat("MLP Long-term (12-month) ASE:",round(mlp_ase_long, 6), "\n")
+cat("MLP Short-term (3-month) ASE:",round(mlp_ase_short, 6), "\n")
+```
+
+### Discussion
+
+The MLP model produces the best long-term ASE of all five models at 0.017 (RMSE ≈ 0.13). The short-term ASE of 0.025 is competitive as well. This makes sense because the neural network can adapt to the nonlinear dynamics of LLY's price trajectory in a way that linear models cannot. Rolling window RMSE is not available for MLP in `tswge`, so we rely on the static ASE on the held-out 12 observations.
+
+---
+
+## Model Comparison
+
+```{r}
+comparison <- data.frame(
+  Model = c(
+    "ARMA (on log returns)",
+    "ARIMA(p,1,0) (on log price)",
+    "VAR1 (LLY + XLV)",
+    "VAR2 (LLY + NVO)",
+    "MLP (LLY + XLV, lag 1)"
+  ),
+  Short_ASE_3mo  = c(
+    round(arma_ase_short,6),
+    round(arima_ase_short,6),
+    round(var1_ase_short,6),
+    round(var2_ase_short,6),
+    round(mlp_ase_short,6)
+  ),
+  Long_ASE_12mo = c(
+    round(arma_ase_long,6),
+    round(arima_ase_long,6),
+    round(var1_ase_long,6),
+    round(var2_ase_long,6),
+    round(mlp_ase_long,6)
+  )
+)
+
+kable(comparison, caption = "Model Comparison: Static ASE (last 12 months held out)", col.names  = c("Model", "Short-Term ASE (3 mo)", "Long-Term ASE (12 mo)"))
+```
+
+Because ARMA is evaluated on log returns while the other models are evaluated on log price levels, we focus on comparing ARIMA, VAR1, VAR2, and MLP. For short-term forecasting (3 months), ARIMA has the lowest ASE. For long-term forecasting (12 months), the MLP model has the lowest ASE. Between the VAR models, VAR2 (LLY + NVO) outperforms VAR1 (LLY + XLV), indicating that the competitor provides more useful predictive information than the sector ETF.
+
+```{r}
+# Rolling window RMSE is available for ARMA and ARIMA only.
+# VAR and MLP rely on static ASE (comparable across models when using the same held-out window).
+arma_rw_s <- roll.win.rmse.wge(lly_diff,horizon = 3,phi = arma_fit$phi, theta = arma_fit$theta)
+arma_rw_l <- roll.win.rmse.wge(lly_diff,horizon = 12,phi = arma_fit$phi, theta = arma_fit$theta)
+arima_rw_s <- roll.win.rmse.wge(lly_log,horizon = 3,phi = arima_fit$phi, d = 1)
+arima_rw_l <- roll.win.rmse.wge(lly_log, horizon = 12,phi = arima_fit$phi, d = 1)
+```
+
+RMSE = sqrt(ASE) and is in the same units as the response, making it easier to communicate to a client. An RMSE of 0.13 for the MLP at 12 months means forecasts are off by roughly 13% on average in log price units.
+
+---
+
+## Final Forecasts: Stepping Into the Future
+
+Based on static ASE performance on the log price scale, ARIMA is selected for short-term forecasting and MLP for long-term forecasting. ARIMA performs best over short horizons because it captures the random walk behavior of stock prices effectively. The MLP performs best over longer horizons, likely because it can adapt to nonlinear patterns and regime changes in the data. Given the uncertainty in long-term stock forecasts, it is also useful to consider multiple models when communicating results to a client.
+
+### ARIMA Forward Forecast
+
+```{r}
+final_arima <- fore.aruma.wge(lly_log, phi = arima_fit$phi, d = 1, n.ahead = 12, lastn = FALSE)
+
+# Convert back to price scale for client interpretation
+final_arima_price <- exp(final_arima$f)
+final_arima_ll <- exp(final_arima$ll)
+final_arima_ul <- exp(final_arima$ul)
+
+cat("12-month forward LLY price forecasts:\n")
+print(round(final_arima_price, 2))
+cat("Lower 95% PI:", round(final_arima_ll, 2), "\n")
+cat("Upper 95% PI:", round(final_arima_ul, 2), "\n")
+```
+
+The ARIMA forecast projects LLY continuing upward toward the $950–$1,250 range over 12 months. The prediction intervals widen dramatically at longer horizons, which is an honest reflection of the inherent uncertainty in equity prices — not a failure of the model. The lower bound dips very low by month 12, reflecting how wide the random walk uncertainty becomes over a full year.
+
+### VAR1 Forward Forecast (LLY + XLV)
+
+```{r}
+lly_xlv_all <- data.frame(LLY = lly_log, XLV = xlv_log)
+var1_final_fit <- VAR(lly_xlv_all, p = 3, type = "const", season = 12)
+var1_final_preds <- predict(var1_final_fit, n.ahead = 12)
+
+var1_final_lly <- data.frame(var1_final_preds$fcst$LLY)
+cat("Log price forecasts:", round(var1_final_lly$fcst,4), "\n")
+cat("Price level forecasts:", round(exp(var1_final_lly$fcst), 2), "\n")
+cat("Lower 95% PI (price):", round(exp(var1_final_lly$lower),2), "\n")
+cat("Upper 95% PI (price):",round(exp(var1_final_lly$upper),2), "\n")
+
+fanchart(var1_final_preds, names = "LLY")
+```
+
+```{r}
+n_future <- 12
+t_hist <- 1:n
+t_fore <- (n + 1):(n + n_future)
+
+final_df <- data.frame(t = t_fore,fcst = var1_final_lly$fcst,lower = var1_final_lly$lower,upper = var1_final_lly$upper)
+
+ggplot() + geom_line(aes(x = t_hist, y = lly_log), color = "black", linewidth = 0.8) +
+  geom_line(aes(x = t, y = fcst), data = final_df, color = "blue", linewidth = 1.2) +
+  geom_ribbon(aes(x = t, ymin = lower, ymax = upper), data = final_df,fill = "blue", alpha = 0.25) +
+  geom_vline(xintercept = n, linetype = "dashed", color = "gray50") +
+  labs(title = "LLY Log Price: Historical Data + 12-Month Forward Forecast", subtitle = "Blue = VAR1 (LLY + XLV) forecast; shaded band = 95% prediction interval",x = "Month Index (Jan 2015 = 1)", y = "Log LLY Adjusted Price") + theme_bw(base_size = 13)
+```
+
+The VAR1 forecast is much more conservative than ARIMA. It projects LLY hovering in the $950–$1,140 range over 12 months with tighter, more realistic prediction intervals. The sector co-movement from XLV acts as an anchor, preventing the forecast from projecting the explosive 2022–2024 trend indefinitely into the future. This is arguably more credible for a client making real investment decisions.
+
+---
+
+## Conclusions and Recommendation
+
+This analysis fit five models to forecast Eli Lilly's monthly log-adjusted closing price at both 3-month and 12-month horizons.
+
+1. LLY log price is nonstationary, and a single (1-B) difference was sufficient to achieve stationarity — consistent with typical stock price behavior.
+2. The ARMA model on log returns suggests that returns behave close to white noise, meaning there is very limited predictable structure in monthly returns.
+3. The ARIMA model performed best for short-term forecasting, capturing the random walk behavior of stock prices and producing the lowest ASE at the 3-month horizon.
+4. Among the VAR models, VAR2 (LLY + NVO) outperformed VAR1 (LLY + XLV), suggesting that the competitor provides slightly more useful information than the broader healthcare sector.
+5. The MLP neural network produced the lowest ASE at the 12-month horizon, indicating that a nonlinear model may better capture longer-term patterns in the data.
+
+**Model Recommendation:** For short-term forecasting (3 months), ARIMA is recommended due to its strong performance and interpretability. For long-term forecasting (12 months), the MLP model provides the best predictive accuracy based on ASE, though it is less interpretable. The VAR2 model offers a useful middle ground, incorporating external information from a relevant competitor while remaining a transparent linear model.
+
+At longer horizons, all models produce wide prediction intervals. This reflects the inherent uncertainty in forecasting stock prices rather than a failure of the models, and it is important to communicate this uncertainty clearly to the client.
