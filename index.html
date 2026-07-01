@@ -201,6 +201,14 @@
     justify-content: center;
     font-size: 1.1rem;
     flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .exp-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
   }
 
   .exp-body { flex: 1; min-width: 0; }
@@ -549,7 +557,7 @@
         <div class="section-header"><h2>Experience</h2></div>
 
         <div class="exp-item">
-          <div class="exp-logo">🦢</div>
+          <div class="exp-logo"><img src="certifications/goosehead.jpeg" alt="Goosehead Insurance"></div>
           <div class="exp-body">
             <div class="exp-company">Goosehead Insurance</div>
             <div class="exp-title">Data Science Intern</div>
