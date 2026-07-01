@@ -476,6 +476,71 @@
     color: var(--ink);
   }
 
+  /* ── Stats strip ── */
+  .stats-strip {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    animation: fadeUp .5s ease both;
+    animation-delay: .08s;
+  }
+
+  .stat-item {
+    flex: 1;
+    min-width: 140px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.74rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ── Project image preview ── */
+  .project-preview {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 12px;
+    object-fit: cover;
+    max-height: 140px;
+    display: block;
+  }
+
+  /* ── Project tags ── */
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .project-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
   /* ── Footer ── */
   .footer {
     text-align: center;
@@ -541,6 +606,26 @@
     </div>
   </div>
 
+  <!-- Stats strip -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <span class="stat-value">3.97</span>
+      <span class="stat-label">M.S. GPA at SMU</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">3.77</span>
+      <span class="stat-label">B.S. GPA at UT Austin</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">★ #1</span>
+      <span class="stat-label">Best Capstone Presentation</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">5+</span>
+      <span class="stat-label">End-to-end DS projects</span>
+    </div>
+  </div>
+
   <div class="two-col">
     <div class="main-col">
 
@@ -548,7 +633,7 @@
       <div class="card">
         <div class="section-header"><h2>About</h2></div>
         <p class="about-text">
-          I'm a data scientist specializing in machine learning, predictive modeling, and statistical analysis, currently completing my M.S. in Data Science at SMU. My B.S. in Biology from UT Austin gives me a strong grounding in research methodology and working with real, messy data. I build models in Python, R, and SQL, and care deeply about communicating findings clearly to both technical and non-technical audiences. My MS capstone earned <strong>Best Presentation</strong> at SMU's MSDS program. I'm actively seeking full-time data science roles.
+          I'm a data scientist specializing in machine learning, predictive modeling, and statistical analysis, currently completing my M.S. in Data Science at SMU (GPA: 3.97, expected August 2026). My B.S. in Biology from UT Austin grounds me in rigorous research methodology and real-world, messy data. I build end-to-end pipelines in Python, R, and SQL — from raw data to deployed insight — and care deeply about communicating findings to both technical and non-technical audiences. My MS capstone earned <strong>Best Presentation</strong> at SMU's MSDS program. I'm currently interning at Goosehead Insurance and actively seeking full-time data science roles starting fall 2026.
         </p>
       </div>
 
@@ -580,12 +665,15 @@
           <a class="capstone-card" href="capstone/">
             <div class="capstone-badge">★ MS Capstone · Best Presentation</div>
             <div class="capstone-title">Groundwater Lithium &amp; Dementia Prevalence in Texas</div>
-            <div class="capstone-desc">End-to-end epidemiological study investigating whether naturally occurring groundwater lithium concentrations correlate with county-level dementia prevalence across Texas.</div>
+            <img class="project-preview" src="capstone/map_lithium_vs_dementia_sidebyside.png" alt="Side-by-side choropleth maps of Texas counties showing groundwater lithium levels and dementia prevalence">
+            <div class="capstone-desc">End-to-end epidemiological study across all 254 Texas counties investigating whether naturally occurring groundwater lithium concentrations are associated with reduced dementia prevalence — using OLS regression with HC3 robust standard errors, permutation testing, and bootstrap confidence intervals to establish statistical rigor.</div>
             <div class="capstone-pills">
-              <span class="pill">Python · GeoPandas</span>
-              <span class="pill">OLS · HC3 Robust SEs</span>
+              <span class="pill">Python</span>
+              <span class="pill">GeoPandas</span>
+              <span class="pill">OLS · HC3</span>
               <span class="pill">Permutation Testing</span>
               <span class="pill">Bootstrap CIs</span>
+              <span class="pill">Public Health</span>
             </div>
           </a>
 
@@ -594,7 +682,16 @@
               <span class="project-name">Predictive Analytics</span>
               <span class="project-arrow">→</span>
             </div>
-            <div class="project-desc">Healthcare modeling, employee attrition, and heart disease prediction using KNN, LDA, QDA, Logistic Regression, Random Forest, and LASSO in R &amp; Python.</div>
+            <div class="project-desc">Three end-to-end predictive modeling projects: employee attrition prediction for Frito-Lay (Random Forest, KNN achieving &gt;85% accuracy), crab age regression competition (LASSO, linear regression), and heart disease classification (Logistic Regression, LDA/QDA with ROC/AUC evaluation).</div>
+            <div class="project-tags">
+              <span class="project-tag">R</span>
+              <span class="project-tag">Python</span>
+              <span class="project-tag">scikit-learn</span>
+              <span class="project-tag">Random Forest</span>
+              <span class="project-tag">KNN</span>
+              <span class="project-tag">LASSO</span>
+              <span class="project-tag">ROC/AUC</span>
+            </div>
           </a>
 
           <a class="project-link" href="machine-learning/">
@@ -602,7 +699,15 @@
               <span class="project-name">Machine Learning</span>
               <span class="project-arrow">→</span>
             </div>
-            <div class="project-desc">Unsupervised learning, clustering (K-Means, DBSCAN, Hierarchical), association rule mining with Apriori/FP-Growth, and anomaly detection.</div>
+            <div class="project-desc">Unsupervised learning lab on retail and health datasets: customer segmentation with K-Means and DBSCAN, hierarchical clustering with dendrogram analysis, and market basket analysis using Apriori and FP-Growth to surface high-confidence association rules.</div>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">scikit-learn</span>
+              <span class="project-tag">K-Means</span>
+              <span class="project-tag">DBSCAN</span>
+              <span class="project-tag">Apriori</span>
+              <span class="project-tag">pandas</span>
+            </div>
           </a>
 
           <a class="project-link" href="databases-sql/">
@@ -610,7 +715,15 @@
               <span class="project-name">Databases &amp; SQL</span>
               <span class="project-arrow">→</span>
             </div>
-            <div class="project-desc">Relational database design (MySQL, 3NF), ETL pipelines, query optimization, and geospatial analysis with GeoPandas and Folium.</div>
+            <div class="project-desc">Designed and populated a normalized MySQL database (3NF) of Texas groundwater chemical composition, built ETL pipelines from raw EPA well data, and created interactive choropleth maps of fluoride, iodide, and lithium distribution across Texas counties.</div>
+            <div class="project-tags">
+              <span class="project-tag">MySQL</span>
+              <span class="project-tag">Python</span>
+              <span class="project-tag">GeoPandas</span>
+              <span class="project-tag">Folium</span>
+              <span class="project-tag">ETL</span>
+              <span class="project-tag">3NF</span>
+            </div>
           </a>
 
           <a class="project-link" href="data-storytelling/">
@@ -618,7 +731,15 @@
               <span class="project-name">Data Storytelling</span>
               <span class="project-arrow">→</span>
             </div>
-            <div class="project-desc">Visualizations and executive-facing dashboards in Tableau, Power BI, R Shiny, ggplot2, matplotlib, and seaborn.</div>
+            <div class="project-desc">Executive-facing presentations and visual analyses for diverse audiences: medical device market entry (Butterfly IQ), NLP-driven data science news digests, MetaSky product infographic, and a passion-project deep dive — all emphasizing clear narrative over raw numbers.</div>
+            <div class="project-tags">
+              <span class="project-tag">Tableau</span>
+              <span class="project-tag">Power BI</span>
+              <span class="project-tag">R Shiny</span>
+              <span class="project-tag">ggplot2</span>
+              <span class="project-tag">NLP</span>
+              <span class="project-tag">TF-IDF</span>
+            </div>
           </a>
 
         </div>
@@ -716,8 +837,10 @@
         </div>
 
         <div class="skill-group">
-          <div class="skill-label">Tools</div>
+          <div class="skill-label">Platforms & Tools</div>
           <div class="skill-pills">
+            <span class="skill-pill">Databricks</span>
+            <span class="skill-pill">Snowflake</span>
             <span class="skill-pill">Git</span>
             <span class="skill-pill">Jupyter</span>
             <span class="skill-pill">MySQL</span>
