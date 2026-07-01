@@ -3,88 +3,106 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Chloe Barker | Data Science Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<title>Chloe Barker | Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
-  .grid a.card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.grid a.card ul {
-  margin-top: auto;
-}
   :root {
-    --navy: #0f2b4a;
-    --blue: #1a5fa8;
-    --blue-mid: #2d7dd2;
-    --blue-light: #e8f2fc;
-    --blue-pale: #f3f8fe;
-    --accent: #3b9eff;
-    --text: #1c2b3a;
-    --muted: #5a7080;
-    --border: #d5e6f5;
-    --white: #ffffff;
-    --card-shadow: 0 2px 12px rgba(15,43,74,0.08);
-    --card-hover-shadow: 0 6px 24px rgba(15,43,74,0.14);
+    --ink:       #0d1b2a;
+    --ink-2:     #2c3e50;
+    --muted:     #64748b;
+    --muted-2:   #94a3b8;
+    --accent:    #2563eb;
+    --accent-2:  #3b82f6;
+    --accent-3:  #dbeafe;
+    --accent-4:  #eff6ff;
+    --green:     #059669;
+    --green-bg:  #d1fae5;
+    --border:    #e2e8f0;
+    --border-2:  #cbd5e1;
+    --surface:   #ffffff;
+    --bg:        #f8fafc;
+    --bg-2:      #f1f5f9;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+    --shadow-lg: 0 10px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.04);
+    --radius:    14px;
+    --radius-sm: 8px;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(160deg, #f0f6fd 0%, #fafcff 60%, #eef4fb 100%);
-    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    padding: 48px 20px 64px;
+    line-height: 1.6;
   }
 
-  .container {
-    max-width: 920px;
+  /* ── Layout ── */
+  .page {
+    max-width: 1000px;
     margin: 0 auto;
+    padding: 48px 24px 80px;
   }
 
-  /* ── Header ── */
-  .header-section {
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
+    border-radius: 20px;
+    padding: 40px 40px 36px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: fadeUp .5s ease both;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-inner {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 28px;
-    margin-bottom: 16px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 32px;
-    box-shadow: var(--card-shadow);
-    animation: fadeUp 0.5s ease both;
-    animation-delay: 0.05s;
   }
 
   .headshot {
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center top;
-    border: 3px solid var(--blue-light);
-    box-shadow: 0 0 0 4px var(--border);
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.08);
     flex-shrink: 0;
   }
 
-  .header-text h1 {
-    font-size: 2rem;
-    color: var(--navy);
-    letter-spacing: -0.01em;
+  .hero-text h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
     line-height: 1.1;
     margin-bottom: 4px;
   }
 
-  .sub {
-    color: var(--muted);
+  .hero-role {
     font-size: 0.95rem;
-    font-weight: 400;
-    margin-bottom: 14px;
-    margin-top: 4px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-role span {
+    color: #93c5fd;
+    font-weight: 600;
   }
 
   .contact-links {
@@ -94,446 +112,626 @@
   }
 
   .contact-links a {
-    color: var(--blue);
-    text-decoration: none;
-    font-size: 0.83rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    background: var(--blue-light);
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-    border-radius: 20px;
-    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 14px;
+    border-radius: 100px;
+    transition: background .18s, border-color .18s;
+    white-space: nowrap;
   }
 
   .contact-links a:hover {
-    background: var(--blue);
-    color: var(--white);
-    border-color: var(--blue);
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.4);
   }
 
-  /* ── Info blocks ── */
-  .info-block {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 24px 20px 28px;
-    margin-bottom: 14px;
-    box-shadow: var(--card-shadow);
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  .info-block::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, var(--blue-mid), var(--accent));
-    border-radius: 4px 0 0 4px;
-  }
-
-  .info-block h3 {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--blue-mid);
-    margin-bottom: 10px;
-  }
-
-  .info-block p {
-    font-size: 0.92rem;
-    color: var(--text);
-    line-height: 1.65;
-    margin-bottom: 5px;
-  }
-
-  .info-block p:last-child { margin-bottom: 0; }
-  .info-block strong { color: var(--navy); font-weight: 600; }
-
-  /* ── Certifications ── */
-  .cert-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: center;
-    margin-top: 4px;
-  }
-
-  .cert-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--blue-pale);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 16px;
-    text-decoration: none;
-    color: var(--text);
-    transition: box-shadow 0.18s, border-color 0.18s;
-  }
-
-  .cert-item:hover {
-    box-shadow: var(--card-hover-shadow);
-    border-color: var(--blue-mid);
-  }
-
-  .cert-badge {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
-    border-radius: 8px;
-    flex-shrink: 0;
-  }
-
-  .cert-info {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .cert-issuer {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--blue-mid);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-
-  .cert-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--navy);
-  }
-
-  /* ── Section label ── */
-  .section-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--blue-mid);
-    margin: 24px 0 12px;
-    animation: fadeUp 0.5s ease both;
-    animation-delay: 0.28s;
-  }
-
-  /* ── Grid ── */
-  .grid {
+  /* ── Two-column layout ── */
+  .two-col {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    grid-template-columns: 1fr 280px;
+    gap: 20px;
+    align-items: start;
   }
 
-  /* ── Standard cards ── */
-  a.card {
-    display: block;
-    text-decoration: none;
-    background: var(--white);
+  .main-col { display: flex; flex-direction: column; gap: 20px; }
+  .side-col  { display: flex; flex-direction: column; gap: 20px; }
+
+  /* ── Sections ── */
+  .card {
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 22px;
-    color: var(--text);
-    box-shadow: var(--card-shadow);
-    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-    animation: fadeUp 0.5s ease both;
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp .5s ease both;
   }
 
-  a.card:hover {
-    box-shadow: var(--card-hover-shadow);
-    border-color: var(--blue-mid);
-    transform: translateY(-2px);
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
   }
 
-  a.card h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--blue);
-    margin-bottom: 7px;
+  .section-header h2 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
   }
 
-  a.card:hover h3 { color: var(--navy); }
-
-  .muted {
-    color: var(--muted);
-    font-size: 0.87rem;
-    line-height: 1.55;
-    margin-bottom: 10px;
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
   }
 
-  ul {
-    padding-left: 16px;
-    font-size: 0.84rem;
-    color: var(--muted);
+  /* ── About ── */
+  .about-text {
+    font-size: 0.92rem;
+    color: var(--ink-2);
     line-height: 1.75;
   }
 
-  /* ── Featured capstone card ── */
-  a.card-featured {
+  /* ── Experience ── */
+  .exp-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exp-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .exp-item:first-child { padding-top: 0; }
+
+  .exp-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .exp-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+
+  .exp-body { flex: 1; min-width: 0; }
+
+  .exp-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .exp-company {
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+
+  .exp-meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .exp-bullets {
+    font-size: 0.83rem;
+    color: var(--ink-2);
+    line-height: 1.65;
+    padding-left: 14px;
+  }
+
+  .exp-bullets li { margin-bottom: 3px; }
+
+  /* ── Projects grid ── */
+  .projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .project-link {
     display: block;
     text-decoration: none;
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, var(--navy) 0%, #1a4a80 100%);
-    border: 1px solid #1a4a80;
-    border-radius: 14px;
-    padding: 26px 28px;
-    color: var(--white);
-    box-shadow: 0 4px 20px rgba(15,43,74,0.2);
-    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-    animation: fadeUp 0.5s ease both;
-    animation-delay: 0.32s;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    transition: box-shadow .18s, border-color .18s, transform .18s;
+    position: relative;
+    overflow: hidden;
   }
 
-  a.card-featured:hover {
-    box-shadow: 0 8px 32px rgba(15,43,74,0.28);
-    transform: translateY(-2px);
-    border-color: var(--accent);
-  }
-
-  .capstone-label {
-    display: inline-block;
+  .project-link::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
     background: var(--accent);
-    color: var(--white);
+    border-radius: 3px 0 0 3px;
+    opacity: 0;
+    transition: opacity .18s;
+  }
+
+  .project-link:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-2);
+    transform: translateX(2px);
+  }
+
+  .project-link:hover::before { opacity: 1; }
+
+  .project-link-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .project-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .project-arrow {
+    color: var(--muted-2);
+    font-size: 0.8rem;
+    transition: color .18s, transform .18s;
+  }
+
+  .project-link:hover .project-arrow {
+    color: var(--accent);
+    transform: translateX(2px);
+  }
+
+  .project-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Capstone featured ── */
+  .capstone-card {
+    display: block;
+    text-decoration: none;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 100%);
+    border: 1px solid #1e3a5f;
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    transition: box-shadow .18s, transform .18s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .capstone-card:hover {
+    box-shadow: 0 8px 24px rgba(37,99,235,.3);
+    transform: translateY(-1px);
+  }
+
+  .capstone-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(37,99,235,.5);
+    border: 1px solid rgba(59,130,246,.5);
+    color: #93c5fd;
     font-size: 0.68rem;
     font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 4px;
-    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     margin-bottom: 8px;
   }
 
-  a.card-featured h3 {
-    font-size: 1.2rem;
-    color: var(--white);
-    margin-bottom: 14px;
-    line-height: 1.3;
+  .capstone-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 6px;
   }
 
-  .capstone-body {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .capstone-desc { flex: 2; min-width: 200px; }
-
-  .capstone-desc p {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.82);
-    line-height: 1.65;
-    margin: 0;
+  .capstone-desc {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.55;
+    margin-bottom: 12px;
   }
 
   .capstone-pills {
-    flex: 1;
-    min-width: 150px;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
   }
 
-  .cap-pill {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.92);
-    border-radius: 6px;
-    padding: 5px 12px;
-    font-size: 0.8rem;
+  .pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
+    font-size: 0.72rem;
     font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 100px;
+  }
+
+  /* ── Skills ── */
+  .skill-group { margin-bottom: 14px; }
+  .skill-group:last-child { margin-bottom: 0; }
+
+  .skill-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .skill-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .skill-pill {
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-4);
+    border: 1px solid var(--accent-3);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  /* ── Education ── */
+  .edu-item { margin-bottom: 14px; }
+  .edu-item:last-child { margin-bottom: 0; }
+
+  .edu-degree {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .edu-school {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+
+  .edu-meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* ── Certifications ── */
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--ink);
+    transition: box-shadow .18s, border-color .18s;
+    margin-bottom: 8px;
+  }
+
+  .cert-item:last-child { margin-bottom: 0; }
+
+  .cert-item:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-2);
+  }
+
+  .cert-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: #fff;
+    padding: 2px;
+    border: 1px solid var(--border);
+  }
+
+  .cert-info .cert-issuer {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    margin-bottom: 1px;
+  }
+
+  .cert-info .cert-name {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--ink);
   }
 
   /* ── Footer ── */
   .footer {
-    margin-top: 32px;
     text-align: center;
-    font-size: 0.85rem;
+    margin-top: 32px;
+    font-size: 0.82rem;
     color: var(--muted);
-    animation: fadeUp 0.5s ease both;
-    animation-delay: 0.52s;
+    animation: fadeUp .5s ease both;
+    animation-delay: .5s;
   }
 
   .footer a {
-    color: var(--blue);
+    color: var(--accent);
     text-decoration: none;
     font-weight: 500;
   }
 
   .footer a:hover { text-decoration: underline; }
 
-  /* ── Staggered card delays ── */
-  .grid a:nth-child(2) { animation-delay: 0.36s; }
-  .grid a:nth-child(3) { animation-delay: 0.40s; }
-  .grid a:nth-child(4) { animation-delay: 0.44s; }
-  .grid a:nth-child(5) { animation-delay: 0.48s; }
-
-  .info-block:nth-of-type(1) { animation-delay: 0.12s; }
-  .info-block:nth-of-type(2) { animation-delay: 0.18s; }
-  .info-block:nth-of-type(3) { animation-delay: 0.24s; }
-  .info-block:nth-of-type(4) { animation-delay: 0.28s; }
-
   /* ── Animation ── */
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
+    from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  .card:nth-child(1) { animation-delay: .06s; }
+  .card:nth-child(2) { animation-delay: .10s; }
+  .card:nth-child(3) { animation-delay: .14s; }
+  .card:nth-child(4) { animation-delay: .18s; }
+  .card:nth-child(5) { animation-delay: .22s; }
+  .card:nth-child(6) { animation-delay: .26s; }
+  .card:nth-child(7) { animation-delay: .30s; }
+
   /* ── Responsive ── */
-  @media (max-width: 620px) {
-    .header-section { flex-direction: column; text-align: center; padding: 22px 18px; }
-    .contact-links { justify-content: center; }
-    .grid { grid-template-columns: 1fr; }
-    a.card-featured { grid-column: auto; }
-    body { padding: 24px 14px 48px; }
-    .header-text h1 { font-size: 1.6rem; }
+  @media (max-width: 700px) {
+    .page { padding: 24px 16px 60px; }
+    .hero { padding: 28px 22px; border-radius: 16px; }
+    .hero-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .hero-text h1 { font-size: 1.7rem; }
+    .two-col { grid-template-columns: 1fr; }
+    .side-col { order: -1; }
   }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="page">
 
-  <!-- Header -->
-  <div class="header-section">
-    <img src="headshot.png" alt="Chloe Barker" class="headshot">
-    <div class="header-text">
-      <h1>Chloe Barker</h1>
-      <p class="sub"><strong style="color:var(--navy)">Data Scientist</strong> &nbsp;·&nbsp; M.S. Data Science Student at SMU</p>
-      <div class="contact-links">
-        <a href="mailto:chloedbarkerr@icloud.com">Email</a>
-        <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
-        <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
-        <a href="resume/Chloe_Barker_Resume.pdf">Resume</a>
-        <a href="resume/Projects_Overview.pdf">Projects One-Pager</a>
-        <a href="tel:2147337514">(214) 733-7514</a>
+  <!-- Hero -->
+  <div class="hero" style="animation-delay:.02s">
+    <div class="hero-inner">
+      <img src="headshot.png" alt="Chloe Barker" class="headshot">
+      <div class="hero-text">
+        <h1>Chloe Barker</h1>
+        <p class="hero-role"><span>Data Scientist</span> &nbsp;·&nbsp; M.S. Data Science @ SMU &nbsp;·&nbsp; GPA 3.97</p>
+        <div class="contact-links">
+          <a href="mailto:chloedbarkerr@icloud.com">Email</a>
+          <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
+          <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
+          <a href="resume/Chloe_Barker_Resume.pdf" target="_blank">Resume</a>
+          <a href="resume/Projects_Overview.pdf" target="_blank">Projects One-Pager</a>
+          <a href="tel:2147337514">(214) 733-7514</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- About -->
-  <div class="info-block">
-    <h3>About</h3>
-    <p>
-      I'm a data scientist specializing in machine learning, predictive modeling, and statistical analysis, currently completing my M.S. in Data Science at SMU (GPA: 3.97, expected August 2026). I hold a B.S. in Biology from UT Austin, which gives me a strong foundation in research methodology and working with real, messy data. Using Python, R, and SQL, I build models, surface insights, and communicate findings clearly to both technical and non-technical audiences. My work includes an MS capstone that earned <strong>Best Presentation</strong> at SMU's MSDS program. I'm actively looking for full-time data science roles and welcome connections with employers and collaborators.
-    </p>
-  </div>
+  <div class="two-col">
+    <div class="main-col">
 
-  <!-- Technical Skills -->
-  <div class="info-block">
-    <h3>Technical Skills</h3>
-    <p><strong>Programming Languages:</strong> Python (pandas, NumPy, scikit-learn, GeoPandas, Folium), R (tidyverse, caret, tswge, ggplot2, R Shiny), SQL, SAS</p>
-    <p><strong>Machine Learning &amp; Modeling:</strong> Classification (Logistic Regression, Random Forest, KNN, LDA/QDA, Naive Bayes), Regression (Linear, LASSO), Clustering (K-Means, DBSCAN, Hierarchical), Feature Engineering, Cross-Validation, Model Evaluation (ROC/AUC, Confusion Matrices)</p>
-    <p><strong>NLP:</strong> TF-IDF, Cosine Similarity, POS Tagging, Sentiment Analysis, NLTK</p>
-    <p><strong>Time Series Analysis:</strong> ARMA, ARIMA, ARUMA, VAR Modeling, Rolling ASE, Spectral Analysis</p>
-    <p><strong>Statistics:</strong> Hypothesis Testing, ANOVA, A/B Testing, Experimental Design, Multivariate Analysis, Permutation Testing, Bootstrap Inference</p>
-    <p><strong>Data Visualization &amp; BI:</strong> Tableau, Power BI, R Shiny, ggplot2, matplotlib, seaborn</p>
-    <p><strong>Tools &amp; Technologies:</strong> Git/GitHub, Jupyter, RStudio, MySQL, Visual Studio Code, Excel, Claude Code</p>
-  </div>
+      <!-- About -->
+      <div class="card">
+        <div class="section-header"><h2>About</h2></div>
+        <p class="about-text">
+          I'm a data scientist specializing in machine learning, predictive modeling, and statistical analysis, currently completing my M.S. in Data Science at SMU. My B.S. in Biology from UT Austin gives me a strong grounding in research methodology and working with real, messy data. I build models in Python, R, and SQL, and care deeply about communicating findings clearly to both technical and non-technical audiences. My MS capstone earned <strong>Best Presentation</strong> at SMU's MSDS program. I'm actively seeking full-time data science roles.
+        </p>
+      </div>
 
-  <!-- Education -->
-  <div class="info-block">
-    <h3>Education</h3>
-    <p><strong>Southern Methodist University</strong> &nbsp;|&nbsp; M.S. in Data Science (Expected Aug 2026) &nbsp;|&nbsp; GPA: 3.97</p>
-    <p><strong>The University of Texas at Austin</strong> &nbsp;|&nbsp; B.S.A. in Biology, Minor in Health Communication &nbsp;|&nbsp; GPA: 3.77</p>
-  </div>
+      <!-- Experience -->
+      <div class="card">
+        <div class="section-header"><h2>Experience</h2></div>
 
-  <!-- Certifications -->
-  <div class="info-block">
-    <h3>Certifications</h3>
-    <div class="cert-grid">
-      <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank">
-        <img class="cert-badge" src="certifications/msds-best-capstone-presentation.png" alt="Best Capstone Presentation badge">
-        <div class="cert-info">
-          <span class="cert-issuer">SMU</span>
-          <span class="cert-name">Best Capstone Presentation</span>
+        <div class="exp-item">
+          <div class="exp-logo"><img src="certifications/goosehead.jpeg" alt="Goosehead Insurance"></div>
+          <div class="exp-body">
+            <div class="exp-company">Goosehead Insurance</div>
+            <div class="exp-title">Data Science Intern</div>
+            <div class="exp-meta">Westlake, TX &nbsp;·&nbsp; Summer 2025</div>
+            <ul class="exp-bullets">
+              <li>Applying machine learning and statistical modeling to insurance business data</li>
+              <li>Building predictive models and surfacing actionable insights for cross-functional stakeholders</li>
+              <li>Working with Python, SQL, and BI tools to support data-driven decision-making</li>
+            </ul>
+          </div>
         </div>
-      </a>
-      <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank">
-        <img class="cert-badge" src="certifications/datacamp_logo.png" alt="DataCamp logo">
-        <div class="cert-info">
-          <span class="cert-issuer">DataCamp</span>
-          <span class="cert-name">Certified Data Scientist</span>
-        </div>
-      </a>
-    </div>
-  </div>
 
-  <!-- Projects -->
-  <div class="section-label">Projects</div>
+      </div>
 
-  <div class="grid">
+      <!-- Projects -->
+      <div class="card">
+        <div class="section-header"><h2>Projects</h2></div>
+        <div class="projects-grid">
 
-    <a class="card-featured" href="capstone/">
-      <span class="capstone-label">MS Capstone</span>
-      <h3>Groundwater Lithium &amp; Dementia Prevalence in Texas</h3>
-      <div class="capstone-body">
-        <div class="capstone-desc">
-          <p>
-            An end-to-end epidemiological data science study investigating whether naturally occurring
-            groundwater lithium concentrations are associated with county-level dementia prevalence
-            across Texas — using OLS regression with HC3 robust standard errors, permutation testing,
-            bootstrap confidence intervals, and geospatial analysis.
-          </p>
-        </div>
-        <div class="capstone-pills">
-          <span class="cap-pill">Python · GeoPandas</span>
-          <span class="cap-pill">OLS · HC3 Robust SEs</span>
-          <span class="cap-pill">Permutation Testing</span>
-          <span class="cap-pill">Bootstrap CIs</span>
-          <span class="cap-pill">Public Health Research</span>
+          <a class="capstone-card" href="capstone/">
+            <div class="capstone-badge">★ MS Capstone · Best Presentation</div>
+            <div class="capstone-title">Groundwater Lithium &amp; Dementia Prevalence in Texas</div>
+            <div class="capstone-desc">End-to-end epidemiological study investigating whether naturally occurring groundwater lithium concentrations correlate with county-level dementia prevalence across Texas.</div>
+            <div class="capstone-pills">
+              <span class="pill">Python · GeoPandas</span>
+              <span class="pill">OLS · HC3 Robust SEs</span>
+              <span class="pill">Permutation Testing</span>
+              <span class="pill">Bootstrap CIs</span>
+            </div>
+          </a>
+
+          <a class="project-link" href="predictive-analytics/">
+            <div class="project-link-top">
+              <span class="project-name">Predictive Analytics</span>
+              <span class="project-arrow">→</span>
+            </div>
+            <div class="project-desc">Healthcare modeling, employee attrition, and heart disease prediction using KNN, LDA, QDA, Logistic Regression, Random Forest, and LASSO in R &amp; Python.</div>
+          </a>
+
+          <a class="project-link" href="machine-learning/">
+            <div class="project-link-top">
+              <span class="project-name">Machine Learning</span>
+              <span class="project-arrow">→</span>
+            </div>
+            <div class="project-desc">Unsupervised learning, clustering (K-Means, DBSCAN, Hierarchical), association rule mining with Apriori/FP-Growth, and anomaly detection.</div>
+          </a>
+
+          <a class="project-link" href="databases-sql/">
+            <div class="project-link-top">
+              <span class="project-name">Databases &amp; SQL</span>
+              <span class="project-arrow">→</span>
+            </div>
+            <div class="project-desc">Relational database design (MySQL, 3NF), ETL pipelines, query optimization, and geospatial analysis with GeoPandas and Folium.</div>
+          </a>
+
+          <a class="project-link" href="data-storytelling/">
+            <div class="project-link-top">
+              <span class="project-name">Data Storytelling</span>
+              <span class="project-arrow">→</span>
+            </div>
+            <div class="project-desc">Visualizations and executive-facing dashboards in Tableau, Power BI, R Shiny, ggplot2, matplotlib, and seaborn.</div>
+          </a>
+
         </div>
       </div>
-    </a>
 
-    <a class="card" href="predictive-analytics/">
-      <h3>Predictive Analytics</h3>
-      <p class="muted">Healthcare modeling, employee attrition analysis, regression-based predictions, and heart disease prediction.</p>
-      <ul>
-        <li>R, Python, scikit-learn</li>
-        <li>KNN, LDA, QDA, Logistic Regression, Random Forest</li>
-        <li>Linear Regression, LASSO, Feature Engineering</li>
-        <li>ROC/AUC Analysis, Cross-Validation</li>
-      </ul>
-    </a>
+    </div><!-- /main-col -->
 
-    <a class="card" href="machine-learning/">
-      <h3>Machine Learning</h3>
-      <p class="muted">Unsupervised learning, clustering algorithms, association rule mining, and classification optimization.</p>
-      <ul>
-        <li>Python, scikit-learn, Pandas</li>
-        <li>K-Means, DBSCAN, Hierarchical Clustering</li>
-        <li>Apriori, FP-Growth</li>
-        <li>Pattern Discovery, Anomaly Detection</li>
-      </ul>
-    </a>
+    <div class="side-col">
 
-    <a class="card" href="databases-sql/">
-      <h3>Databases &amp; SQL</h3>
-      <p class="muted">Relational database design, query optimization, ETL workflows, and geospatial analysis.</p>
-      <ul>
-        <li>MySQL, Database Normalization (3NF)</li>
-        <li>Python, GeoPandas, Folium</li>
-        <li>Query Optimization, ETL Pipelines</li>
-        <li>Geospatial Mapping &amp; Analysis</li>
-      </ul>
-    </a>
+      <!-- Education -->
+      <div class="card">
+        <div class="section-header"><h2>Education</h2></div>
 
-    <a class="card" href="data-storytelling/">
-      <h3>Data Storytelling</h3>
-      <p class="muted">Visualizations, presentations, and insights for non-technical stakeholders.</p>
-      <ul>
-        <li>Tableau, Power BI, R Shiny</li>
-        <li>ggplot2, matplotlib, seaborn</li>
-        <li>Dashboard Design</li>
-        <li>Executive Communication</li>
-      </ul>
-    </a>
+        <div class="edu-item">
+          <div class="edu-school">Southern Methodist University</div>
+          <div class="edu-degree">M.S. Data Science</div>
+          <div class="edu-meta">Expected Aug 2026 &nbsp;·&nbsp; GPA 3.97</div>
+        </div>
 
-  </div>
+        <div class="edu-item">
+          <div class="edu-school">University of Texas at Austin</div>
+          <div class="edu-degree">B.S.A. Biology · Minor Health Communication</div>
+          <div class="edu-meta">GPA 3.77</div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="card">
+        <div class="section-header"><h2>Certifications</h2></div>
+
+        <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank">
+          <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png" alt="SMU badge">
+          <div class="cert-info">
+            <div class="cert-issuer">SMU MSDS</div>
+            <div class="cert-name">Best Capstone Presentation</div>
+          </div>
+        </a>
+
+        <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank">
+          <img class="cert-logo" src="certifications/datacamp_logo.png" alt="DataCamp logo">
+          <div class="cert-info">
+            <div class="cert-issuer">DataCamp</div>
+            <div class="cert-name">Certified Data Scientist</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Skills -->
+      <div class="card">
+        <div class="section-header"><h2>Skills</h2></div>
+
+        <div class="skill-group">
+          <div class="skill-label">Languages</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">R</span>
+            <span class="skill-pill">SQL</span>
+            <span class="skill-pill">SAS</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-label">ML / Modeling</div>
+          <div class="skill-pills">
+            <span class="skill-pill">scikit-learn</span>
+            <span class="skill-pill">Random Forest</span>
+            <span class="skill-pill">Logistic Reg.</span>
+            <span class="skill-pill">KNN</span>
+            <span class="skill-pill">LASSO</span>
+            <span class="skill-pill">K-Means</span>
+            <span class="skill-pill">DBSCAN</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-label">Data & Analysis</div>
+          <div class="skill-pills">
+            <span class="skill-pill">pandas</span>
+            <span class="skill-pill">NumPy</span>
+            <span class="skill-pill">GeoPandas</span>
+            <span class="skill-pill">tidyverse</span>
+            <span class="skill-pill">NLTK</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-label">Visualization & BI</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Tableau</span>
+            <span class="skill-pill">Power BI</span>
+            <span class="skill-pill">R Shiny</span>
+            <span class="skill-pill">ggplot2</span>
+            <span class="skill-pill">matplotlib</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-label">Tools</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Git</span>
+            <span class="skill-pill">Jupyter</span>
+            <span class="skill-pill">MySQL</span>
+            <span class="skill-pill">RStudio</span>
+            <span class="skill-pill">VS Code</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /side-col -->
+  </div><!-- /two-col -->
 
   <div class="footer">
-    <a href="https://github.com/chloedbarker/chloedbarker.github.io">View Portfolio Source Code on GitHub</a>
+    <a href="https://github.com/chloedbarker/chloedbarker.github.io">View source on GitHub</a>
   </div>
 
 </div>
