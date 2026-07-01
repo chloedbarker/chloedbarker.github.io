@@ -4,118 +4,164 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Databases & SQL | Chloe Barker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0f2b4a;
-    --blue: #1a5fa8;
-    --blue-mid: #2d7dd2;
-    --blue-light: #e8f2fc;
-    --accent: #3b9eff;
-    --text: #1c2b3a;
-    --muted: #5a7080;
-    --border: #d5e6f5;
-    --white: #ffffff;
-    --card-shadow: 0 2px 12px rgba(15,43,74,0.08);
-    --card-hover-shadow: 0 6px 24px rgba(15,43,74,0.14);
+    --ink:       #0d1b2a;
+    --ink-2:     #2c3e50;
+    --muted:     #64748b;
+    --accent:    #2563eb;
+    --accent-2:  #3b82f6;
+    --accent-3:  #dbeafe;
+    --accent-4:  #eff6ff;
+    --border:    #e2e8f0;
+    --surface:   #ffffff;
+    --bg:        #f8fafc;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+    --radius:    14px;
+    --radius-sm: 8px;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(160deg, #f0f6fd 0%, #fafcff 60%, #eef4fb 100%);
-    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    padding: 48px 20px 64px;
-  }
-
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  /* ── Page header ── */
-  .page-header {
-    margin-bottom: 28px;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .page-header h1 {
-    font-size: 1.9rem;
-    font-weight: 600;
-    color: var(--navy);
-    margin-bottom: 8px;
-  }
-
-  .page-header p {
-    color: var(--muted);
-    font-size: 0.95rem;
     line-height: 1.6;
-    max-width: 700px;
   }
 
-  /* ── Cards ── */
-  .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px 26px;
-    margin-bottom: 14px;
-    box-shadow: var(--card-shadow);
-    animation: fadeUp 0.4s ease both;
-  }
+  .page { max-width: 860px; margin: 0 auto; padding: 40px 24px 72px; }
 
-  .card h2 {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--blue);
-    margin-bottom: 8px;
-  }
-
-  .muted {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
-
-  /* ── Pill links ── */
-  .card ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 20px;
-  }
-
-  .card ul li a {
-    display: inline-block;
-    color: var(--blue);
+    color: var(--accent);
     text-decoration: none;
     font-size: 0.84rem;
     font-weight: 500;
-    background: var(--blue-light);
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-    border-radius: 20px;
-    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    animation: fadeUp .4s ease both;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .page-hero {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 32px rgba(0,0,0,.12);
+    animation: fadeUp .4s ease both;
+    animation-delay: .04s;
   }
 
-  .card ul li a:hover {
-    background: var(--blue);
-    color: var(--white);
-    border-color: var(--blue);
+  .page-hero h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
   }
+
+  .page-hero p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,.65);
+    line-height: 1.65;
+    max-width: 660px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp .4s ease both;
+    animation-delay: .08s;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .section-header h2 {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .card h3 {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .tool-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .tool-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-4);
+    border: 1px solid var(--accent-3);
+    padding: 3px 9px;
+    border-radius: 100px;
+  }
+
+  .link-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+
+  .link-pill {
+    display: inline-block;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: var(--accent-4);
+    border: 1px solid var(--accent-3);
+    padding: 4px 12px;
+    border-radius: 100px;
+    transition: background .16s, color .16s, border-color .16s;
+  }
+
+  .link-pill:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   /* ── ER Diagram ── */
   .er-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--blue-mid);
+    color: var(--muted);
     margin-bottom: 10px;
   }
 
@@ -126,32 +172,16 @@
 
   .er-diagram img {
     max-width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    transition: box-shadow 0.2s, border-color 0.2s;
+    border: 2px solid var(--accent-3);
+    border-radius: var(--radius-sm);
     display: block;
+    transition: box-shadow .18s, border-color .18s;
   }
 
   .er-diagram:hover img {
-    box-shadow: var(--card-hover-shadow);
-    border-color: var(--blue-mid);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-2);
   }
-
-  /* ── Back link ── */
-  .back-link {
-    display: inline-block;
-    margin-top: 8px;
-    color: var(--blue);
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 500;
-    animation: fadeUp 0.4s ease both;
-    animation-delay: 0.2s;
-  }
-
-  .back-link:hover { text-decoration: underline; }
-
-  .card:nth-child(1) { animation-delay: 0.08s; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
@@ -159,45 +189,56 @@
   }
 
   @media (max-width: 600px) {
-    body { padding: 24px 14px 48px; }
-    .page-header h1 { font-size: 1.5rem; }
+    .page { padding: 24px 16px 56px; }
+    .page-hero { padding: 22px 20px; border-radius: 14px; }
+    .page-hero h1 { font-size: 1.25rem; }
   }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="page">
 
-  <a class="back-link" href="../index.html" style="display:inline-block; margin-bottom: 20px;">← Back to Home</a>
+  <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
-  <div class="page-header">
-    <h1>Databases & SQL</h1>
-    <p>Projects focused on relational schema design, SQL querying, ETL/data integration, and communicating results through diagrams and interactive outputs.</p>
+  <div class="page-hero">
+    <h1>Databases &amp; SQL</h1>
+    <p>Projects focused on relational schema design, SQL querying, ETL/data integration, geospatial analysis, and communicating results through interactive maps and diagrams.</p>
   </div>
 
   <div class="card">
-    <h2>Texas Water Quality Project</h2>
-    <p class="muted">
-      Designed and implemented a normalized relational database (64 tables, 3NF) for Texas
-      groundwater quality data spanning 20+ years across 254 counties. Integrated MySQL with
+    <div class="section-header"><h2>Project</h2></div>
+    <h3>Texas Water Quality Database</h3>
+    <p class="card-desc">
+      Designed and implemented a fully normalized relational database (64 tables, 3NF) for Texas
+      groundwater quality data spanning 20+ years across all 254 counties. Integrated MySQL with
       Python for ETL workflows, performed geospatial analysis using GeoPandas, and created
-      interactive choropleth maps with Folium to identify contamination hotspots for public
-      health research.
+      interactive choropleth maps with Folium to identify contamination hotspots for public health research.
     </p>
-    <ul>
-      <li><a href="water-quality-project/Final_Paper.pdf">Final Paper (PDF)</a></li>
-      <li><a href="water-quality-project/Project_Presentation_Slides.pdf">Presentation Slides (PDF)</a></li>
-      <li><a href="water-quality-project/texas_lithium_map.html">Interactive Map: Texas Lithium</a></li>
-      <li><a href="water-quality-project/texas_fluoride_map.html">Interactive Map: Texas Fluoride</a></li>
-      <li><a href="water-quality-project/texas_iodide_map.html">Interactive Map: Texas Iodide</a></li>
-      <li><a href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql/water-quality-project">View all project files on GitHub</a></li>
-    </ul>
+    <div class="tool-tags">
+      <span class="tool-tag">Python</span>
+      <span class="tool-tag">Jupyter</span>
+      <span class="tool-tag">SQL</span>
+      <span class="tool-tag">MySQL</span>
+      <span class="tool-tag">GeoPandas</span>
+      <span class="tool-tag">Folium</span>
+      <span class="tool-tag">pandas</span>
+      <span class="tool-tag">VS Code</span>
+    </div>
+    <div class="link-row">
+      <a class="link-pill" href="water-quality-project/Final_Paper.pdf" target="_blank">Final Paper (PDF)</a>
+      <a class="link-pill" href="water-quality-project/Project_Presentation_Slides.pdf" target="_blank">Slides (PDF)</a>
+      <a class="link-pill" href="water-quality-project/texas_lithium_map.html" target="_blank">Map: Lithium</a>
+      <a class="link-pill" href="water-quality-project/texas_fluoride_map.html" target="_blank">Map: Fluoride</a>
+      <a class="link-pill" href="water-quality-project/texas_iodide_map.html" target="_blank">Map: Iodide</a>
+      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql/water-quality-project" target="_blank">GitHub</a>
+    </div>
     <p class="er-label">ER Diagram</p>
-    <a class="er-diagram" href="water-quality-project/ER.png">
-      <img src="water-quality-project/ER.png" alt="ER Diagram" />
+    <a class="er-diagram" href="water-quality-project/ER.png" target="_blank">
+      <img src="water-quality-project/ER.png" alt="Entity-Relationship Diagram for Texas water quality database" />
     </a>
   </div>
 
-  <a class="back-link" href="../index.html">← Back to Home</a>
+  <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
 </div>
 </body>

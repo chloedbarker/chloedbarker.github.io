@@ -4,131 +4,139 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data Storytelling | Chloe Barker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0f2b4a;
-    --blue: #1a5fa8;
-    --blue-mid: #2d7dd2;
-    --blue-light: #e8f2fc;
-    --accent: #3b9eff;
-    --text: #1c2b3a;
-    --muted: #5a7080;
-    --border: #d5e6f5;
-    --white: #ffffff;
-    --card-shadow: 0 2px 12px rgba(15,43,74,0.08);
-    --card-hover-shadow: 0 6px 24px rgba(15,43,74,0.14);
+    --ink:       #0d1b2a;
+    --ink-2:     #2c3e50;
+    --muted:     #64748b;
+    --accent:    #2563eb;
+    --accent-2:  #3b82f6;
+    --accent-3:  #dbeafe;
+    --accent-4:  #eff6ff;
+    --border:    #e2e8f0;
+    --surface:   #ffffff;
+    --bg:        #f8fafc;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+    --radius:    14px;
+    --radius-sm: 8px;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(160deg, #f0f6fd 0%, #fafcff 60%, #eef4fb 100%);
-    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    padding: 48px 20px 64px;
-  }
-
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  /* ── Page header ── */
-  .page-header {
-    margin-bottom: 28px;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .page-header h1 {
-    font-size: 1.9rem;
-    font-weight: 600;
-    color: var(--navy);
-    margin-bottom: 8px;
-  }
-
-  .page-header p {
-    color: var(--muted);
-    font-size: 0.95rem;
     line-height: 1.6;
-    max-width: 640px;
   }
 
-  /* ── Cards ── */
-  .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin-bottom: 14px;
-    box-shadow: var(--card-shadow);
-    animation: fadeUp 0.4s ease both;
-  }
+  .page { max-width: 860px; margin: 0 auto; padding: 40px 24px 72px; }
 
-
-
-  .card h2 {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--blue);
-    margin-bottom: 6px;
-  }
-
-  .muted {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.55;
-    margin-bottom: 12px;
-  }
-
-  /* ── Links inside cards ── */
-  .card ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .card ul li a {
-    display: inline-block;
-    color: var(--blue);
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    color: var(--accent);
     text-decoration: none;
     font-size: 0.84rem;
     font-weight: 500;
-    background: var(--blue-light);
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-    border-radius: 20px;
-    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    animation: fadeUp .4s ease both;
   }
-
-  .card ul li a:hover {
-    background: var(--blue);
-    color: var(--white);
-    border-color: var(--blue);
-    text-decoration: none;
-  }
-
-  /* ── Back link ── */
-  .back-link {
-    display: inline-block;
-    margin-top: 8px;
-    color: var(--blue);
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 500;
-    animation: fadeUp 0.4s ease both;
-  }
-
   .back-link:hover { text-decoration: underline; }
 
-  /* ── Stagger ── */
-  .card:nth-child(1) { animation-delay: 0.08s; }
-  .card:nth-child(2) { animation-delay: 0.14s; }
-  .card:nth-child(3) { animation-delay: 0.20s; }
-  .card:nth-child(4) { animation-delay: 0.26s; }
+  .page-hero {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 32px rgba(0,0,0,.12);
+    animation: fadeUp .4s ease both;
+    animation-delay: .04s;
+  }
+
+  .page-hero h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
+  }
+
+  .page-hero p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,.65);
+    line-height: 1.65;
+    max-width: 640px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp .4s ease both;
+    transition: box-shadow .18s, border-color .18s;
+  }
+
+  .card:hover { box-shadow: var(--shadow-md); border-color: var(--accent-2); }
+  .card:nth-child(1) { animation-delay: .08s; }
+  .card:nth-child(2) { animation-delay: .12s; }
+  .card:nth-child(3) { animation-delay: .16s; }
+  .card:nth-child(4) { animation-delay: .20s; }
+
+  .card h2 {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-size: 0.87rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .tool-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .tool-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-4);
+    border: 1px solid var(--accent-3);
+    padding: 3px 9px;
+    border-radius: 100px;
+  }
+
+  .link-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  .link-pill {
+    display: inline-block;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: var(--accent-4);
+    border: 1px solid var(--accent-3);
+    padding: 4px 12px;
+    border-radius: 100px;
+    transition: background .16s, color .16s, border-color .16s;
+  }
+
+  .link-pill:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
@@ -136,56 +144,79 @@
   }
 
   @media (max-width: 600px) {
-    body { padding: 24px 14px 48px; }
-    .page-header h1 { font-size: 1.5rem; }
+    .page { padding: 24px 16px 56px; }
+    .page-hero { padding: 22px 20px; border-radius: 14px; }
+    .page-hero h1 { font-size: 1.25rem; }
   }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="page">
 
-  <a class="back-link" href="../index.html" style="margin-bottom: 20px;">← Back to Home</a>
+  <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
-  <div class="page-header">
+  <div class="page-hero">
     <h1>Data Storytelling</h1>
-    <p>Presentations, infographics, and communication projects designed for non-technical audiences.</p>
+    <p>Presentations, infographics, and communication projects designed to make complex data accessible to non-technical audiences — emphasizing clear narrative, strong visuals, and actionable insight.</p>
   </div>
 
   <div class="card">
-    <h2>Butterfly iQ</h2>
-    <p class="muted">Presentation on Butterfly iQ ultrasound technology.</p>
-    <ul>
-      <li><a href="butterfly-iq/Butterfly_IQ_Presentation.pdf">Presentation (PDF)</a></li>
-    </ul>
+    <h2>Butterfly iQ — Medical Device Market Analysis</h2>
+    <p class="card-desc">Data-driven presentation analyzing the Butterfly iQ handheld ultrasound device, covering market positioning, clinical use cases, and data science applications in portable medical imaging.</p>
+    <div class="tool-tags">
+      <span class="tool-tag">PowerPoint</span>
+      <span class="tool-tag">Data Visualization</span>
+      <span class="tool-tag">Market Analysis</span>
+    </div>
+    <div class="link-row">
+      <a class="link-pill" href="butterfly-iq/Butterfly_IQ_Presentation.pdf" target="_blank">Presentation (PDF)</a>
+    </div>
   </div>
 
   <div class="card">
-    <h2>Data Science News</h2>
-    <p class="muted">Weekly news presentations on data science and NLP developments.</p>
-    <ul>
-      <li><a href="data-science-news/Data_Science_News_of_the_Week.pdf">Data Science News (PDF)</a></li>
-      <li><a href="data-science-news/NLP_News_of_the_Week.pdf">NLP News (PDF)</a></li>
-    </ul>
+    <h2>Data Science &amp; NLP News Digests</h2>
+    <p class="card-desc">Weekly news presentations distilling current developments in data science and NLP for a technical audience. Topics include model releases, industry trends, and research highlights — communicated clearly and concisely.</p>
+    <div class="tool-tags">
+      <span class="tool-tag">Python</span>
+      <span class="tool-tag">NLP</span>
+      <span class="tool-tag">NLTK</span>
+      <span class="tool-tag">TF-IDF</span>
+      <span class="tool-tag">PowerPoint</span>
+    </div>
+    <div class="link-row">
+      <a class="link-pill" href="data-science-news/Data_Science_News_of_the_Week.pdf" target="_blank">Data Science News (PDF)</a>
+      <a class="link-pill" href="data-science-news/NLP_News_of_the_Week.pdf" target="_blank">NLP News (PDF)</a>
+    </div>
   </div>
 
   <div class="card">
-    <h2>MetaSky</h2>
-    <p class="muted">Infographic and presentation on MetaSky project.</p>
-    <ul>
-      <li><a href="metasky/MetaSky_Infographic.pdf">Infographic (PDF)</a></li>
-      <li><a href="metasky/MetaSky_Presentation.pdf">Presentation (PDF)</a></li>
-    </ul>
+    <h2>MetaSky — Product Infographic &amp; Presentation</h2>
+    <p class="card-desc">Infographic and executive presentation for the MetaSky project, translating technical findings into a compelling visual story for a non-technical stakeholder audience.</p>
+    <div class="tool-tags">
+      <span class="tool-tag">Infographic Design</span>
+      <span class="tool-tag">PowerPoint</span>
+      <span class="tool-tag">Data Visualization</span>
+    </div>
+    <div class="link-row">
+      <a class="link-pill" href="metasky/MetaSky_Infographic.pdf" target="_blank">Infographic (PDF)</a>
+      <a class="link-pill" href="metasky/MetaSky_Presentation.pdf" target="_blank">Presentation (PDF)</a>
+    </div>
   </div>
 
   <div class="card">
     <h2>Passion Project</h2>
-    <p class="muted">Personal passion project presentation.</p>
-    <ul>
-      <li><a href="passion-project/Passion_Presentation.pdf">Presentation (PDF)</a></li>
-    </ul>
+    <p class="card-desc">Personal deep-dive presentation combining data analysis and storytelling around a topic of genuine interest — demonstrating the ability to turn self-directed research into a compelling narrative.</p>
+    <div class="tool-tags">
+      <span class="tool-tag">Data Visualization</span>
+      <span class="tool-tag">PowerPoint</span>
+      <span class="tool-tag">Storytelling</span>
+    </div>
+    <div class="link-row">
+      <a class="link-pill" href="passion-project/Passion_Presentation.pdf" target="_blank">Presentation (PDF)</a>
+    </div>
   </div>
 
-  <a class="back-link" href="../index.html">← Back to Home</a>
+  <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
 </div>
 </body>
