@@ -477,40 +477,38 @@
     color: var(--ink);
   }
 
-  /* ── Stats strip ── */
-  .stats-strip {
+  /* ── Hero stats row ── */
+  .hero-stats {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
     flex-wrap: wrap;
-    animation: fadeUp .5s ease both;
-    animation-delay: .08s;
+    gap: 0;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.12);
   }
 
-  .stat-item {
-    flex: 1;
-    min-width: 140px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px 18px;
-    box-shadow: var(--shadow-sm);
+  .hero-stat {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    padding: 0 20px 0 0;
+    margin-right: 20px;
+    border-right: 1px solid rgba(255,255,255,0.15);
   }
 
-  .stat-value {
-    font-size: 1.3rem;
+  .hero-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+
+  .hero-stat-value {
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
+    color: #fff;
+    line-height: 1.1;
   }
 
-  .stat-label {
-    font-size: 0.74rem;
-    color: var(--muted);
-    font-weight: 500;
+  .hero-stat-label {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    font-weight: 400;
+    margin-top: 2px;
   }
 
   /* ── Project image preview ── */
@@ -604,27 +602,25 @@
           <a href="resume/Projects_Overview.pdf" target="_blank">Projects One-Pager</a>
           <a href="tel:2147337514">(214) 733-7514</a>
         </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">3.97</span>
+            <span class="hero-stat-label">M.S. GPA · SMU</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">3.77</span>
+            <span class="hero-stat-label">B.S. GPA · UT Austin</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">★ Best Presentation</span>
+            <span class="hero-stat-label">SMU MSDS Capstone</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">5+</span>
+            <span class="hero-stat-label">End-to-end projects</span>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Stats strip -->
-  <div class="stats-strip">
-    <div class="stat-item">
-      <span class="stat-value">3.97</span>
-      <span class="stat-label">M.S. GPA at SMU</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">3.77</span>
-      <span class="stat-label">B.S. GPA at UT Austin</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">★ #1</span>
-      <span class="stat-label">Best Capstone Presentation</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-value">5+</span>
-      <span class="stat-label">End-to-end DS projects</span>
     </div>
   </div>
 
