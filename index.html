@@ -4,596 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Chloe Barker | Data Scientist</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink:       #0d1b2a;
-    --ink-2:     #2c3e50;
-    --muted:     #64748b;
-    --muted-2:   #94a3b8;
-    --accent:    #2563eb;
-    --accent-2:  #3b82f6;
-    --accent-3:  #dbeafe;
-    --accent-4:  #eff6ff;
-    --border:    #e2e8f0;
-    --surface:   #ffffff;
-    --bg:        #f8fafc;
-    --bg-2:      #f1f5f9;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-    --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
-    --shadow-lg: 0 10px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.04);
-    --radius:    14px;
-    --radius-sm: 8px;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-
-  .page {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-
-  /* ── Hero ── */
-  .hero {
-    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-    border-radius: 20px;
-    padding: 40px 40px 36px;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-
-  .hero-inner {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 28px;
-  }
-
-  .headshot {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center top;
-    border: 3px solid rgba(255,255,255,0.3);
-    box-shadow: 0 0 0 6px rgba(255,255,255,0.08);
-    flex-shrink: 0;
-  }
-
-  .hero-text h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 4px;
-  }
-
-  .hero-role {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 18px;
-    letter-spacing: 0.01em;
-  }
-
-  .hero-role span { color: #93c5fd; font-weight: 600; }
-
-  .contact-links {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .contact-links a {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.9);
-    text-decoration: none;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 5px 14px;
-    border-radius: 100px;
-    transition: background .18s, border-color .18s;
-    white-space: nowrap;
-  }
-
-  .contact-links a:hover {
-    background: rgba(255,255,255,0.22);
-    border-color: rgba(255,255,255,0.4);
-  }
-
-  .hero-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255,255,255,0.12);
-  }
-
-  .hero-stat {
-    display: flex;
-    flex-direction: column;
-    padding: 0 20px 0 0;
-    margin-right: 20px;
-    border-right: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .hero-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
-
-  .hero-stat-value {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.1;
-  }
-
-  .hero-stat-label {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.55);
-    font-weight: 400;
-    margin-top: 2px;
-  }
-
-  /* ── Two-column layout ── */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 20px;
-    align-items: start;
-  }
-
-  .main-col { display: flex; flex-direction: column; gap: 20px; }
-  .side-col  { display: flex; flex-direction: column; gap: 20px; }
-
-  /* ── Cards ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px 26px;
-    box-shadow: var(--shadow-sm);
-  }
-
-  /* ── Scroll reveal ── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity .55s ease, transform .55s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Hero animates immediately */
-  .hero { animation: fadeUp .5s ease both; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Section header ── */
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .section-header h2 {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    white-space: nowrap;
-  }
-
-  .section-header::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ── About ── */
-  .about-text {
-    font-size: 0.92rem;
-    color: var(--ink-2);
-    line-height: 1.75;
-  }
-
-  /* ── Experience ── */
-  .exp-item {
-    display: flex;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .exp-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .exp-item:first-child { padding-top: 0; }
-
-  .exp-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-sm);
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-
-  .exp-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-sm);
-  }
-
-  .exp-body { flex: 1; min-width: 0; }
-
-  .exp-company {
-    font-size: 0.84rem;
-    font-weight: 500;
-    color: var(--accent);
-    margin-bottom: 1px;
-  }
-
-  .exp-title {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.3;
-  }
-
-  .exp-meta {
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .exp-bullets {
-    font-size: 0.83rem;
-    color: var(--ink-2);
-    line-height: 1.65;
-    padding-left: 14px;
-  }
-
-  .exp-bullets li { margin-bottom: 3px; }
-
-  /* ── Projects ── */
-  .projects-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .project-link {
-    display: block;
-    text-decoration: none;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 16px 18px;
-    transition: box-shadow .18s, border-color .18s, transform .18s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .project-link::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--accent);
-    border-radius: 3px 0 0 3px;
-    opacity: 0;
-    transition: opacity .18s;
-  }
-
-  .project-link:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--accent-2);
-    transform: translateX(3px);
-  }
-
-  .project-link:hover::before { opacity: 1; }
-
-  .project-link-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-
-  .project-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .project-arrow {
-    color: var(--muted-2);
-    font-size: 0.85rem;
-    transition: color .18s, transform .18s;
-  }
-
-  .project-link:hover .project-arrow {
-    color: var(--accent);
-    transform: translateX(2px);
-  }
-
-  .project-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  /* ── Capstone card ── */
-  .capstone-card {
-    display: block;
-    text-decoration: none;
-    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 100%);
-    border: 1px solid #1e3a5f;
-    border-radius: var(--radius-sm);
-    padding: 18px 20px;
-    transition: box-shadow .2s, transform .2s, border-color .2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .capstone-card:hover {
-    box-shadow: 0 8px 28px rgba(37,99,235,.45);
-    transform: translateY(-2px);
-    border-color: #3b82f6;
-  }
-
-  .capstone-badge {
-    display: inline-flex;
-    align-items: center;
-    background: rgba(37,99,235,.5);
-    border: 1px solid rgba(59,130,246,.5);
-    color: #93c5fd;
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 100px;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .capstone-title {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.4;
-    margin-bottom: 6px;
-  }
-
-  .project-preview {
-    width: 100%;
-    border-radius: 8px;
-    border: 2px solid rgba(59,130,246,0.5);
-    box-shadow: 0 0 0 1px rgba(59,130,246,0.15), 0 4px 12px rgba(0,0,0,.25);
-    margin-bottom: 12px;
-    object-fit: cover;
-    max-height: 140px;
-    display: block;
-  }
-
-  .capstone-desc {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.55;
-    margin-bottom: 12px;
-  }
-
-  .capstone-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  .pill {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.8);
-    font-size: 0.72rem;
-    font-weight: 500;
-    padding: 3px 9px;
-    border-radius: 100px;
-  }
-
-  /* ── Education ── */
-  .edu-item { margin-bottom: 14px; }
-  .edu-item:last-child { margin-bottom: 0; }
-
-  .edu-school {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--accent);
-    margin-bottom: 1px;
-  }
-
-  .edu-degree {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.3;
-  }
-
-  .edu-meta {
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-
-  /* ── Certifications ── */
-  .cert-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    color: var(--ink);
-    transition: box-shadow .18s, border-color .18s;
-    margin-bottom: 8px;
-  }
-
-  .cert-item:last-child { margin-bottom: 0; }
-
-  .cert-item:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--accent-2);
-  }
-
-  .cert-logo {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    border-radius: 6px;
-    flex-shrink: 0;
-    background: #fff;
-    padding: 2px;
-    border: 1px solid var(--border);
-  }
-
-  .cert-info .cert-issuer {
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--muted);
-    margin-bottom: 1px;
-  }
-
-  .cert-info .cert-name {
-    font-size: 0.84rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  /* ── Skills section (full-width) ── */
-  .skills-section {
-    margin-top: 20px;
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .skill-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 16px 18px;
-    box-shadow: var(--shadow-sm);
-    transition: border-color .18s, box-shadow .18s;
-  }
-
-  .skill-card:hover {
-    border-color: var(--accent-3);
-    box-shadow: var(--shadow-md);
-  }
-
-  .skill-card-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .skill-card-icon {
-    font-size: 1rem;
-    line-height: 1;
-  }
-
-  .skill-card-label {
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-  }
-
-  .skill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  .skill-chip {
-    font-size: 0.74rem;
-    font-weight: 500;
-    color: var(--ink-2);
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    padding: 3px 9px;
-    border-radius: 6px;
-  }
-
-  /* ── Footer ── */
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-
-  .footer a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .footer a:hover { text-decoration: underline; }
-
-  /* ── Responsive ── */
-  @media (max-width: 700px) {
-    .page { padding: 24px 16px 60px; }
-    .hero { padding: 28px 22px; border-radius: 16px; }
-    .hero-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
-    .hero-text h1 { font-size: 1.7rem; }
-    .two-col { grid-template-columns: 1fr; }
-    .side-col { order: -1; }
-    .skills-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (max-width: 480px) {
-    .skills-grid { grid-template-columns: 1fr; }
-    .hero-stats { gap: 10px; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.12); }
-    .hero-stat { border-right: none; padding-right: 0; margin-right: 0; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <div class="page">
@@ -611,7 +23,6 @@
           <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
           <a href="resume/Chloe_Barker_Resume.pdf" target="_blank">Resume</a>
           <a href="resume/Projects_Overview.pdf" target="_blank">Projects One-Pager</a>
-          <a href="tel:2147337514">(214) 733-7514</a>
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
@@ -623,12 +34,12 @@
             <span class="hero-stat-label">B.S. GPA · UT Austin</span>
           </div>
           <div class="hero-stat">
-            <span class="hero-stat-value">★ Best Presentation</span>
+            <span class="hero-stat-value hero-stat-highlight">★ Best Presentation</span>
             <span class="hero-stat-label">SMU MSDS Capstone</span>
           </div>
           <div class="hero-stat">
-            <span class="hero-stat-value">5+</span>
-            <span class="hero-stat-label">End-to-end projects</span>
+            <span class="hero-stat-value">13</span>
+            <span class="hero-stat-label">Projects shipped in MSDS</span>
           </div>
         </div>
       </div>
@@ -642,7 +53,7 @@
       <div class="card reveal">
         <div class="section-header"><h2>About</h2></div>
         <p class="about-text">
-          I build end-to-end data science pipelines — from messy raw data to production-ready models and clear stakeholder communication — using Python, R, and SQL. Currently interning at Goosehead Insurance on Databricks and Snowflake, and completing my M.S. in Data Science at SMU. Open to full-time data scientist roles starting fall 2026.
+          I build end-to-end data science pipelines — from raw data to production-ready models — using Python, R, and SQL. Currently interning at Goosehead Insurance and finishing my M.S. in Data Science at SMU, open to full-time roles this fall.
         </p>
       </div>
 
@@ -673,36 +84,36 @@
             <div class="capstone-badge">★ MS Capstone · Best Presentation</div>
             <div class="capstone-title">Groundwater Lithium &amp; Dementia Prevalence in Texas</div>
             <img class="project-preview" src="capstone/map_lithium_vs_dementia_sidebyside.png" alt="Side-by-side choropleth maps of Texas counties">
-            <div class="capstone-desc">End-to-end epidemiological study across all 254 Texas counties — OLS regression with HC3 robust standard errors, permutation testing, and bootstrap confidence intervals.</div>
+            <div class="capstone-desc">Merged 460,137 groundwater records with Medicare-derived dementia prevalence across 254 Texas counties. The full-sample result was null; I traced it to exposure misclassification and developed a homogeneity framework to correct for it, raising R² from 0.009 to 0.226. Eighty-six percent of leave-one-out slopes remained in the protective direction.</div>
             <div class="capstone-pills">
               <span class="pill">Python</span>
-              <span class="pill">Jupyter</span>
-              <span class="pill">SQL</span>
               <span class="pill">GeoPandas</span>
+              <span class="pill">statsmodels</span>
               <span class="pill">OLS · HC3</span>
-              <span class="pill">Permutation Testing</span>
+              <span class="pill">Bootstrap CIs</span>
+              <span class="pill">LOO Diagnostics</span>
             </div>
           </a>
 
           <a class="project-link" href="predictive-analytics/">
             <div class="project-link-top">
-              <span class="project-name">Predictive Analytics</span>
+              <span class="project-name">Predicting Attrition, Risk &amp; Price</span>
               <span class="project-arrow">→</span>
             </div>
-            <p class="project-desc">Employee attrition (Frito-Lay), crab age regression competition, heart disease classification, hospital length-of-stay, stock price forecasting, and sale price prediction.</p>
+            <p class="project-desc">Predicted employee attrition for Frito-Lay HR data, patient heart-disease risk, hospital length-of-stay, real-estate sale price, crab age, and Eli Lilly stock price — six classification and regression projects end to end.</p>
           </a>
 
           <a class="project-link" href="machine-learning/">
             <div class="project-link-top">
-              <span class="project-name">Machine Learning</span>
+              <span class="project-name">Clustering &amp; Pattern Discovery</span>
               <span class="project-arrow">→</span>
             </div>
-            <p class="project-desc">6 clustering algorithms benchmarked on 100K health records; association rule mining on 541K retail transactions with Apriori and FP-Growth.</p>
+            <p class="project-desc">Benchmarked 6 clustering algorithms on 100K health records and mined association rules from 541K retail transactions with Apriori and FP-Growth.</p>
           </a>
 
           <a class="project-link" href="databases-sql/">
             <div class="project-link-top">
-              <span class="project-name">Databases &amp; SQL</span>
+              <span class="project-name">Texas Groundwater Database</span>
               <span class="project-arrow">→</span>
             </div>
             <p class="project-desc">64-table normalized MySQL database of Texas groundwater data (20+ years, 254 counties), ETL pipelines, and interactive Folium choropleth maps.</p>
@@ -710,7 +121,7 @@
 
           <a class="project-link" href="data-storytelling/">
             <div class="project-link-top">
-              <span class="project-name">Data Storytelling</span>
+              <span class="project-name">Executive Communication</span>
               <span class="project-arrow">→</span>
             </div>
             <p class="project-desc">Executive presentations and infographics for non-technical audiences — medical devices, NLP news digests, product analysis, and passion-project research.</p>
@@ -847,9 +258,6 @@
             <span class="skill-chip">GitLab</span>
             <span class="skill-chip">VS Code</span>
             <span class="skill-chip">Jupyter</span>
-            <span class="skill-chip">Claude Code</span>
-            <span class="skill-chip">Codex</span>
-            <span class="skill-chip">Microsoft Office</span>
           </div>
         </div>
 
@@ -864,19 +272,30 @@
 </div>
 
 <script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
 
-  document.querySelectorAll('.reveal').forEach((el, i) => {
-    el.style.transitionDelay = `${i * 0.06}s`;
-    observer.observe(el);
-  });
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.06}s`;
+      observer.observe(el);
+    });
+
+    // Safety net: if the observer never fires (script error elsewhere,
+    // unusual layout), don't leave content permanently invisible.
+    setTimeout(() => revealEls.forEach(el => el.classList.add('visible')), 3000);
+  }
 </script>
 
 </body>
