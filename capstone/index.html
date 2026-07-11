@@ -4,332 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Capstone | Chloe Barker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink:       #0d1b2a;
-      --ink-2:     #2c3e50;
-      --muted:     #64748b;
-      --muted-2:   #94a3b8;
-      --accent:    #2563eb;
-      --accent-2:  #3b82f6;
-      --accent-3:  #dbeafe;
-      --accent-4:  #eff6ff;
-      --border:    #e2e8f0;
-      --surface:   #ffffff;
-      --bg:        #f8fafc;
-      --bg-2:      #f1f5f9;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-      --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
-      --radius:    14px;
-      --radius-sm: 8px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    .page {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 40px 24px 72px;
-    }
-
-    /* ── Back link ── */
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 20px;
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.84rem;
-      font-weight: 500;
-      animation: fadeUp .4s ease both;
-    }
-    .back-link:hover { text-decoration: underline; }
-
-    /* ── Hero ── */
-    .hero {
-      background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-      border-radius: 18px;
-      padding: 32px 36px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 32px rgba(0,0,0,.15);
-      animation: fadeUp .4s ease both;
-      animation-delay: .04s;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(37,99,235,.5);
-      border: 1px solid rgba(59,130,246,.45);
-      color: #93c5fd;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 100px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .hero h1 {
-      font-size: 1.55rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-      letter-spacing: -.01em;
-      margin-bottom: 8px;
-    }
-
-    .hero-byline {
-      font-size: 0.84rem;
-      color: rgba(255,255,255,.6);
-      margin-bottom: 20px;
-    }
-
-    .hero-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .hero-pill {
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.18);
-      color: rgba(255,255,255,.88);
-      border-radius: 100px;
-      padding: 4px 12px;
-      font-size: 0.76rem;
-      font-weight: 500;
-    }
-
-    /* ── Cards ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow-sm);
-      animation: fadeUp .4s ease both;
-    }
-
-    .card:nth-of-type(1) { animation-delay: .08s; }
-    .card:nth-of-type(2) { animation-delay: .12s; }
-    .card:nth-of-type(3) { animation-delay: .16s; }
-    .card:nth-of-type(4) { animation-delay: .20s; }
-    .card:nth-of-type(5) { animation-delay: .24s; }
-    .card:nth-of-type(6) { animation-delay: .28s; }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .section-header h2 {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      white-space: nowrap;
-    }
-
-    .section-header::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .card p {
-      font-size: 0.91rem;
-      color: var(--ink-2);
-      line-height: 1.72;
-      margin-bottom: 10px;
-    }
-
-    .card p:last-child { margin-bottom: 0; }
-
-    .card ul {
-      padding-left: 18px;
-      margin-bottom: 10px;
-    }
-
-    .card ul li {
-      font-size: 0.9rem;
-      color: var(--ink-2);
-      line-height: 1.72;
-      margin-bottom: 6px;
-    }
-
-    .card ul li:last-child { margin-bottom: 0; }
-    .card ul li strong { color: var(--ink); font-weight: 600; }
-    .card a { color: var(--accent); text-decoration: none; }
-    .card a:hover { text-decoration: underline; }
-
-    /* ── Highlight / caveat ── */
-    .highlight {
-      background: var(--accent-4);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      padding: 14px 18px;
-      margin: 14px 0;
-      font-size: 0.9rem;
-      color: var(--ink-2);
-      line-height: 1.65;
-    }
-
-    .highlight strong { color: var(--ink); font-weight: 600; }
-
-    .caveat {
-      background: #fffbeb;
-      border-left: 3px solid #f59e0b;
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      padding: 12px 16px;
-      margin-top: 16px;
-      font-size: 0.86rem;
-      color: #78350f;
-      line-height: 1.6;
-    }
-
-    /* ── Map figure ── */
-    .figure { margin: 18px 0 0; }
-
-    .figure img {
-      width: 100%;
-      border: 2px solid rgba(37,99,235,.35);
-      box-shadow: 0 0 0 1px rgba(37,99,235,.1), 0 4px 12px rgba(0,0,0,.08);
-      border-radius: 10px;
-      display: block;
-    }
-
-    .figure-caption {
-      margin-top: 10px;
-      font-size: 0.81rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .figure-caption strong { color: var(--ink-2); }
-
-    /* ── Artifact grid ── */
-    .artifact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
-    }
-
-    .artifact-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 16px 12px;
-      font-size: 0.83rem;
-      font-weight: 500;
-      color: var(--accent);
-      background: var(--accent-4);
-      text-align: center;
-      text-decoration: none;
-      transition: background .18s, border-color .18s, box-shadow .18s;
-    }
-
-    .artifact-btn:hover {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-      box-shadow: var(--shadow-md);
-      text-decoration: none;
-    }
-
-    .artifact-icon { font-size: 1.3rem; }
-
-    /* ── Tool tags ── */
-    .tool-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 14px;
-    }
-
-    .tool-tag {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--muted);
-      background: var(--bg-2);
-      border: 1px solid var(--border);
-      padding: 3px 9px;
-      border-radius: 100px;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    /* ── References ── */
-    .ref-list { padding-left: 18px; }
-
-    .ref-list li {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.65;
-      margin-bottom: 8px;
-    }
-
-    .ref-list li a { color: var(--accent); text-decoration: none; }
-    .ref-list li a:hover { text-decoration: underline; }
-
-    /* ── Recruiter note ── */
-    .recruiter-note {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 24px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow-sm);
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.65;
-      animation: fadeUp .4s ease both;
-      animation-delay: .32s;
-    }
-
-    .recruiter-note strong { color: var(--ink-2); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 600px) {
-      .page { padding: 24px 16px 56px; }
-      .hero { padding: 24px 22px; border-radius: 14px; }
-      .hero h1 { font-size: 1.25rem; }
-      .card { padding: 18px 18px; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
 </head>
-<body>
+<body class="page-capstone subpage">
 <div class="page">
 
   <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
   <!-- Hero -->
-  <div class="hero">
-    <div class="hero-badge">★ MS Capstone · Best Presentation</div>
+  <div class="page-hero">
     <h1>Groundwater Lithium &amp; Dementia Prevalence in Texas</h1>
     <p class="hero-byline">Co-authored with Tracy Dower &nbsp;·&nbsp; Advised by Jacob Turner, PhD &amp; Jacquelyn Cheun, PhD</p>
     <div class="hero-pills">
@@ -366,7 +50,7 @@
   <div class="card">
     <div class="section-header"><h2>Data</h2></div>
     <ul>
-      <li><strong>Groundwater quality:</strong> Texas Water Development Board (TWDB) well measurements compiled into a county-level dataset with all water quality parameters.</li>
+      <li><strong>Groundwater quality:</strong> 460,137 Texas Water Development Board (TWDB) well measurements (1919–2019) compiled into a county-level dataset with all water quality parameters.</li>
       <li><strong>Health outcome:</strong> NORC Dementia DataHub county-level dementia prevalence estimates, 2020.</li>
       <li><strong>Geography:</strong> Texas county FIPS crosswalk and Census TIGER shapefiles for choropleth mapping.</li>
     </ul>
@@ -389,12 +73,12 @@
   <div class="card">
     <div class="section-header"><h2>Approach</h2></div>
     <ul>
-      <li><strong>Exposure homogeneity classification:</strong> counties classified using a three-criterion framework — coefficient of variation ≤ 0.50, ≥ 70% well consistency, and ≥ 10 samples — to ensure only counties with stable, reliable lithium readings were included in modeling.</li>
+      <li><strong>Exposure homogeneity classification:</strong> counties classified using a three-criterion framework — at least 10 samples, at least 70% of wells in one tail of the statewide distribution, and a coefficient of variation ≤ 0.50 — to identify counties where a county mean is a defensible proxy for population exposure.</li>
       <li><strong>Ingestion &amp; cleaning:</strong> standardized dates, resolved FIPS mismatches, handled missingness, and validated county naming across all sources.</li>
       <li><strong>Feature engineering:</strong> aggregated well-level measurements to county-level summaries; constructed map-ready tables for choropleth visualization.</li>
       <li><strong>Exploration:</strong> choropleth maps and summary statistics characterizing spatial distribution of lithium concentrations and dementia prevalence across Texas.</li>
-      <li><strong>Modeling:</strong> OLS regression with HC3 heteroskedasticity-robust standard errors on the homogeneous county subset (N ≈ 27–30), supplemented with permutation testing and bootstrap confidence intervals.</li>
-      <li><strong>Sensitivity analyses:</strong> varied classification thresholds (CV cutoff, minimum samples, well consistency floor) to assess robustness of findings.</li>
+      <li><strong>Modeling:</strong> OLS regression with HC3 heteroskedasticity-robust standard errors on the homogeneous county subset (N = 14), supplemented with permutation testing, bootstrap confidence intervals, and Cook's D / leave-one-out diagnostics.</li>
+      <li><strong>Sensitivity analyses:</strong> varied classification thresholds (CV cutoff, minimum samples, well consistency floor) to assess robustness of findings; also tested model sensitivity to sodium as a confounding covariate.</li>
     </ul>
     <div class="tool-tags">
       <span class="tool-tag">Python</span>
@@ -404,6 +88,7 @@
       <span class="tool-tag">pandas</span>
       <span class="tool-tag">NumPy</span>
       <span class="tool-tag">GeoPandas</span>
+      <span class="tool-tag">statsmodels</span>
       <span class="tool-tag">VS Code</span>
     </div>
   </div>
@@ -411,15 +96,21 @@
   <!-- Results -->
   <div class="card">
     <div class="section-header"><h2>Results</h2></div>
+    <p>
+      Across the 240 counties with complete data, groundwater lithium showed effectively no association with
+      dementia prevalence (r = −0.095, R² = 0.009). Rather than treat this as the end of the analysis, I
+      examined why the null appeared. A county-mean lithium value averages residents drawing from wells with
+      substantially different concentrations, and this measurement error in the predictor attenuates
+      regression coefficients toward zero regardless of the underlying effect.
+    </p>
     <ul>
-      <li>Identified a subset of Texas counties with sufficiently homogeneous groundwater lithium exposure for reliable inference; final analytic sample ranged from <strong>27–30 counties</strong> depending on classification parameters.</li>
-      <li>OLS regression with HC3 robust standard errors found a <strong>negative association</strong> between groundwater lithium concentration and county-level dementia prevalence — consistent with the direction reported in prior epidemiological literature.</li>
-      <li>Permutation tests and bootstrap confidence intervals supported the <strong>robustness of the primary finding</strong> under small-sample constraints.</li>
-      <li>Sensitivity analyses across classification threshold variants yielded <strong>directionally consistent results</strong>, strengthening confidence in the primary specification.</li>
-      <li>Produced choropleth maps illustrating spatial variation of lithium concentrations and dementia prevalence across Texas counties.</li>
+      <li>Developed a three-criterion exposure homogeneity framework — at least 10 samples, at least 70% of wells in one tail of the statewide distribution, and a coefficient of variation of 0.50 or below — to identify the <strong>14 counties</strong> in which a county mean is a defensible proxy for population exposure.</li>
+      <li>Within that subsample, explanatory power increased from <strong>R² = 0.009 to R² = 0.226</strong>. The lithium coefficient was negative, and <strong>86% of leave-one-out slopes</strong> and <strong>66% of bootstrap slopes</strong> remained in the protective direction, indicating the result was not driven by any single county.</li>
+      <li>Found that <strong>sodium confounding alone is sufficient to reverse the sign</strong> of the association — without adjusting for sodium, the lithium coefficient becomes positive, so controlling for geochemical co-variates is essential rather than optional in this analysis.</li>
+      <li>Produced choropleth maps showing lithium concentrated in the Panhandle and Trans-Pecos regions, which also show lower dementia prevalence.</li>
     </ul>
     <div class="caveat">
-      ⚠️ <strong>Important caveat:</strong> This is an ecological, observational study. Results reflect county-level correlations and should not be interpreted as causal. Confounding, ecological fallacy, and data limitations are discussed in the full paper.
+      ⚠️ <strong>Limitations:</strong> At N = 14, the primary model's p-value is 0.73 and the bootstrap confidence interval spans zero. These results are directionally consistent with the existing literature but are not statistically significant, and the ecological design does not support causal inference. The methodological contribution is the homogeneity framework itself, which extends to other trace elements and health outcomes studied at the county level.
     </div>
   </div>
 
@@ -427,18 +118,10 @@
   <div class="card">
     <div class="section-header"><h2>Artifacts</h2></div>
     <div class="artifact-grid">
-      <a class="artifact-btn" href="Final_Paper.pdf" target="_blank">
-        <span class="artifact-icon">📄</span>Final Paper
-      </a>
-      <a class="artifact-btn" href="slides/Capstone_Slides.pdf" target="_blank">
-        <span class="artifact-icon">📊</span>Presentation Slides
-      </a>
-      <a class="artifact-btn" href="notebooks/Water_Quality_Dementia_Analysis.ipynb" target="_blank">
-        <span class="artifact-icon">📓</span>Analysis Notebook
-      </a>
-      <a class="artifact-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone" target="_blank">
-        <span class="artifact-icon">💻</span>GitHub Repo
-      </a>
+      <a class="artifact-btn" href="Final_Paper.pdf" target="_blank">Final Paper</a>
+      <a class="artifact-btn" href="slides/Capstone_Slides.pdf" target="_blank">Presentation Slides</a>
+      <a class="artifact-btn" href="notebooks/Water_Quality_Dementia_Analysis.ipynb" target="_blank">Analysis Notebook</a>
+      <a class="artifact-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone" target="_blank">GitHub Repo</a>
     </div>
   </div>
 
@@ -465,11 +148,6 @@
       <li><a href="references/terao_review.pdf" target="_blank">Terao &amp; Kodama (2024)</a> — Comparative efficacy of donanemab, lecanemab, aducanumab and lithium on cognitive function</li>
       <li><a href="references/terao_review.pdf" target="_blank">Terao et al. (2024)</a> — Trace lithium for suicide prevention and dementia prevention: A qualitative review</li>
     </ul>
-  </div>
-
-  <!-- Recruiter note -->
-  <div class="recruiter-note">
-    <strong>For recruiters:</strong> This project demonstrates end-to-end workflow capabilities including data engineering, geospatial analysis, small-sample inference, and reproducible analytics pipelines in Python and SQL.
   </div>
 
   <a class="back-link" href="../index.html">← Back to Portfolio</a>
