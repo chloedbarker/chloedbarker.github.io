@@ -718,7 +718,6 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .skill-card:hover { border-color: var(--accent-3); box-shadow: var(--shadow-md); }
 
 .skill-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.skill-card-icon { font-size: var(--text-base); line-height: 1; }
 .skill-card-label {
   font-size: var(--text-2xs);
   font-weight: 700;
