@@ -53,7 +53,7 @@
 
 /* ── Base ── */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Google Sans', sans-serif;
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
