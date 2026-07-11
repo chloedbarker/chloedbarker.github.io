@@ -189,16 +189,17 @@
 
   <div class="page-hero">
     <h1>Predictive Analytics</h1>
-    <p>Graduate-level classification and regression modeling projects across healthcare, HR, real estate, and finance — emphasizing model development, feature engineering, cross-validation, and result interpretation.</p>
+    <p>Six classification and regression projects across healthcare, HR, real estate, and finance. The common thread: picking the model that fits the decision, not just the one with the best headline number — cost-optimized thresholds for attrition, interpretability over black-box gains for hospital stays, different models for different forecast horizons.</p>
   </div>
 
   <div class="card">
     <div class="card-top"><h2>Heart Disease Prediction</h2></div>
-    <p class="card-desc">Classification modeling to predict heart disease risk from survey and health indicators, with full model evaluation, ROC/AUC analysis, and performance benchmarking across multiple algorithms.</p>
+    <p class="card-desc">Binary classification of heart disease using CDC BRFSS survey data (300k+ respondents, 18 predictors). Compared additive logistic regression, a GLMNET-selected non-additive model with polynomial and interaction terms, LDA, QDA, and kNN. The non-additive logistic model performed best (AUROC 0.845), substantially outperforming LDA (0.637), QDA (0.622), and kNN (0.586). General health was the strongest signal: poor self-rated health carried 6.57 times the odds of heart disease relative to excellent (95% CI: 6.01–7.18). Class imbalance held sensitivity low across all models, a limitation I discuss rather than tune away.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
       <span class="tool-tag">Logistic Regression</span>
+      <span class="tool-tag">GLMNET</span>
       <span class="tool-tag">KNN</span>
       <span class="tool-tag">LDA / QDA</span>
       <span class="tool-tag">ROC / AUC</span>
@@ -212,13 +213,14 @@
 
   <div class="card">
     <div class="card-top"><h2>Time Series Forecasting — Eli Lilly (LLY)</h2></div>
-    <p class="card-desc">Forecasting Eli Lilly stock prices using ARIMA, VAR, and neural network models, with evaluation across short- and long-term horizons. Includes spectral analysis and rolling ASE comparison.</p>
+    <p class="card-desc">Forecast LLY monthly log price (136 observations, 2015–2026) for a healthcare investment fund needing both quarterly and annual horizons. Compared ARMA, ARIMA(4,1,0), two VAR specifications, and an MLP neural network. No single model won both horizons: ARIMA was best at three months (ASE 0.004) but degraded badly at twelve (ASE 0.355), while the MLP with lagged XLV was best long-term (ASE 0.017). Notably, VAR with Novo Nordisk outperformed VAR with the sector ETF — the direct GLP-1 competitor carried more signal than the sector as a whole.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
       <span class="tool-tag">tswge</span>
       <span class="tool-tag">ARIMA</span>
       <span class="tool-tag">VAR</span>
+      <span class="tool-tag">MLP Neural Net</span>
       <span class="tool-tag">Time Series</span>
     </div>
     <div class="link-row">
@@ -230,13 +232,14 @@
 
   <div class="card">
     <div class="card-top"><h2>Hospital Length of Stay Prediction</h2></div>
-    <p class="card-desc">Regression modeling to predict patient length of stay using clinical features, with feature engineering, cross-validation, and interpretability analysis for healthcare decision support.</p>
+    <p class="card-desc">Regression modeling of average patient length of stay across 113 hospitals. Compared an interpretable additive MLR against a complex MLR with polynomial and interaction terms (LASSO-guided) and a kNN model. The complex MLR performed best on every error metric (R² = 0.776, RMSE = 0.0996, MAE = 0.077); kNN was worst, trading interpretability for nothing. Infection risk was significant across all specifications: each one-unit increase was associated with a 5.4% increase in median length of stay (bootstrap 95% CI: 3.3–7.6%).</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
       <span class="tool-tag">Linear Regression</span>
-      <span class="tool-tag">Feature Engineering</span>
-      <span class="tool-tag">Cross-Validation</span>
+      <span class="tool-tag">LASSO</span>
+      <span class="tool-tag">KNN</span>
+      <span class="tool-tag">Bootstrap CI</span>
     </div>
     <div class="link-row">
       <a class="link-pill" href="hospital-length-of-stay-prediction/Hospital_Length_of_Stay_Slides.pdf" target="_blank">Slides (PDF)</a>
@@ -246,13 +249,13 @@
 
   <div class="card">
     <div class="card-top"><h2>Employee Attrition Prediction — Frito-Lay</h2></div>
-    <p class="card-desc">Classification modeling to predict employee turnover risk using Frito-Lay HR data. Includes EDA, feature importance analysis, and retention strategy recommendations for business stakeholders.</p>
+    <p class="card-desc">Classification modeling to identify turnover risk in Frito-Lay HR data, with the decision threshold tuned to minimize expected cost rather than maximize accuracy. Age, job role, and overtime emerged as the dominant predictors. The kNN model (k = 3, threshold 0.15) reached 94.29% sensitivity at 72.76% accuracy — deliberately favoring recall, since missing an employee who leaves costs 50–400% of their salary to replace versus $200 for a retention incentive. Translated model output into a projected cost range of $379k–$2.53M, down from $1.27M–$9.59M under the Naive Bayes alternative.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">Random Forest</span>
       <span class="tool-tag">KNN</span>
       <span class="tool-tag">Naive Bayes</span>
+      <span class="tool-tag">Cost-Based Thresholding</span>
       <span class="tool-tag">ggplot2</span>
     </div>
     <div class="link-row">
@@ -263,13 +266,14 @@
 
   <div class="card">
     <div class="card-top"><h2>Sale Price Prediction</h2></div>
-    <p class="card-desc">Regression modeling to predict real estate sale prices from property features using linear regression and LASSO with feature engineering, regularization, and pricing optimization.</p>
+    <p class="card-desc">Predicted residential sale prices in Ames, Iowa (1,460 homes, 79 variables) for two distinct questions: a neighborhood-level inference problem for a realtor client, and a city-wide prediction problem scored on Kaggle. For the first, log-transformed both price and living area to satisfy regression assumptions, then tested whether the price-per-square-foot relationship varies by neighborhood — it does (F = 8.649, p = 0.0002), with BrkSide showing a significantly steeper slope than NAmes or Edwards. For the second, compared four specifications; the final MLR incorporating quality indices, building type, age, and neighborhood explained 86.7% of variance in log sale price and achieved a Kaggle RMSLE of 0.150, improving on the simple-regression baseline of 0.229. Validated assumptions throughout with Q-Q, leverage, Cook's D, and Durbin-Watson diagnostics.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
       <span class="tool-tag">Linear Regression</span>
       <span class="tool-tag">LASSO</span>
-      <span class="tool-tag">Feature Engineering</span>
+      <span class="tool-tag">Kaggle</span>
+      <span class="tool-tag">Regression Diagnostics</span>
     </div>
     <div class="link-row">
       <a class="link-pill" href="sale-price-prediction/Sale_Price_Project_Report.pdf" target="_blank">Report (PDF)</a>
@@ -279,7 +283,7 @@
 
   <div class="card">
     <div class="card-top"><h2>Crab Age Prediction</h2></div>
-    <p class="card-desc">Regression competition predicting crab age from physical measurements. Built and deployed an interactive R Shiny app alongside modeling work, using multiple linear regression and model validation.</p>
+    <p class="card-desc">Regression competition predicting crab age from physical measurements, with an interactive R Shiny app for exploring predictions. Feature engineering — polynomial terms, a constructed shell-density variable, and size-by-sex interactions — produced a final model with R² = 0.702 and MAE = 1.14 months.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
