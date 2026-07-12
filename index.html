@@ -8,41 +8,46 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<div class="page">
+<div class="layout">
 
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-inner">
-      <img src="headshot.png" alt="Chloe Barker" class="headshot">
-      <div class="hero-text">
-        <h1>Chloe Barker</h1>
-        <p class="hero-role"><span>Data Scientist</span> &nbsp;·&nbsp; M.S. Data Science @ SMU &nbsp;·&nbsp; Seeking full-time roles fall 2026</p>
-        <div class="contact-links">
-          <a href="mailto:chloedbarkerr@icloud.com">Email</a>
-          <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
-          <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
-          <a href="resume/Chloe_Barker_Resume.pdf" target="_blank">Resume</a>
-          <a href="resume/Projects_Overview.pdf" target="_blank">Projects One-Pager</a>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat-value">3.97</span>
-            <span class="hero-stat-label">M.S. GPA · SMU</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-value">3.77</span>
-            <span class="hero-stat-label">B.S. GPA · UT Austin</span>
-          </div>
-        </div>
+  <!-- Sidebar: stays in view while content scrolls -->
+  <aside class="hero">
+    <img src="headshot.png" alt="Chloe Barker" class="headshot">
+    <h1>Chloe Barker</h1>
+    <p class="hero-role">Data Scientist</p>
+    <p class="sidebar-meta">M.S. Data Science @ SMU<br>Seeking full-time roles fall 2026</p>
+
+    <nav class="side-nav">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+    </nav>
+
+    <div class="contact-links">
+      <a href="mailto:chloedbarkerr@icloud.com">Email</a>
+      <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
+      <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
+      <a href="resume/Chloe_Barker_Resume.pdf" target="_blank">Resume</a>
+      <a href="resume/Projects_Overview.pdf" target="_blank">One-Pager</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-value">3.97</span>
+        <span class="hero-stat-label">M.S. GPA · SMU</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">3.77</span>
+        <span class="hero-stat-label">B.S. GPA · UT Austin</span>
       </div>
     </div>
-  </div>
+  </aside>
 
-  <div class="two-col">
-    <div class="main-col">
+  <main class="content">
 
       <!-- About -->
-      <div class="card reveal">
+      <div id="about" class="card reveal">
         <div class="section-header"><h2>About</h2></div>
         <p class="about-text">
           I am a data science graduate student who enjoys turning raw, complex data into practical models and clear business insights. I build end-to-end data science pipelines using Python, R, SQL, Databricks, and Snowflake. I am currently a Data Science Intern at Goosehead Insurance and completing my M.S. in Data Science at SMU. I am seeking full-time data scientist opportunities beginning in fall 2026!
@@ -50,7 +55,7 @@
       </div>
 
       <!-- Experience -->
-      <div class="card reveal">
+      <div id="experience" class="card reveal">
         <div class="section-header"><h2>Experience</h2></div>
         <div class="exp-item">
           <div class="exp-logo"><img src="certifications/goosehead.jpeg" alt="Goosehead Insurance"></div>
@@ -68,7 +73,7 @@
       </div>
 
       <!-- Projects -->
-      <div class="card reveal">
+      <div id="projects" class="card reveal">
         <div class="section-header"><h2>Projects</h2></div>
         <div class="projects-grid">
 
@@ -122,120 +127,115 @@
         </div>
       </div>
 
-    </div><!-- /main-col -->
-
-    <div class="side-col">
-
-      <!-- Education -->
-      <div class="card reveal">
-        <div class="section-header"><h2>Education</h2></div>
-        <div class="edu-item">
-          <div class="edu-school">Southern Methodist University</div>
-          <div class="edu-degree">M.S. Data Science</div>
-          <div class="edu-meta">Expected Aug 2026 &nbsp;·&nbsp; GPA 3.97</div>
+      <!-- Education & Certifications -->
+      <div class="pair-grid">
+        <div class="card reveal">
+          <div class="section-header"><h2>Education</h2></div>
+          <div class="edu-item">
+            <div class="edu-school">Southern Methodist University</div>
+            <div class="edu-degree">M.S. Data Science</div>
+            <div class="edu-meta">Expected Aug 2026 &nbsp;·&nbsp; GPA 3.97</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-school">The University of Texas at Austin</div>
+            <div class="edu-degree">B.S.A. Biology · Minor Health Communication</div>
+            <div class="edu-meta">GPA 3.77</div>
+          </div>
         </div>
-        <div class="edu-item">
-          <div class="edu-school">The University of Texas at Austin</div>
-          <div class="edu-degree">B.S.A. Biology · Minor Health Communication</div>
-          <div class="edu-meta">GPA 3.77</div>
+
+        <div class="card reveal">
+          <div class="section-header"><h2>Certifications</h2></div>
+          <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank">
+            <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png" alt="SMU badge">
+            <div class="cert-info">
+              <div class="cert-issuer">SMU MSDS</div>
+              <div class="cert-name">Best Capstone Presentation</div>
+            </div>
+          </a>
+          <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank">
+            <img class="cert-logo" src="certifications/datacamp_logo.png" alt="DataCamp logo">
+            <div class="cert-info">
+              <div class="cert-issuer">DataCamp</div>
+              <div class="cert-name">Certified Data Scientist</div>
+            </div>
+          </a>
         </div>
       </div>
 
-      <!-- Certifications -->
-      <div class="card reveal">
-        <div class="section-header"><h2>Certifications</h2></div>
-        <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank">
-          <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png" alt="SMU badge">
-          <div class="cert-info">
-            <div class="cert-issuer">SMU MSDS</div>
-            <div class="cert-name">Best Capstone Presentation</div>
+      <!-- Skills -->
+      <div id="skills" class="skills-section reveal">
+        <div class="card" style="padding-bottom: 20px;">
+          <div class="section-header"><h2>Skills</h2></div>
+          <div class="skills-grid">
+
+            <div class="skill-card">
+              <div class="skill-card-header">
+                <span class="skill-card-label">Programming</span>
+              </div>
+              <div class="skill-list">
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/python" alt="">Python</span>
+                <span class="skill-chip">SQL</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/r" alt="">R</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header">
+                <span class="skill-card-label">Machine Learning &amp; Analytics</span>
+              </div>
+              <div class="skill-list">
+                <span class="skill-chip">Regression</span>
+                <span class="skill-chip">Classification</span>
+                <span class="skill-chip">Random Forest</span>
+                <span class="skill-chip">Gradient Boosting</span>
+                <span class="skill-chip">SVM</span>
+                <span class="skill-chip">Regularization</span>
+                <span class="skill-chip">Cross-Validation</span>
+                <span class="skill-chip">Time Series Forecasting</span>
+                <span class="skill-chip">NLP</span>
+                <span class="skill-chip">Geospatial Analysis</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header">
+                <span class="skill-card-label">Data Tools &amp; Platforms</span>
+              </div>
+              <div class="skill-list">
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/pandas" alt="">pandas</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/numpy" alt="">NumPy</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/scikitlearn" alt="">scikit-learn</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/databricks" alt="">Databricks</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/snowflake" alt="">Snowflake</span>
+                <span class="skill-chip">Excel</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card-header">
+                <span class="skill-card-label">Visualization &amp; Development</span>
+              </div>
+              <div class="skill-list">
+                <span class="skill-chip">Tableau</span>
+                <span class="skill-chip">matplotlib</span>
+                <span class="skill-chip">Seaborn</span>
+                <span class="skill-chip">ggplot2</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/git" alt="">Git</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/github" alt="">GitHub</span>
+                <span class="skill-chip"><img class="skill-chip-icon" src="https://cdn.simpleicons.org/jupyter" alt="">Jupyter</span>
+                <span class="skill-chip">VS Code</span>
+              </div>
+            </div>
+
           </div>
-        </a>
-        <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank">
-          <img class="cert-logo" src="certifications/datacamp_logo.png" alt="DataCamp logo">
-          <div class="cert-info">
-            <div class="cert-issuer">DataCamp</div>
-            <div class="cert-name">Certified Data Scientist</div>
-          </div>
-        </a>
+        </div>
       </div>
 
-    </div><!-- /side-col -->
-  </div><!-- /two-col -->
-
-  <!-- Skills (full-width) -->
-  <div class="skills-section reveal">
-    <div class="card" style="padding-bottom: 20px;">
-      <div class="section-header"><h2>Skills</h2></div>
-      <div class="skills-grid">
-
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <span class="skill-card-label">Programming</span>
-          </div>
-          <div class="skill-list">
-            <span class="skill-chip">Python</span>
-            <span class="skill-chip">SQL</span>
-            <span class="skill-chip">R</span>
-          </div>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <span class="skill-card-label">Machine Learning &amp; Analytics</span>
-          </div>
-          <div class="skill-list">
-            <span class="skill-chip">Regression</span>
-            <span class="skill-chip">Classification</span>
-            <span class="skill-chip">Random Forest</span>
-            <span class="skill-chip">Gradient Boosting</span>
-            <span class="skill-chip">SVM</span>
-            <span class="skill-chip">Regularization</span>
-            <span class="skill-chip">Cross-Validation</span>
-            <span class="skill-chip">Time Series Forecasting</span>
-            <span class="skill-chip">NLP</span>
-            <span class="skill-chip">Geospatial Analysis</span>
-          </div>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <span class="skill-card-label">Data Tools &amp; Platforms</span>
-          </div>
-          <div class="skill-list">
-            <span class="skill-chip">pandas</span>
-            <span class="skill-chip">NumPy</span>
-            <span class="skill-chip">scikit-learn</span>
-            <span class="skill-chip">Databricks</span>
-            <span class="skill-chip">Snowflake</span>
-            <span class="skill-chip">Excel</span>
-          </div>
-        </div>
-
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <span class="skill-card-label">Visualization &amp; Development</span>
-          </div>
-          <div class="skill-list">
-            <span class="skill-chip">Tableau</span>
-            <span class="skill-chip">matplotlib</span>
-            <span class="skill-chip">Seaborn</span>
-            <span class="skill-chip">ggplot2</span>
-            <span class="skill-chip">Git</span>
-            <span class="skill-chip">GitHub</span>
-            <span class="skill-chip">Jupyter</span>
-            <span class="skill-chip">VS Code</span>
-          </div>
-        </div>
-
+      <div class="footer reveal">
+        <a href="https://github.com/chloedbarker/chloedbarker.github.io">View source on GitHub</a>
       </div>
-    </div>
-  </div>
 
-  <div class="footer reveal">
-    <a href="https://github.com/chloedbarker/chloedbarker.github.io">View source on GitHub</a>
-  </div>
-
+  </main>
 </div>
 
 <script>
@@ -262,6 +262,23 @@
     // Safety net: if the observer never fires (script error elsewhere,
     // unusual layout), don't leave content permanently invisible.
     setTimeout(() => revealEls.forEach(el => el.classList.add('visible')), 3000);
+  }
+
+  // Highlight the sidebar nav link matching whichever section is in view
+  const navLinks = document.querySelectorAll('.side-nav a');
+  const navSections = [...navLinks].map(a => document.querySelector(a.getAttribute('href')));
+
+  if ('IntersectionObserver' in window && navSections.every(Boolean)) {
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = '#' + entry.target.id;
+          navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+        }
+      });
+    }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+
+    navSections.forEach(section => navObserver.observe(section));
   }
 </script>
 
