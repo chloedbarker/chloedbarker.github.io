@@ -629,12 +629,13 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 /* ── Scrolling content column ── */
 .content { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
-/* Simple 2-up row (Education + Certifications) */
+/* Simple 2-up row (Education + Certifications) — stretched so both
+   cards match height and read as a uniform pair */
 .pair-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ── Scroll reveal ── */
