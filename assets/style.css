@@ -137,7 +137,7 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   background: rgba(255,255,255,.1);
   border: 1px solid rgba(255,255,255,.18);
   color: rgba(255,255,255,.88);
-  border-radius: 100px;
+  border-radius: var(--radius-sm);
   padding: 4px 12px;
   font-size: var(--text-xs);
   font-weight: 500;
@@ -155,11 +155,10 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   transition: box-shadow .18s, border-color .18s;
 }
 
-.card:hover { box-shadow: var(--shadow-md); border-color: var(--accent-2); }
-
-/* About and Experience aren't links — don't give them a hover state
-   that implies they're clickable */
-#about:hover, #experience:hover { box-shadow: var(--shadow-sm); border-color: var(--border); }
+/* .card is a plain content container everywhere it's used — never the
+   clickable element itself (that's .project-link, .capstone-card,
+   .cert-item, .link-pill, .artifact-btn, etc., each with their own
+   hover state below). No hover feedback here on purpose. */
 
 /* Staggered reveal, keyed off position among .card siblings specifically —
    not nth-child/nth-of-type off the parent, which broke as soon as a
@@ -225,9 +224,6 @@ body.page-capstone .card ul li {
 body.page-capstone .card ul li:last-child { margin-bottom: 0; }
 body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 
-.card a { color: var(--accent); text-decoration: none; }
-.card a:hover { text-decoration: underline; }
-
 /* ── Section header ── */
 .section-header {
   display: flex;
@@ -267,7 +263,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   background: var(--bg-2);
   border: 1px solid var(--border);
   padding: 3px 9px;
-  border-radius: 100px;
+  border-radius: var(--radius-sm);
 }
 
 /* ── Links (shared) ── */
@@ -833,9 +829,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   border-radius: var(--radius-sm);
   padding: 16px 18px;
   box-shadow: var(--shadow-sm);
-  transition: border-color .18s, box-shadow .18s;
 }
-.skill-card:hover { border-color: var(--accent-3); box-shadow: var(--shadow-md); }
 
 .skill-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
 .skill-card-label {
