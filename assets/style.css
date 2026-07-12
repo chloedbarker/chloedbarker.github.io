@@ -157,6 +157,10 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .card:hover { box-shadow: var(--shadow-md); border-color: var(--accent-2); }
 
+/* About and Experience aren't links — don't give them a hover state
+   that implies they're clickable */
+#about:hover, #experience:hover { box-shadow: var(--shadow-sm); border-color: var(--border); }
+
 /* Staggered reveal, keyed off position among .card siblings specifically —
    not nth-child/nth-of-type off the parent, which broke as soon as a
    back-link or hero preceded the cards (silently ate the stagger on the
