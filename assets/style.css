@@ -794,13 +794,13 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .cert-item:hover { box-shadow: var(--shadow-md); border-color: var(--accent-2); }
 
 .cert-logo {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: 8px;
   flex-shrink: 0;
   background: #fff;
-  padding: 2px;
+  padding: 4px;
   border: 1px solid var(--border);
 }
 
@@ -819,7 +819,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
@@ -876,6 +876,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   .layout { grid-template-columns: 1fr; }
   .hero { position: static; max-height: none; overflow-y: visible; }
   .pair-grid { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 700px) {
@@ -884,6 +885,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   .hero { padding: 28px 22px; border-radius: 16px; }
   .page-hero { padding: 22px 20px; border-radius: 14px; }
   .page-hero h1 { font-size: var(--text-lg); }
+  .skills-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
