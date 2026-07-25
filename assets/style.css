@@ -796,11 +796,10 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .cert-logo {
   width: 44px;
   height: 44px;
-  object-fit: contain;
-  border-radius: 8px;
+  object-fit: cover;
+  border-radius: 12px;
   flex-shrink: 0;
   background: #fff;
-  padding: 4px;
   border: 1px solid var(--border);
 }
 
