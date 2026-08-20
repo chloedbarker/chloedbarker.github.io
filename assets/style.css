@@ -124,7 +124,6 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
   font-size: var(--text-sm);
   color: rgba(255,255,255,.65);
   line-height: 1.65;
-  max-width: 680px;
 }
 
 .hero-byline {
@@ -206,7 +205,6 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
   color: var(--muted);
   line-height: 1.6;
   margin-bottom: 14px;
-  max-width: 70ch;
 }
 
 /* Capstone-only prose (plain <p>/<ul> inside a .card, no .card-desc class).
@@ -217,14 +215,12 @@ body.page-capstone .card p {
   color: var(--ink-2);
   line-height: 1.72;
   margin-bottom: 10px;
-  max-width: 70ch;
 }
 body.page-capstone .card p:last-child { margin-bottom: 0; }
 
 body.page-capstone .card ul {
   padding-left: 18px;
   margin-bottom: 10px;
-  max-width: 70ch;
 }
 body.page-capstone .card ul li {
   font-size: var(--text-sm);
@@ -655,7 +651,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ── About ── */
-.about-text { font-size: var(--text-base); color: var(--ink-2); line-height: 1.75; max-width: 70ch; }
+.about-text { font-size: var(--text-base); color: var(--ink-2); line-height: 1.75; }
 
 /* ── Experience ── */
 .exp-item {
