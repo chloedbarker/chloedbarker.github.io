@@ -43,17 +43,12 @@
   --text-xl:   1.5rem;    /* subpage hero h1 */
   --text-2xl:  2.2rem;    /* homepage hero h1 */
 
-  /* Shape / elevation — flatter, thinner shadows read as more
-     deliberate/editorial than soft diffuse ones */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
-  --shadow-md: 0 6px 20px rgba(0,0,0,.07);
-  --shadow-lg: 0 12px 28px rgba(0,0,0,.14);
-  --radius:    7px;
-  --radius-sm: 5px;
-
-  /* Display serif — headings only. Body/nav/chips stay on Google Sans;
-     the serif is what signals "editorial" rather than "template card." */
-  --font-display: 'Fraunces', Georgia, serif;
+  /* Shape / elevation */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 10px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.04);
+  --radius:    14px;
+  --radius-sm: 8px;
 }
 
 /* ── Base ── */
@@ -66,13 +61,13 @@ body {
 }
 
 .page {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 48px 32px 80px;
+  padding: 48px 24px 80px;
 }
 
 /* Subpages use a narrower column */
-body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
+body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 /* ── Motion ── */
 @keyframes fadeUp {
@@ -102,7 +97,7 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
 /* ── Page hero (subpages + capstone) ── */
 .page-hero {
   background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-  border-radius: 10px;
+  border-radius: 18px;
   padding: 28px 32px;
   margin-bottom: 20px;
   box-shadow: var(--shadow-lg);
@@ -111,12 +106,11 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
 }
 
 .page-hero h1 {
-  font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
   letter-spacing: -.01em;
-  line-height: 1.25;
+  line-height: 1.3;
   margin-bottom: 8px;
 }
 
@@ -124,6 +118,7 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
   font-size: var(--text-sm);
   color: rgba(255,255,255,.65);
   line-height: 1.65;
+  max-width: 680px;
 }
 
 .hero-byline {
@@ -177,7 +172,6 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
 .card:nth-of-type(6 of .card) { animation-delay: .28s; }
 
 .card h2 {
-  font-family: var(--font-display);
   font-size: var(--text-base);
   font-weight: 600;
   color: var(--ink);
@@ -186,7 +180,6 @@ body.subpage .page { max-width: 1040px; padding: 40px 32px 72px; }
 }
 
 .card h3 {
-  font-family: var(--font-display);
   font-size: var(--text-base);
   font-weight: 600;
   color: var(--ink);
@@ -328,7 +321,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   width: 100%;
   border: 2px solid rgba(37,99,235,.35);
   box-shadow: 0 0 0 1px rgba(37,99,235,.1), 0 4px 12px rgba(0,0,0,.08);
-  border-radius: 6px;
+  border-radius: 10px;
   display: block;
 }
 
@@ -469,12 +462,12 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
    ========================================================================== */
 
 .layout {
-  max-width: 1440px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 48px 32px 80px;
+  padding: 48px 24px 80px;
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 40px;
+  grid-template-columns: 300px 1fr;
+  gap: 32px;
   align-items: start;
 }
 
@@ -482,7 +475,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
    while .content scrolls past on the right */
 .hero {
   background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 32px 24px;
   position: sticky;
   top: 32px;
@@ -519,11 +512,10 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 
 .hero h1 {
   position: relative;
-  font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   margin-bottom: 6px;
 }
@@ -562,7 +554,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   font-size: var(--text-sm);
   font-weight: 500;
   padding: 7px 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   text-align: left;
   transition: background .15s, color .15s;
 }
@@ -620,7 +612,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 }
 
 /* Sparing use of the warm accent: only the achievement stat gets it */
-.hero-stat-highlight { color: #fbbf6a; text-shadow: 0 0 10px var(--accent-warm-glow); }
+.hero-stat-highlight { color: #fbbf6a; text-shadow: 0 0 18px var(--accent-warm-glow); }
 
 .hero-stat-label {
   font-size: var(--text-2xs);
@@ -677,7 +669,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .exp-body { flex: 1; min-width: 0; }
 
 .exp-company { font-size: var(--text-sm); font-weight: 500; color: var(--accent); margin-bottom: 1px; }
-.exp-title { font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: var(--ink); line-height: 1.3; }
+.exp-title { font-size: var(--text-base); font-weight: 600; color: var(--ink); line-height: 1.3; }
 .exp-meta { font-size: var(--text-xs); color: var(--muted); margin-bottom: 8px; }
 
 .exp-bullets { font-size: var(--text-sm); color: var(--ink-2); line-height: 1.65; padding-left: 14px; }
@@ -720,7 +712,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   margin-bottom: 4px;
 }
 
-.project-name { font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: var(--ink); }
+.project-name { font-size: var(--text-base); font-weight: 600; color: var(--ink); }
 
 .project-arrow { color: var(--muted-2); font-size: var(--text-sm); transition: color .18s, transform .18s; }
 .project-link:hover .project-arrow { color: var(--accent); transform: translateX(2px); }
@@ -761,11 +753,11 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   margin-bottom: 8px;
 }
 
-.capstone-title { font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 6px; }
+.capstone-title { font-size: var(--text-base); font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 6px; }
 
 .project-preview {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 2px solid rgba(59,130,246,0.5);
   box-shadow: 0 0 0 1px rgba(59,130,246,0.15), 0 4px 12px rgba(0,0,0,.25);
   margin-bottom: 12px;
@@ -781,7 +773,7 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .edu-item:last-child { margin-bottom: 0; }
 
 .edu-school { font-size: var(--text-sm); font-weight: 500; color: var(--accent); margin-bottom: 1px; }
-.edu-degree { font-family: var(--font-display); font-size: var(--text-base); font-weight: 600; color: var(--ink); line-height: 1.3; }
+.edu-degree { font-size: var(--text-base); font-weight: 600; color: var(--ink); line-height: 1.3; }
 .edu-meta { font-size: var(--text-xs); color: var(--muted); }
 
 /* ── Certifications ── */
@@ -911,8 +903,8 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
 @media (max-width: 700px) {
   .layout { padding: 24px 16px 60px; }
   body.subpage .page { padding: 24px 16px 56px; }
-  .hero { padding: 28px 22px; border-radius: 10px; }
-  .page-hero { padding: 22px 20px; border-radius: 10px; }
+  .hero { padding: 28px 22px; border-radius: 16px; }
+  .page-hero { padding: 22px 20px; border-radius: 14px; }
   .page-hero h1 { font-size: var(--text-lg); }
   .skill-card { flex-direction: column; gap: 8px; }
   .skill-card-header { flex: none; padding-top: 0; }
