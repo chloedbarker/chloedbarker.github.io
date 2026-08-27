@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unsupervised Learning: Clustering &amp; Association Rule Mining | Chloe Barker</title>
+<meta name="description" content="Benchmarking six clustering algorithms on 100K health records and mining association rules from 541K retail transactions.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — analytical/violet mood for this project only. */
+  body.case-study {
+    --accent:   #6d28d9;
+    --accent-2: #7c3aed;
+    --accent-3: #ede9fe;
+    --bg:       #f9f8fc;
+    --bg-2:     #f2effa;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Machine Learning</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Machine Learning · Case Study</span>
+    <h1>Clustering &amp; Association Rule Mining</h1>
+    <p class="project-hero-lede">Two very different unsupervised learning questions on two very different datasets: does a synthetic health dataset actually contain hidden patient segments, and which products at an online retailer keep showing up in the same basket?</p>
+
+    <div class="project-tags">
+      <span class="project-tag">Python</span>
+      <span class="project-tag">scikit-learn</span>
+      <span class="project-tag">mlxtend</span>
+      <span class="project-tag">Clustering</span>
+      <span class="project-tag">Association Rules</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Final_Report_Overview.pdf" target="_blank">Read Full Report</a>
+      <a class="project-btn" href="Chloe_Barker_Lab.pdf" target="_blank">View Notebook (PDF)</a>
+      <a class="project-btn" href="Chloe_Barker_Lab_Overview_Notebook.ipynb" target="_blank">View Code (.ipynb)</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning/unsupervised-learning-lab" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Does this data actually cluster, and can it predict what sells together?</h2>
+    <p>Two datasets, two different unsupervised questions. On the health dataset: do six different clustering algorithms agree that meaningful patient segments exist, and do those segments line up with actual disease risk? On the retail dataset: which products get bought together often enough, and reliably enough, to be worth acting on?</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>100K synthetic health records, 541K real retail transactions</h2>
+    <p>The health dataset is fully synthetic (Kaggle, CC0), built for algorithm testing rather than medical interpretation. The retail dataset is real UK online-retailer transaction data (UCI, CC BY 4.0) spanning thousands of customers and products.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">100,000</span>
+        <span class="metric-label">Health &amp; lifestyle records, 16 variables</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">541,909</span>
+        <span class="metric-label">Retail transactions, ~4,372 customers</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">6</span>
+        <span class="metric-label">Clustering algorithms benchmarked</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">~4,070</span>
+        <span class="metric-label">Distinct retail items mined for associations</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Six clustering methods, evaluated the same way</h2>
+    <p>For clustering: scale and encode the features, then run K-Means, Hierarchical (Ward and Average linkage), Gaussian Mixture Models, DBSCAN, Spectral, and graph-based clustering across a range of k, scored on both internal metrics (how tight the clusters are) and external metrics (whether they recover the actual disease-risk label). For the retail data: mine frequent itemsets with Apriori and FP-Growth at different support thresholds, then generate and rank association rules.</p>
+    <div class="approach-flow">
+      <span class="approach-step">Scale &amp; Encode</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">6 Clustering Methods (k = 2-8)</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Internal + External Validation</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Apriori / FP-Growth</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Rule Ranking</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>The health data doesn't cluster. The retail data clearly does.</h2>
+    <p>Every clustering method independently converged on the same answer: at best a very weak two-way split, with essentially zero agreement with the true disease-risk label. The retail basket data told the opposite story, producing strong, actionable rules.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">0.000</span>
+        <span class="metric-label">Adjusted Rand Index, best clustering method vs. true disease risk</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">24×</span>
+        <span class="metric-label">Lift on the strongest 3-item retail association rule</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <img src="assets/clusters.png" alt="Scatter plot of spectral clustering results in PCA space, k=2, showing two heavily overlapping clusters">
+      <p class="chart-caption">Every method's clusters look like this in PCA space: two heavily overlapping clouds, not the well-separated groups a useful segmentation would show.</p>
+    </div>
+
+    <div class="model-table-wrap" style="margin-top: 18px;">
+      <table class="model-table">
+        <thead>
+          <tr><th>Method</th><th>Best k</th><th>Silhouette</th><th>ARI</th><th>NMI</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>K-Means</td><td>2</td><td>0.070</td><td>0.000</td><td>0.000</td></tr>
+          <tr><td>HAC (Ward)</td><td>2</td><td>0.028</td><td>0.001</td><td>0.000</td></tr>
+          <tr><td>HAC (Average)</td><td>2</td><td>0.123</td><td>-0.001</td><td>0.000</td></tr>
+          <tr><td>GMM</td><td>2</td><td>0.067</td><td>0.000</td><td>0.000</td></tr>
+          <tr><td>Spectral</td><td>2</td><td>0.062</td><td>0.003</td><td>0.000</td></tr>
+          <tr><td>DBSCAN</td><td>-</td><td>n/a (mostly noise)</td><td>-</td><td>-</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top: 14px; font-size: var(--text-xs); color: var(--muted);">Silhouette scores near zero and ARI/NMI at essentially zero across every method, six independent algorithms agreeing this strongly is itself a finding.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What the two datasets actually showed</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Six algorithms agreeing is a real result</h3>
+        <p>K-Means, HAC, GMM, DBSCAN, Spectral, and graph-based clustering all independently landed on the same weak, at-best-two-cluster structure, that convergence is stronger evidence than any single method's score.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>DBSCAN's high silhouette score was misleading</h3>
+        <p>DBSCAN hit a silhouette of ~0.56 at one setting, but only because nearly every point was labeled noise around a few tiny core clusters, a reminder that a single metric can look good for the wrong reason.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>A specific product trio dominated the retail rules</h3>
+        <p>Three stock codes (22697, 22698, 22699) showed up together with 24× lift and high confidence, a clear, actionable signal for bundling or merchandising.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>The support threshold controlled everything</h3>
+        <p>Dropping the minimum support from 2% to 3% collapsed 251 itemsets down to 94, all singletons, and eliminated every association rule, interpretability lived entirely in that one parameter.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Limitations</div>
+    <h2>What not to take from this</h2>
+    <div class="callout warn">
+      <strong>The health dataset is fully synthetic.</strong> It's built for testing clustering algorithms, not for real epidemiological insight, the near-zero correlations that produced weak clusters reflect how the data was generated, not a real population.
+    </div>
+    <div class="callout">
+      <strong>Association rules can reflect popularity, not real association.</strong> Some high-confidence rules had a lift of about 1, meaning the items just happen to be popular individually rather than actually bought together for a reason, those were filtered out rather than reported as findings.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Machine Learning Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>

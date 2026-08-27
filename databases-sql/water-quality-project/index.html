@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Texas Water Quality Database | Chloe Barker</title>
+<meta name="description" content="A normalized MySQL database and geospatial analysis pipeline for Texas groundwater-quality data across all 254 counties.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — technical/database mood for this project only. */
+  body.case-study {
+    --accent:   #1e40af;
+    --accent-2: #2563eb;
+    --accent-3: #dbeafe;
+    --bg:       #f7f8fb;
+    --bg-2:     #eef1f7;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Databases &amp; SQL</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Databases &amp; SQL · Case Study</span>
+    <h1>Texas Water Quality Database</h1>
+    <p class="project-hero-lede">Turning decades of fragmented Texas Water Development Board text files and spreadsheets into a normalized relational database, so groundwater quality could actually be queried, mapped, and eventually linked to health outcomes.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">Python</span>
+      <span class="project-tag">SQL</span>
+      <span class="project-tag">MySQL</span>
+      <span class="project-tag">GeoPandas</span>
+      <span class="project-tag">Folium</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Final_Paper.pdf" target="_blank">Read Full Paper</a>
+      <a class="project-btn" href="Project_Presentation_Slides.pdf" target="_blank">View Slides</a>
+      <a class="project-btn" href="Semester_Project_Code.ipynb" target="_blank">View Code (.ipynb)</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql/water-quality-project" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Public groundwater data that nobody could actually query</h2>
+    <p>The Texas Water Development Board maintains one of the most comprehensive groundwater datasets in the country, decades of measurements for arsenic, fluoride, nitrate, lithium, manganese, uranium, and hundreds of other minerals, across wells statewide. But it's distributed as fragmented text files and spreadsheets, which makes real analysis, mapping, or public-health research painfully manual. Co-authored with Samson Akomolafe, Blake Armstrong, and Tracy Dower.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>A 64-table schema covering all 254 Texas counties</h2>
+    <p>The database was designed in Third Normal Form (3NF) to minimize redundancy while staying fast to query. It covers wells, sampling events, mineral concentrations, aquifers, and county geography, all as separate, properly related tables rather than one flat spreadsheet.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">64</span>
+        <span class="metric-label">Tables in the normalized (3NF) schema</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">254</span>
+        <span class="metric-label">Texas counties covered</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">20+</span>
+        <span class="metric-label">Years of TWDB groundwater measurements</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">4</span>
+        <span class="metric-label">Team members on the build</span>
+      </div>
+    </div>
+    <p class="er-label" style="margin-top: 22px;">ER Diagram</p>
+    <a class="er-diagram" href="ER.png" target="_blank">
+      <img src="ER.png" alt="Entity-Relationship Diagram for Texas water quality database" />
+    </a>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Clean, normalize, query, map</h2>
+    <p>Raw TWDB files were cleaned and standardized, then loaded into the 3NF schema. SQL joins and aggregations validated relational integrity across wells, samples, and counties before the results moved into Python for geospatial visualization.</p>
+    <div class="approach-flow">
+      <span class="approach-step">Clean &amp; Standardize Raw Files</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Design 3NF Schema</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Load &amp; Validate with SQL Joins</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">County Aggregation Queries</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">GeoPandas + Folium Mapping</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>From scattered files to a queryable, mappable system</h2>
+    <p>SQL joins confirmed accurate relational integrity across wells, samples, minerals, and counties, and aggregation queries correctly produced county-level summaries. That eliminated the manual filtering and spreadsheet wrangling the raw TWDB files required, and made it possible to spot geographic patterns directly: arsenic ran higher in parts of West Texas, fluoride clustered in central and western counties, and lithium varied enough across counties to be worth studying against health outcomes, exactly the question the follow-up capstone project picked up.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Interactive Maps</div>
+    <h2>County-level concentrations, explorable directly</h2>
+    <p>Each map below is a self-contained Folium choropleth built from the database's county-level aggregation queries. Pan, zoom, or hover a county for its value.</p>
+    <div class="map-tabs">
+      <button type="button" class="map-tab active" data-map="texas_lithium_map.html">Lithium</button>
+      <button type="button" class="map-tab" data-map="texas_fluoride_map.html">Fluoride</button>
+      <button type="button" class="map-tab" data-map="texas_iodide_map.html">Iodide</button>
+    </div>
+    <div class="map-placeholder" id="mapPlaceholder">
+      <button type="button" class="map-load-btn" id="mapLoadBtn">▶ Load interactive map</button>
+      <p class="map-placeholder-note">Each map is a self-contained Folium file (~30 MB), loaded on demand so it doesn't slow down the page.</p>
+    </div>
+    <p class="map-caption">County-level choropleth of Texas groundwater concentrations. <a id="mapFullscreenLink" href="texas_lithium_map.html" target="_blank">Open full-screen ↗</a></p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What building the schema actually revealed</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Normalization made cross-mineral queries trivial</h3>
+        <p>Separating wells, sampling events, and mineral concentrations into their own tables meant a single join could answer questions that would have required manual spreadsheet merging across dozens of raw files.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Coverage isn't even across counties</h3>
+        <p>TWDB sampling frequency varies, so some rural counties have sparse data. Any downstream health-outcome analysis has to account for that unevenness rather than treating every county's estimate as equally reliable.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>Geographic patterns were visible immediately once mapped</h3>
+        <p>Arsenic, fluoride, and lithium each showed distinct regional clustering once summarized by county and mapped, patterns that were effectively invisible in the original text files.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>The schema was built to outlive this project</h3>
+        <p>Because the design separates raw measurements from derived summaries, the same database became the direct foundation for a later independent study linking lithium exposure to dementia prevalence.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Limitations</div>
+    <h2>What this database doesn't do on its own</h2>
+    <div class="callout warn">
+      <strong>Sampling coverage is uneven.</strong> Some rural counties have very little TWDB data, so a county-level average can rest on just a handful of wells, that has to be accounted for before treating any county's number as representative.
+    </div>
+    <div class="callout">
+      <strong>This is infrastructure, not an epidemiological finding.</strong> The database organizes and exposes the data cleanly, but the geographic patterns it surfaces are descriptive; establishing a real health-outcome relationship requires the kind of statistical work done separately in the capstone project.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Databases &amp; SQL Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+
+<script>
+  const mapTabs = document.querySelectorAll('.map-tab');
+  const mapPlaceholder = document.getElementById('mapPlaceholder');
+  const mapLoadBtn = document.getElementById('mapLoadBtn');
+  const mapFullscreenLink = document.getElementById('mapFullscreenLink');
+  let mapFrame = null;
+
+  function activeMapSrc() {
+    return document.querySelector('.map-tab.active').dataset.map;
+  }
+
+  function loadMap() {
+    if (!mapFrame) {
+      mapFrame = document.createElement('iframe');
+      mapFrame.className = 'map-frame';
+      mapFrame.title = 'Texas county-level groundwater choropleth map';
+      mapPlaceholder.replaceWith(mapFrame);
+    }
+    mapFrame.src = activeMapSrc();
+  }
+
+  mapLoadBtn.addEventListener('click', loadMap);
+
+  mapTabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mapTabs.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mapFullscreenLink.href = btn.dataset.map;
+      if (mapFrame) loadMap();
+    });
+  });
+</script>
+
+</body>
+</html>

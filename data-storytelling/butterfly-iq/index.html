@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Butterfly iQ — Medical Device Market Analysis | Chloe Barker</title>
+<meta name="description" content="How the Butterfly iQ handheld ultrasound device uses data science to bring point-of-care imaging to emergency medicine.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — deep tech/medical-device mood for this project only. */
+  body.case-study {
+    --accent:   #4338ca;
+    --accent-2: #4f46e5;
+    --accent-3: #e0e7ff;
+    --bg:       #f8f8fc;
+    --bg-2:     #eeecfa;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Data Storytelling</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Data Storytelling · Case Study</span>
+    <h1>Butterfly iQ: How Data Science Revolutionizes Point-of-Care Imaging</h1>
+    <p class="project-hero-lede">A market and technology analysis of the Butterfly iQ handheld ultrasound, built to explain a genuinely technical product, chip-based imaging, AI-assisted diagnostics, cloud telemedicine, to a non-technical audience without losing what makes it interesting.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">Market Analysis</span>
+      <span class="project-tag">Data Visualization</span>
+      <span class="project-tag">PowerPoint</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Butterfly_IQ_Presentation.pdf" target="_blank">View Full Presentation</a>
+    </div>
+
+    <div class="project-hero-image">
+      <img src="assets/device.png" alt="The Butterfly iQ handheld ultrasound probe, held in a gloved hand">
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Traditional ultrasound doesn't go where the patient is</h2>
+    <p>Hospital imaging still runs into the same five walls: digital systems that can't share data easily, machines too large and room-bound for emergency use, price tags in the tens of thousands, little to no access in rural or under-resourced settings, and no good way to image a critically ill patient without moving them. Butterfly iQ was built to answer all five at once, by replacing a cart full of hardware with a single chip-based probe that plugs into a phone.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Device</div>
+    <h2>One probe, whole-body imaging, FDA-cleared</h2>
+    <p>Butterfly iQ is a portable point-of-care ultrasound (POCUS) device that connects to a smartphone or tablet. A single silicon chip-based probe replaces the multiple physical transducers a traditional ultrasound cart requires, and it's FDA-cleared for whole-body imaging in settings from emergency rooms to rural clinics.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">$500</span>
+        <span class="metric-label">Cost, versus tens of thousands for a traditional cart-based system</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">1B+</span>
+        <span class="metric-label">Ultrasound frames the underlying AI was trained on</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">3M+</span>
+        <span class="metric-label">Labeled scans in the training data</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/use-case.png" alt="The Butterfly iQ probe next to a smartphone displaying a live cardiac ultrasound scan">
+      <p class="chart-caption">The device pairs with a standard phone, no separate monitor or console required.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Where Data Science Fits In</div>
+    <h2>A full pipeline behind a handheld probe</h2>
+    <p>The chip captures raw ultrasound signal, but everything after that is data science: digital signal processing to remove noise, AI/ML interpretation that automatically recognizes structures and takes measurements, real-time image reconstruction, and a feedback loop that improves the underlying models as more scans are collected, all wrapped in HIPAA-compliant cloud infrastructure for telemedicine.</p>
+    <div class="approach-flow">
+      <span class="approach-step">Signal Acquisition</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Digital Signal Processing</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">AI/ML Interpretation</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Real-Time Reconstruction</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Cloud + Telemedicine</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Real-World Case</div>
+    <h2>Hennepin EMS put it in 40 ambulances</h2>
+    <p>The clearest evidence for the device isn't a spec sheet, it's what happened when a real EMS system deployed it at scale.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">40</span>
+        <span class="metric-label">Ambulances equipped with Butterfly iQ+</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">210</span>
+        <span class="metric-label">Paramedics trained</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">6,000+</span>
+        <span class="metric-label">Scans completed in 2024</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">10%</span>
+        <span class="metric-label">Of scans that significantly changed patient-care decisions</span>
+      </div>
+    </div>
+    <p style="margin-top: 14px;">That 10% included early field diagnosis of conditions like pulmonary embolism and aortic aneurysm, exactly the scenarios where getting imaging before the hospital changes the outcome.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Takeaways</div>
+    <h2>Why this matters beyond one device</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Data-driven decisions at the point of care</h3>
+        <p>Automated measurements and structure recognition let clinicians act on a scan immediately, instead of waiting on a specialist read.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Accessible and scalable by design</h3>
+        <p>A $500, pocket-sized device puts imaging in reach of small clinics, EMS crews, and global health settings that could never afford a traditional machine.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>Rapid response, measurable impact</h3>
+        <p>The Hennepin EMS numbers show this isn't hypothetical, one in ten field scans changed what paramedics actually did for the patient.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Data Storytelling Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
