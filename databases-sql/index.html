@@ -18,8 +18,7 @@
   </div>
 
   <div class="card">
-    <div class="section-header"><h2>Project</h2></div>
-    <h3>Texas Water Quality Database</h3>
+    <div class="card-top"><h2>Texas Water Quality Database</h2></div>
     <p class="card-desc">
       Built a fully normalized MySQL database (64 tables) to organize 20+ years of Texas
       groundwater data across all 254 counties. Used Python for the ETL pipeline and made
@@ -36,66 +35,15 @@
       <span class="tool-tag">VS Code</span>
     </div>
     <div class="link-row">
+      <a class="link-pill primary" href="water-quality-project/">View Case Study</a>
       <a class="link-pill" href="water-quality-project/Final_Paper.pdf" target="_blank">Final Paper (PDF)</a>
       <a class="link-pill" href="water-quality-project/Project_Presentation_Slides.pdf" target="_blank">Slides (PDF)</a>
       <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql/water-quality-project" target="_blank">GitHub</a>
     </div>
-    <p class="er-label">ER Diagram</p>
-    <a class="er-diagram" href="water-quality-project/ER.png" target="_blank">
-      <img src="water-quality-project/ER.png" alt="Entity-Relationship Diagram for Texas water quality database" />
-    </a>
-  </div>
-
-  <div class="card">
-    <div class="section-header"><h2>Interactive Maps</h2></div>
-    <div class="map-tabs">
-      <button type="button" class="map-tab active" data-map="water-quality-project/texas_lithium_map.html">Lithium</button>
-      <button type="button" class="map-tab" data-map="water-quality-project/texas_fluoride_map.html">Fluoride</button>
-      <button type="button" class="map-tab" data-map="water-quality-project/texas_iodide_map.html">Iodide</button>
-    </div>
-    <div class="map-placeholder" id="mapPlaceholder">
-      <button type="button" class="map-load-btn" id="mapLoadBtn">▶ Load interactive map</button>
-      <p class="map-placeholder-note">Each map is a self-contained Folium file (~30 MB), loaded on demand so it doesn't slow down the page.</p>
-    </div>
-    <p class="map-caption">County-level choropleth of Texas groundwater concentrations, pan, zoom, and hover a county for its value. <a id="mapFullscreenLink" href="water-quality-project/texas_lithium_map.html" target="_blank">Open full-screen ↗</a></p>
   </div>
 
   <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
 </div>
-
-<script>
-  const mapTabs = document.querySelectorAll('.map-tab');
-  const mapPlaceholder = document.getElementById('mapPlaceholder');
-  const mapLoadBtn = document.getElementById('mapLoadBtn');
-  const mapFullscreenLink = document.getElementById('mapFullscreenLink');
-  let mapFrame = null;
-
-  function activeMapSrc() {
-    return document.querySelector('.map-tab.active').dataset.map;
-  }
-
-  function loadMap() {
-    if (!mapFrame) {
-      mapFrame = document.createElement('iframe');
-      mapFrame.className = 'map-frame';
-      mapFrame.title = 'Texas county-level groundwater choropleth map';
-      mapPlaceholder.replaceWith(mapFrame);
-    }
-    mapFrame.src = activeMapSrc();
-  }
-
-  mapLoadBtn.addEventListener('click', loadMap);
-
-  mapTabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-      mapTabs.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      mapFullscreenLink.href = btn.dataset.map;
-      if (mapFrame) loadMap();
-    });
-  });
-</script>
-
 </body>
 </html>

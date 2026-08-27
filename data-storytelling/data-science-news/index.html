@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Data Science &amp; NLP News Digests | Chloe Barker</title>
+<meta name="description" content="Weekly presentations recapping current data science and NLP research for a technical audience, covering AI in healthcare and disease-trajectory modeling.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — briefing/editorial mood for this project only. */
+  body.case-study {
+    --accent:   #0369a1;
+    --accent-2: #0284c7;
+    --accent-3: #e0f2fe;
+    --bg:       #f7fafc;
+    --bg-2:     #eef4f8;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Data Storytelling</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Data Storytelling · Case Study</span>
+    <h1>Data Science &amp; NLP News Digests</h1>
+    <p class="project-hero-lede">A recurring weekly presentation series distilling current data science and NLP research for a technical audience: what the study actually found, why it matters, and what its limitations are, in about ten slides.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">Python</span>
+      <span class="project-tag">NLP</span>
+      <span class="project-tag">Research Synthesis</span>
+      <span class="project-tag">PowerPoint</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Data_Science_News_of_the_Week.pdf" target="_blank">AI in Healthcare (PDF)</a>
+      <a class="project-btn" href="NLP_News_of_the_Week.pdf" target="_blank">Delphi-2M / NLP (PDF)</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Format</div>
+    <h2>Same structure every week, different research</h2>
+    <p>Each edition follows the same arc: why the topic matters, what the underlying research actually did, the real numbers behind the headline, and an honest look at what the study can't yet claim. Two representative editions are summarized below.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Edition 1</div>
+    <h2>AI in Healthcare: Challenges &amp; Breakthroughs</h2>
+    <p>A survey of where AI is actually being used in medicine right now, diagnostic imaging, remote monitoring, predictive risk scoring, administrative automation, anchored by two specific studies rather than general hype.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">92.19%</span>
+        <span class="metric-label">Best breast-cancer prediction accuracy across 8 ML classifiers (LGBM, third feature selection)</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">97.5%</span>
+        <span class="metric-label">Sensitivity of a deep-learning model detecting diabetic retinopathy</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">9,963</span>
+        <span class="metric-label">Retinal images used to train and validate that model</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/slide-p12.png" alt="Slide showing the ROC curve for a deep-learning algorithm detecting diabetic retinopathy, AUC 0.978">
+      <p class="chart-caption">The algorithm's ROC curve (AUC 0.978) against individual ophthalmologists' sensitivity/specificity trade-offs, most human readers fall below the curve.</p>
+    </div>
+    <p style="margin-top: 14px;">The same edition also covered a Stanford study where GPT-4 outperformed first- and second-year medical students on clinical reasoning exams, evidence, the deck argued, that medical curricula need to start teaching AI literacy rather than treating it as external to the field.</p>
+    <div class="chart-container">
+      <img src="assets/slide-p5.png" alt="Table comparing GPT-3.5 and GPT-4 scores against Stanford medical student scores across clinical reasoning skills and case types">
+      <p class="chart-caption">GPT-4 (Model 4) beat student scores on most clinical-reasoning skills and showed a clear jump over GPT-3.5, though students still edged it out on differential diagnosis.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Edition 2</div>
+    <h2>How GPT-Style AI Could Transform Preventive Medicine</h2>
+    <p>A deep dive into Delphi-2M (Shmatko et al., Nature, 2025), a GPT-style transformer that treats a patient's health history as a sequence of tokens, one per diagnosis, ordered by age, the same way a language model treats a sentence as a sequence of words.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">1,000+</span>
+        <span class="metric-label">Diseases the model forecasts risk for simultaneously</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">20 years</span>
+        <span class="metric-label">Forecast horizon for disease timing, not just presence</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">400K + 1.9M</span>
+        <span class="metric-label">UK Biobank participants and Danish disease-registry records used for training</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/nlp-slide-p4.png" alt="Slide diagram showing a patient's health history encoded as a sequence of tokens by age, from birth to death">
+      <p class="chart-caption">Delphi-2M's core idea: a health history becomes a token sequence the model can learn the "grammar" of, the same architecture that powers a language model.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Takeaways</div>
+    <h2>What both editions kept coming back to</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>The numbers earn the headline</h3>
+        <p>Every claim in these decks traces back to a specific published study, not a general trend, that's what separates a research digest from a hype cycle.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Architecture transfers across domains</h3>
+        <p>The same transformer architecture behind large language models turns out to model disease progression, showing up twice in one week's research is itself a signal.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>Every promising result comes with a limitation</h3>
+        <p>Neither model is presented as clinic-ready, Delphi-2M's own authors flag demographic bias risk and note its predictions are probabilities, not certainties.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Data Storytelling Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
