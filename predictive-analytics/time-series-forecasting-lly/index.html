@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Time Series Forecasting — Eli Lilly (LLY) | Chloe Barker</title>
+<meta name="description" content="Forecasting Eli Lilly's monthly stock price at two horizons, comparing ARMA, ARIMA, VAR, and an MLP neural network.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — dark navy/financial mood for this project only. */
+  body.case-study {
+    --accent:   #3730a3;
+    --accent-2: #4f46e5;
+    --accent-3: #e0e7ff;
+    --bg:       #f8f8fc;
+    --bg-2:     #f1f0fa;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Predictive Analytics · Case Study</span>
+    <h1>Time Series Forecasting — Eli Lilly (LLY)</h1>
+    <p class="project-hero-lede">Forecasting Eli Lilly's monthly stock price at two different horizons for a healthcare investment fund, and learning that the model that wins at three months is not the model that wins at twelve.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">R</span>
+      <span class="project-tag">tswge</span>
+      <span class="project-tag">ARIMA</span>
+      <span class="project-tag">VAR</span>
+      <span class="project-tag">MLP Neural Net</span>
+      <span class="project-tag">Time Series</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="final-report.pdf" target="_blank">Read Full Report</a>
+      <a class="project-btn" href="presentation.pdf" target="_blank">View Slides</a>
+      <a class="project-btn" href="analysis.Rmd" target="_blank">View Code (.Rmd)</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/time-series-forecasting-lly" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Which model actually forecasts a volatile stock, and over what horizon?</h2>
+    <p>A healthcare investment fund tracking Eli Lilly's GLP-1-driven run needed forecasts at two different horizons, three months and twelve months, and wanted to know whether one model could serve both or whether the horizon itself should drive the model choice.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>136 months of LLY, plus two comparison stocks</h2>
+    <p>Monthly log-adjusted closing prices for LLY from 2015 to 2026, split into 124 months of training data with the final 12 months held out for testing. Two explanatory series were tested alongside LLY's own history: XLV, the broad healthcare sector ETF, and NVO (Novo Nordisk), LLY's direct competitor in the GLP-1 drug market.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">136</span>
+        <span class="metric-label">Months of price history modeled</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">124</span>
+        <span class="metric-label">Training months</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">12</span>
+        <span class="metric-label">Held-out test months</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">2</span>
+        <span class="metric-label">Comparison series tested (XLV sector ETF, NVO competitor)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Five models, evaluated at two horizons</h2>
+    <p>I log-transformed price to stabilize variance, confirmed the series was nonstationary (a single difference was enough to fix that), then fit five different models and evaluated each one on the same held-out 3-month and 12-month windows using average squared error (ASE).</p>
+    <div class="approach-flow">
+      <span class="approach-step">Log-Transform &amp; Stationarity Check</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">ARMA &amp; ARIMA (Univariate)</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">VAR with XLV &amp; NVO</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">MLP Neural Net</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">ASE Evaluation (3-mo / 12-mo)</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>No single model won both horizons</h2>
+    <p>ARIMA was the strongest short-term forecaster but degraded sharply at twelve months, while a nonlinear neural network reversed that pattern almost entirely.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">0.004</span>
+        <span class="metric-label">Best 3-month ASE, ARIMA(4,1,0)</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">0.017</span>
+        <span class="metric-label">Best 12-month ASE, MLP neural net</span>
+      </div>
+    </div>
+
+    <div class="model-table-wrap">
+      <table class="model-table">
+        <thead>
+          <tr><th>Model</th><th>Short-Term ASE (3 mo)</th><th>Long-Term ASE (12 mo)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ARMA (on log returns)</td><td>0.006</td><td>0.010</td></tr>
+          <tr class="is-winner"><td>ARIMA(4,1,0) (on log price)</td><td>0.004</td><td>0.355</td></tr>
+          <tr><td>VAR (LLY + XLV)</td><td>0.070</td><td>0.046</td></tr>
+          <tr><td>VAR (LLY + NVO)</td><td>0.062</td><td>0.038</td></tr>
+          <tr class="is-winner"><td>MLP (LLY + XLV, lag 1)</td><td>0.023</td><td>0.017</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top: 14px; font-size: var(--text-xs); color: var(--muted);">ARMA is evaluated on differenced log returns while the other four models are evaluated on the log price level, so that row isn't directly comparable, the horizon recommendation below focuses on ARIMA, VAR, and MLP.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What actually separated the models</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>ARIMA won short-term by riding the random walk</h3>
+        <p>Stock prices behave close to a random walk, so ARIMA's short-horizon forecast is mostly an extension of the most recent trend, and that's exactly what worked at three months.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>That same behavior sank it long-term</h3>
+        <p>Projecting the recent trend forward for twelve months meant extrapolating LLY's explosive 2022-2024 GLP-1 run indefinitely, and the ASE blew out to 0.355 as a result.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>A nonlinear model handled the long horizon better</h3>
+        <p>The MLP neural network produced the lowest 12-month ASE, suggesting the longer-term pattern in LLY's price isn't purely linear the way ARIMA assumes.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>The competitor mattered more than the sector</h3>
+        <p>VAR with Novo Nordisk, LLY's direct GLP-1 rival, beat VAR with the broader healthcare ETF at both horizons, company-specific competition carried more signal than sector-wide movement.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Model Limitations</div>
+    <h2>Where these forecasts should be trusted, and where not</h2>
+    <div class="callout warn">
+      <strong>Only 12 months were held out for testing.</strong> With a test window that short, the ASE estimates are sensitive to exactly which 12 months got held out, and LLY's 2022-2024 run was unusually volatile even for a stock, so these results may not generalize to a calmer market.
+    </div>
+    <div class="callout">
+      <strong>Monthly returns are close to white noise.</strong> The ARMA fit on differenced log returns showed very limited predictable structure, a reminder that no model here should be read as more precise than a stock forecast can honestly be. The wide prediction intervals at the 12-month horizon reflect that real uncertainty rather than a modeling failure.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Predictive Analytics Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
