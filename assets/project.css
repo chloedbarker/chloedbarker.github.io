@@ -1,0 +1,299 @@
+/* ==========================================================================
+   Case-study page system — shared by individual project pages
+   (e.g. predictive-analytics/heart-disease-prediction/index.html).
+
+   Loaded *after* assets/style.css, reusing its design tokens (--ink,
+   --accent, --border, --radius, etc.) so every case study stays visually
+   part of the same portfolio while getting its own richer layout.
+
+   Each project page may layer a small <style> override block on top of
+   this file to adopt its own accent/mood (see the "palette hook" section
+   at the bottom) without duplicating the component CSS.
+   ========================================================================== */
+
+body.case-study .page { max-width: 920px; }
+
+/* ── Hero ── */
+.project-hero {
+  padding: 8px 0 36px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+
+.project-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.project-hero h1 {
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.project-hero-lede {
+  font-size: var(--text-base);
+  color: var(--ink-2);
+  line-height: 1.7;
+  max-width: 640px;
+  margin-bottom: 22px;
+}
+
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+
+.project-tag {
+  font-size: var(--text-2xs);
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+}
+
+.project-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.project-btn {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+  background: var(--surface);
+  transition: background .15s, color .15s, border-color .15s, transform .15s;
+}
+
+.project-btn:hover { border-color: var(--accent-2); color: var(--accent); transform: translateY(-1px); }
+
+.project-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.project-btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+
+.project-hero-image {
+  margin-top: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.project-hero-image img { display: block; width: 100%; height: auto; }
+
+/* ── Section rhythm ── */
+.project-section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+.project-section:last-of-type { border-bottom: none; }
+
+.project-section-label {
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.project-section h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.project-section p {
+  font-size: var(--text-base);
+  color: var(--ink-2);
+  line-height: 1.75;
+  max-width: 680px;
+}
+
+.project-section p + p { margin-top: 12px; }
+
+/* ── Metrics ── */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.metric-card {
+  padding: 20px 18px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.metric-value {
+  display: block;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.metric-value.accent { color: var(--accent); }
+
+.metric-label {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ── Approach flow ── */
+.approach-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.approach-step {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.approach-arrow { color: var(--muted-2); font-size: var(--text-sm); }
+
+/* ── Model comparison table ── */
+.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: var(--text-sm);
+}
+
+.model-table th, .model-table td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.model-table th {
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.model-table td { color: var(--ink-2); }
+.model-table tr.is-winner td { color: var(--ink); font-weight: 600; }
+.model-table tr.is-winner td:first-child { color: var(--accent); }
+
+.model-table-wrap { overflow-x: auto; }
+
+/* ── Insight cards ── */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.insight-card {
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.insight-number {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.insight-card h3 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.insight-card p {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+/* ── Callout / limitations ── */
+.callout {
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--muted-2);
+  background: var(--bg-2);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  line-height: 1.65;
+  margin-top: 14px;
+}
+
+.callout strong { color: var(--ink); font-weight: 600; }
+
+.callout.warn { border-left-color: var(--accent-warm); background: var(--accent-warm-bg); }
+.callout.warn strong { color: #78350f; }
+
+/* ── Chart / figure container ── */
+.chart-container {
+  margin-top: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.chart-container img { display: block; width: 100%; height: auto; }
+
+.chart-caption {
+  padding: 10px 16px;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Footer nav between projects ── */
+.project-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 32px;
+}
+
+.project-footer-nav a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.project-footer-nav a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .project-footer-nav { flex-direction: column; }
+}

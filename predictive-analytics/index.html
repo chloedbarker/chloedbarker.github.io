@@ -14,12 +14,12 @@
 
   <div class="page-hero">
     <h1>Predictive Analytics</h1>
-    <p>Six classification and regression projects across healthcare, HR, real estate, and finance. The common thread: picking the model that fits the decision, not just the one with the best headline number — cost-optimized thresholds for attrition, interpretability over black-box gains for hospital stays, different models for different forecast horizons.</p>
+    <p>Six classification and regression projects across healthcare, HR, real estate, and finance. The common thread is picking the model that fits the decision, not just the one with the best headline number, using cost-optimized thresholds for attrition, interpretability over black-box gains for hospital stays, and different models for different forecast horizons.</p>
   </div>
 
   <div class="card">
     <div class="card-top"><h2>Heart Disease Prediction</h2></div>
-    <p class="card-desc">Binary classification of heart disease using CDC BRFSS survey data (300k+ respondents, 18 predictors). Compared additive logistic regression, a GLMNET-selected non-additive model with polynomial and interaction terms, LDA, QDA, and kNN. The non-additive logistic model performed best (AUROC 0.845), substantially outperforming LDA (0.637), QDA (0.622), and kNN (0.586). General health was the strongest signal: poor self-rated health carried 6.57 times the odds of heart disease relative to excellent (95% CI: 6.01–7.18). Class imbalance held sensitivity low across all models, a limitation I discuss rather than tune away.</p>
+    <p class="card-desc">Used CDC survey data on 300K+ people to predict who's at risk for heart disease. I compared five different models, and a more flexible logistic regression came out on top, with self-reported general health turning out to be one of the strongest predictors, even more than several clinical factors.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
@@ -30,6 +30,7 @@
       <span class="tool-tag">ROC / AUC</span>
     </div>
     <div class="link-row">
+      <a class="link-pill" href="heart-disease-prediction/" style="background: var(--accent); color: #fff; border-color: var(--accent);">View Case Study</a>
       <a class="link-pill" href="heart-disease-prediction/Heart_Disease_Prediction_Slides.pdf" target="_blank">Slides (PDF)</a>
       <a class="link-pill" href="heart-disease-prediction/Heart_Disease_Prediction_Project.pdf" target="_blank">Report (PDF)</a>
       <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/heart-disease-prediction" target="_blank">GitHub</a>
@@ -38,7 +39,7 @@
 
   <div class="card">
     <div class="card-top"><h2>Time Series Forecasting — Eli Lilly (LLY)</h2></div>
-    <p class="card-desc">Forecast LLY monthly log price (136 observations, 2015–2026) for a healthcare investment fund needing both quarterly and annual horizons. Compared ARMA, ARIMA(4,1,0), two VAR specifications, and an MLP neural network. No single model won both horizons: ARIMA was best at three months (ASE 0.004) but degraded badly at twelve (ASE 0.355), while the MLP with lagged XLV was best long-term (ASE 0.017). Notably, VAR with Novo Nordisk outperformed VAR with the sector ETF — the direct GLP-1 competitor carried more signal than the sector as a whole.</p>
+    <p class="card-desc">Forecasted Eli Lilly's stock price for a healthcare investment fund that needed both short and long-term outlooks. I tried several time-series models and found no single winner, one was best for three-month forecasts and a different one was best for a full year, which was a good lesson in matching the model to the actual question being asked.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
@@ -57,7 +58,7 @@
 
   <div class="card">
     <div class="card-top"><h2>Hospital Length of Stay Prediction</h2></div>
-    <p class="card-desc">Regression modeling of average patient length of stay across 113 hospitals. Compared an interpretable additive MLR against a complex MLR with polynomial and interaction terms (LASSO-guided) and a kNN model. The complex MLR performed best on every error metric (R² = 0.776, RMSE = 0.0996, MAE = 0.077); kNN was worst, trading interpretability for nothing. Infection risk was significant across all specifications: each one-unit increase was associated with a 5.4% increase in median length of stay (bootstrap 95% CI: 3.3–7.6%).</p>
+    <p class="card-desc">Predicted how long patients would stay in the hospital using data from 113 hospitals. I compared a simple, easy-to-explain model against a more complex one, and the complex model won on accuracy, but I made sure it still made sense before trusting it over the simpler one.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
@@ -74,7 +75,7 @@
 
   <div class="card">
     <div class="card-top"><h2>Employee Attrition Prediction — Frito-Lay</h2></div>
-    <p class="card-desc">Classification modeling to identify turnover risk in Frito-Lay HR data, with the decision threshold tuned to minimize expected cost rather than maximize accuracy. Age, job role, and overtime emerged as the dominant predictors. The kNN model (k = 3, threshold 0.15) reached 94.29% sensitivity at 72.76% accuracy — deliberately favoring recall, since missing an employee who leaves costs 50–400% of their salary to replace versus $200 for a retention incentive. Translated model output into a projected cost range of $379k–$2.53M, down from $1.27M–$9.59M under the Naive Bayes alternative.</p>
+    <p class="card-desc">Built a model to flag Frito-Lay employees at risk of leaving, then tuned it around the real cost of turnover instead of just chasing accuracy, since missing someone who's about to quit is a lot more expensive than a false alarm. Age, job role, and overtime were the biggest predictors.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
@@ -91,7 +92,7 @@
 
   <div class="card">
     <div class="card-top"><h2>Sale Price Prediction</h2></div>
-    <p class="card-desc">Predicted residential sale prices in Ames, Iowa (1,460 homes, 79 variables) for two distinct questions: a neighborhood-level inference problem for a realtor client, and a city-wide prediction problem scored on Kaggle. For the first, log-transformed both price and living area to satisfy regression assumptions, then tested whether the price-per-square-foot relationship varies by neighborhood — it does (F = 8.649, p = 0.0002), with BrkSide showing a significantly steeper slope than NAmes or Edwards. For the second, compared four specifications; the final MLR incorporating quality indices, building type, age, and neighborhood explained 86.7% of variance in log sale price and achieved a Kaggle RMSLE of 0.150, improving on the simple-regression baseline of 0.229. Validated assumptions throughout with Q-Q, leverage, Cook's D, and Durbin-Watson diagnostics.</p>
+    <p class="card-desc">Predicted home sale prices in Ames, Iowa two ways: first digging into whether the price-per-square-foot relationship changes by neighborhood (it does), then building a model that competed on Kaggle and explained about 87% of the variation in price.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>
@@ -108,7 +109,7 @@
 
   <div class="card">
     <div class="card-top"><h2>Crab Age Prediction</h2></div>
-    <p class="card-desc">Regression competition predicting crab age from physical measurements, with an interactive R Shiny app for exploring predictions. Feature engineering — polynomial terms, a constructed shell-density variable, and size-by-sex interactions — produced a final model with R² = 0.702 and MAE = 1.14 months.</p>
+    <p class="card-desc">A Kaggle-style competition predicting a crab's age from physical measurements like shell size and weight. I also built a small interactive app so you can play with the predictions yourself.</p>
     <div class="tool-tags">
       <span class="tool-tag">R</span>
       <span class="tool-tag">RStudio</span>

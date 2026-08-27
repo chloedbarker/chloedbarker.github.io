@@ -21,10 +21,9 @@
     <div class="section-header"><h2>Project</h2></div>
     <h3>Texas Water Quality Database</h3>
     <p class="card-desc">
-      Designed and implemented a fully normalized relational database (64 tables, 3NF) for Texas
-      groundwater quality data spanning 20+ years across all 254 counties. Integrated MySQL with
-      Python for ETL workflows, performed geospatial analysis using GeoPandas, and created
-      interactive choropleth maps with Folium to identify contamination hotspots for public health research.
+      Built a fully normalized MySQL database (64 tables) to organize 20+ years of Texas
+      groundwater data across all 254 counties. Used Python for the ETL pipeline and made
+      interactive maps with Folium to spot contamination hotspots.
     </p>
     <div class="tool-tags">
       <span class="tool-tag">Python</span>
@@ -56,9 +55,9 @@
     </div>
     <div class="map-placeholder" id="mapPlaceholder">
       <button type="button" class="map-load-btn" id="mapLoadBtn">▶ Load interactive map</button>
-      <p class="map-placeholder-note">Each map is a self-contained Folium file (~30 MB) — loaded on demand so it doesn't slow down the page.</p>
+      <p class="map-placeholder-note">Each map is a self-contained Folium file (~30 MB), loaded on demand so it doesn't slow down the page.</p>
     </div>
-    <p class="map-caption">County-level choropleth of Texas groundwater concentrations — pan, zoom, and hover a county for its value. <a id="mapFullscreenLink" href="water-quality-project/texas_lithium_map.html" target="_blank">Open full-screen ↗</a></p>
+    <p class="map-caption">County-level choropleth of Texas groundwater concentrations, pan, zoom, and hover a county for its value. <a id="mapFullscreenLink" href="water-quality-project/texas_lithium_map.html" target="_blank">Open full-screen ↗</a></p>
   </div>
 
   <a class="back-link" href="../index.html">← Back to Portfolio</a>
