@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Heart Disease Prediction | Chloe Barker</title>
-<meta name="description" content="Binary classification of heart disease risk using CDC BRFSS survey data — comparing logistic regression, LDA, QDA, and kNN across 319,795 respondents.">
+<meta name="description" content="Binary classification of heart disease risk using CDC BRFSS survey data, comparing logistic regression, LDA, QDA, and kNN across 319,795 respondents.">
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/style.css?v=20260827">
 <link rel="stylesheet" href="../../assets/project.css?v=20260827">
@@ -28,7 +28,7 @@
   <div class="project-hero">
     <span class="project-eyebrow">Predictive Analytics · Case Study</span>
     <h1>Heart Disease Prediction</h1>
-    <p class="project-hero-lede">Using routinely-collected patient survey data to identify individuals at elevated cardiovascular risk — and confronting what a model can and can't do when the outcome it's predicting is rare.</p>
+    <p class="project-hero-lede">Using routinely-collected patient survey data to identify individuals at elevated cardiovascular risk, and confronting what a model can and can't do when the outcome it's predicting is rare.</p>
 
     <div class="project-tags">
       <span class="project-tag">R</span>
@@ -50,7 +50,7 @@
   <div class="project-section">
     <div class="project-section-label">The Problem</div>
     <h2>Can survey-based patient information flag elevated cardiovascular risk?</h2>
-    <p>Heart disease is the leading cause of death in the U.S., but it's also one of the most heavily studied conditions in medicine — clinical risk scores already exist. The question here was narrower and more practical: using only what a population health survey already collects (no labs, no imaging), how much signal is actually there, and where does a simple, interpretable model start to lose to a more flexible one?</p>
+    <p>Heart disease is the leading cause of death in the U.S., but it's also one of the most heavily studied conditions in medicine, and clinical risk scores already exist. The question here was narrower and more practical: using only what a population health survey already collects (no labs, no imaging), how much signal is actually there, and where does a simple, interpretable model start to lose to a more flexible one?</p>
   </div>
 
   <div class="project-section">
@@ -72,7 +72,7 @@
       </div>
       <div class="metric-card">
         <span class="metric-value">91.4%</span>
-        <span class="metric-label">No heart disease — the class imbalance every model had to contend with</span>
+        <span class="metric-label">No heart disease, the class imbalance every model had to contend with</span>
       </div>
     </div>
   </div>
@@ -103,7 +103,7 @@
     <div class="metric-grid">
       <div class="metric-card">
         <span class="metric-value accent">0.845</span>
-        <span class="metric-label">AUROC — non-additive logistic model (best)</span>
+        <span class="metric-label">AUROC, non-additive logistic model (best)</span>
       </div>
       <div class="metric-card">
         <span class="metric-value">6.57×</span>
@@ -148,12 +148,12 @@
       <div class="insight-card">
         <span class="insight-number">01</span>
         <h3>Age was the strongest single driver</h3>
-        <p>Holding other predictors constant, respondents 80+ had roughly 25× the odds of heart disease of the 18–24 reference group (95% CI 20.7–30.8) — a near-monotonic climb across every age band.</p>
+        <p>Holding other predictors constant, respondents 80+ had roughly 25× the odds of heart disease of the 18–24 reference group (95% CI 20.7–30.8), a near-monotonic climb across every age band.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">02</span>
         <h3>Self-rated general health carried outsized signal</h3>
-        <p>Respondents reporting "poor" general health had 6.57× the odds of heart disease versus "excellent" (95% CI 6.01–7.18) — a single subjective survey question doing real predictive work.</p>
+        <p>Respondents reporting "poor" general health had 6.57× the odds of heart disease versus "excellent" (95% CI 6.01–7.18), a single subjective survey question doing real predictive work.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">03</span>
@@ -170,12 +170,12 @@
 
   <div class="project-section">
     <div class="project-section-label">Model Limitations</div>
-    <h2>Where this model should — and shouldn't — be trusted</h2>
+    <h2>Where this model should, and shouldn't, be trusted</h2>
     <div class="callout warn">
-      <strong>Class imbalance held sensitivity low across every model.</strong> With only 8.6% of respondents reporting heart disease, models optimized for overall accuracy defaulted toward predicting "no disease" — LDA reached 88% specificity but caught only 31% of true positive cases. I chose not to tune this away with synthetic resampling, since doing so would trade a documented, interpretable trade-off for an artificial one.
+      <strong>Class imbalance held sensitivity low across every model.</strong> With only 8.6% of respondents reporting heart disease, models optimized for overall accuracy defaulted toward predicting "no disease," and LDA reached 88% specificity but caught only 31% of true positive cases. I chose not to tune this away with synthetic resampling, since doing so would trade a documented, interpretable trade-off for an artificial one.
     </div>
     <div class="callout">
-      <strong>Self-reported, cross-sectional survey data.</strong> BRFSS responses are subject to recall and social-desirability bias, and every predictor here is observational — the odds ratios describe association, not causation, and shouldn't be read as a clinical risk calculator.
+      <strong>Self-reported, cross-sectional survey data.</strong> BRFSS responses are subject to recall and social-desirability bias, and every predictor here is observational, so the odds ratios describe association, not causation, and shouldn't be read as a clinical risk calculator.
     </div>
   </div>
 
