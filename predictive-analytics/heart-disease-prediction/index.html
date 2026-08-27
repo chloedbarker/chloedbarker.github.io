@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Heart Disease Prediction | Chloe Barker</title>
+<meta name="description" content="Binary classification of heart disease risk using CDC BRFSS survey data — comparing logistic regression, LDA, QDA, and kNN across 319,795 respondents.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — clinical/healthcare mood for this project only.
+     Same tokens as the site, tuned toward navy + soft clinical blue. */
+  body.case-study {
+    --accent:   #1d4ed8;
+    --accent-2: #2563eb;
+    --accent-3: #dbeafe;
+    --bg:       #f7f9fc;
+    --bg-2:     #eef2f8;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Predictive Analytics · Case Study</span>
+    <h1>Heart Disease Prediction</h1>
+    <p class="project-hero-lede">Using routinely-collected patient survey data to identify individuals at elevated cardiovascular risk — and confronting what a model can and can't do when the outcome it's predicting is rare.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">R</span>
+      <span class="project-tag">Logistic Regression</span>
+      <span class="project-tag">GLMNET</span>
+      <span class="project-tag">LDA / QDA</span>
+      <span class="project-tag">kNN</span>
+      <span class="project-tag">ROC / AUC</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Heart_Disease_Prediction_Project.pdf" target="_blank">Read Full Report</a>
+      <a class="project-btn" href="Heart_Disease_Prediction_Slides.pdf" target="_blank">View Slides</a>
+      <a class="project-btn" href="Heart_Disease_Prediction_Code.Rmd" target="_blank">View Code (.Rmd)</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/heart-disease-prediction" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Can survey-based patient information flag elevated cardiovascular risk?</h2>
+    <p>Heart disease is the leading cause of death in the U.S., but it's also one of the most heavily studied conditions in medicine — clinical risk scores already exist. The question here was narrower and more practical: using only what a population health survey already collects (no labs, no imaging), how much signal is actually there, and where does a simple, interpretable model start to lose to a more flexible one?</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>CDC BRFSS survey respondents</h2>
+    <p>319,795 respondents from the CDC's Behavioral Risk Factor Surveillance System, split 80/20 into training (255,837) and test (63,958) sets, stratified to preserve the class balance.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">319,795</span>
+        <span class="metric-label">Survey respondents</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">18</span>
+        <span class="metric-label">Predictors (BMI, age, smoking, general health, sleep time, and more)</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">8.6%</span>
+        <span class="metric-label">Prevalence of heart disease in the sample</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">91.4%</span>
+        <span class="metric-label">No heart disease — the class imbalance every model had to contend with</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>From an interpretable baseline to a tuned comparison</h2>
+    <p>I started with an additive logistic regression for interpretation, then let GLMNET select a non-additive specification with polynomial and interaction terms, and benchmarked both against LDA, QDA, and kNN on held-out data.</p>
+    <div class="approach-flow">
+      <span class="approach-step">EDA &amp; Cleaning</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Additive Logistic Model</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">GLMNET Feature Selection</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Non-Additive Model</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">LDA / QDA / kNN Comparison</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">ROC / AUC Evaluation</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>The non-additive logistic model generalized best</h2>
+    <p>Adding polynomial and interaction terms to the logistic model improved discrimination meaningfully over the additive baseline, and both logistic specifications comfortably outperformed LDA, QDA, and kNN on AUROC.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">0.845</span>
+        <span class="metric-label">AUROC — non-additive logistic model (best)</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">6.57×</span>
+        <span class="metric-label">Odds of heart disease, poor vs. excellent general health (95% CI 6.01–7.18)</span>
+      </div>
+    </div>
+
+    <div class="model-table-wrap">
+      <table class="model-table">
+        <thead>
+          <tr><th>Model</th><th>AUROC</th></tr>
+        </thead>
+        <tbody>
+          <tr class="is-winner"><td>Non-Additive Logistic (GLMNET-selected)</td><td>0.845</td></tr>
+          <tr><td>Additive Logistic (interpretable baseline)</td><td>0.841</td></tr>
+          <tr><td>LDA</td><td>0.637</td></tr>
+          <tr><td>QDA</td><td>0.622</td></tr>
+          <tr><td>kNN</td><td>0.586</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top: 18px;">At a threshold tuned for the rare positive class, sensitivity and specificity told a more complicated story than AUROC alone:</p>
+    <div class="model-table-wrap">
+      <table class="model-table">
+        <thead>
+          <tr><th>Model</th><th>Sensitivity</th><th>Specificity</th><th>PPV</th><th>NPV</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Additive Logistic</td><td>74.2%</td><td>78.0%</td><td>24.0%</td><td>97.0%</td></tr>
+          <tr><td>LDA</td><td>30.7%</td><td>88.2%</td><td>—</td><td>—</td></tr>
+          <tr><td>kNN</td><td>89.7%</td><td>65.2%</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What actually predicted risk</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Age was the strongest single driver</h3>
+        <p>Holding other predictors constant, respondents 80+ had roughly 25× the odds of heart disease of the 18–24 reference group (95% CI 20.7–30.8) — a near-monotonic climb across every age band.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Self-rated general health carried outsized signal</h3>
+        <p>Respondents reporting "poor" general health had 6.57× the odds of heart disease versus "excellent" (95% CI 6.01–7.18) — a single subjective survey question doing real predictive work.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>Stroke history nearly tripled the odds</h3>
+        <p>A prior stroke was associated with 2.85× the odds of heart disease (95% CI 2.71–2.99), the strongest binary clinical-history predictor in the model.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>Sex was a persistent, moderate factor</h3>
+        <p>Men had roughly double the odds of women (95% CI 1.97–2.10) after adjusting for age, health status, and the other 15 predictors.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Model Limitations</div>
+    <h2>Where this model should — and shouldn't — be trusted</h2>
+    <div class="callout warn">
+      <strong>Class imbalance held sensitivity low across every model.</strong> With only 8.6% of respondents reporting heart disease, models optimized for overall accuracy defaulted toward predicting "no disease" — LDA reached 88% specificity but caught only 31% of true positive cases. I chose not to tune this away with synthetic resampling, since doing so would trade a documented, interpretable trade-off for an artificial one.
+    </div>
+    <div class="callout">
+      <strong>Self-reported, cross-sectional survey data.</strong> BRFSS responses are subject to recall and social-desirability bias, and every predictor here is observational — the odds ratios describe association, not causation, and shouldn't be read as a clinical risk calculator.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Predictive Analytics Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
