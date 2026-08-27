@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Employee Attrition Prediction — Frito-Lay | Chloe Barker</title>
+<meta name="description" content="Predicting employee attrition risk at Frito-Lay and choosing a decision threshold based on the real cost of a missed departure vs. a false alarm.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — HR/risk mood for this project only. */
+  body.case-study {
+    --accent:   #be123c;
+    --accent-2: #e11d48;
+    --accent-3: #ffe4e6;
+    --bg:       #fdf8f9;
+    --bg-2:     #faf0f1;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Predictive Analytics · Case Study</span>
+    <h1>Employee Attrition Prediction — Frito-Lay</h1>
+    <p class="project-hero-lede">Flagging which Frito-Lay employees are at risk of leaving, and choosing the decision threshold around what a missed departure actually costs instead of chasing accuracy for its own sake.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">R</span>
+      <span class="project-tag">kNN</span>
+      <span class="project-tag">Naive Bayes</span>
+      <span class="project-tag">Cost-Based Thresholding</span>
+      <span class="project-tag">ggplot2</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Chloe_Barker_Frito_Lay_EDA.pdf" target="_blank">View Slides</a>
+      <a class="project-btn" href="Frito-Lay-Analysis-Code.Rmd" target="_blank">View Code (.Rmd)</a>
+      <a class="project-btn" href="FritoLay-Analysis-Code.html" target="_blank">View Code Output</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/employee-attrition-prediction" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Which employees are likely to leave, and what should the company do about it?</h2>
+    <p>Frito-Lay wanted to flag employees at risk of attrition before they left. But a plain accuracy-optimized model treats a missed departure and a false alarm as equally costly, and they aren't even close: replacing a departing employee runs 50%-400% of their salary, while a retention incentive costs about $200. The real question wasn't just who's likely to leave, it was what decision threshold makes financial sense given how lopsided those two costs are.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>870 employees, and a real income gap between who stays and who leaves</h2>
+    <p>Of 870 employees, 730 stayed and 140 left, an attrition rate of about 16%. Before building any predictive model, I tested whether monthly income actually differed between the two groups, and it did.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">870</span>
+        <span class="metric-label">Employees in the dataset</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">16.1%</span>
+        <span class="metric-label">Attrition rate (140 of 870 left)</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">$6,702</span>
+        <span class="metric-label">Avg. monthly income, employees who stayed</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">$4,765</span>
+        <span class="metric-label">Avg. monthly income, employees who left</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/ttest.png" alt="Two-sample t-test comparing mean monthly income between employees who stayed and employees who left, test statistic -5.3249, p-value 2.412e-07">
+      <p class="chart-caption">A two-sample t-test rejected the null of equal means (t = -5.32, p &lt; .001): employees who left earned $1,220 to $2,654 less per month on average, at 95% confidence.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Cost first, model second</h2>
+    <p>Rather than optimize for accuracy, I set the decision threshold using the actual dollar costs on each side, a $200 retention incentive against a replacement cost of 50%-400% of the average $76,683 salary, then compared a Naive Bayes model against a kNN model at their respective cost-optimal thresholds.</p>
+    <div class="approach-flow">
+      <span class="approach-step">EDA &amp; Cost Framework</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Naive Bayes (threshold 0.12)</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">kNN, k = 3 (threshold 0.15)</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Cost-Based Comparison</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Recommendation</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>kNN cut the projected cost range by more than half</h2>
+    <p>Both models identified Age, Job Role, and Overtime as the strongest predictors. But at their respective cost-optimal thresholds, kNN traded some specificity for a large jump in sensitivity, and that trade paid off financially.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">94.29%</span>
+        <span class="metric-label">kNN sensitivity at its cost-optimal threshold</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">$379K-$2.53M</span>
+        <span class="metric-label">kNN projected cost range, down from $1.27M-$9.59M under Naive Bayes</span>
+      </div>
+    </div>
+    <div class="model-table-wrap">
+      <table class="model-table">
+        <thead>
+          <tr><th>Model</th><th>Threshold</th><th>Sensitivity</th><th>Specificity</th><th>Accuracy</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Naive Bayes</td><td>0.12</td><td>77.86%</td><td>62.05%</td><td>64.60%</td></tr>
+          <tr class="is-winner"><td>kNN (k = 3)</td><td>0.15</td><td>94.29%</td><td>68.63%</td><td>72.76%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-container">
+      <img src="assets/attrition.png" alt="Scatter plot of years in current role versus monthly income, faceted by overtime status, colored by whether the employee left or stayed">
+      <p class="chart-caption">Employees who left (red) cluster at low tenure and lower income in both facets, but far more densely among those working overtime, visual confirmation of why overtime ranked alongside age and job role as a top predictor.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What actually mattered</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Missing a leaver is far more expensive than a false alarm</h3>
+        <p>A false alarm costs about $200, missing someone who actually leaves costs 50%-400% of their $76,683 salary. That asymmetry should drive the decision threshold, not overall accuracy.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Age, job role, and overtime held up across both models</h3>
+        <p>The same three predictors surfaced as the strongest signal in both the Naive Bayes model and the kNN model, model choice didn't change what was actually driving attrition risk.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>Income really is different between the two groups</h3>
+        <p>A t-test confirmed employees who stayed earned significantly more per month than those who left, evidence that monthly income is worth watching even outside the final model.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>A less "accurate" model was the better business decision</h3>
+        <p>kNN's 72.76% accuracy wasn't the highest it could have been tuned for, but a threshold chosen for cost rather than accuracy cut the projected replacement-cost range by more than half versus Naive Bayes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Model Limitations</div>
+    <h2>What these numbers can and can't tell you</h2>
+    <div class="callout warn">
+      <strong>The cost figures rely on a wide assumed range.</strong> Replacement cost is modeled at 50%-400% of salary, a range drawn from general HR literature rather than Frito-Lay's own accounting, so the dollar figures should be read as a plausible range, not a precise budget number.
+    </div>
+    <div class="callout">
+      <strong>This is observational data from one company at one point in time.</strong> These predictors and thresholds reflect Frito-Lay's workforce specifically and may not transfer directly to a different employer or industry.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Predictive Analytics Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
