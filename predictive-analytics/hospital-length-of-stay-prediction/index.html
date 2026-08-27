@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hospital Length of Stay Prediction | Chloe Barker</title>
+<meta name="description" content="Comparing an interpretable regression model against a more complex one and a k-NN model to predict hospital length of stay across 113 hospitals.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — clinical/operations mood for this project only. */
+  body.case-study {
+    --accent:   #0f766e;
+    --accent-2: #0d9488;
+    --accent-3: #ccfbf1;
+    --bg:       #f7fafa;
+    --bg-2:     #eef5f4;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Predictive Analytics · Case Study</span>
+    <h1>Hospital Length of Stay Prediction</h1>
+    <p class="project-hero-lede">Finding the predictors that most influence how long a patient stays in the hospital, so hospitals can target the factors most likely to reduce unnecessary patient days.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">R</span>
+      <span class="project-tag">Linear Regression</span>
+      <span class="project-tag">LASSO</span>
+      <span class="project-tag">kNN</span>
+      <span class="project-tag">Bootstrap CI</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Hospital_Length_of_Stay_Slides.pdf" target="_blank">View Slides</a>
+      <a class="project-btn" href="Hospital_Length_of_Stay_Code.Rmd" target="_blank">View Code (.Rmd)</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/hospital-length-of-stay-prediction" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>What actually drives how long a patient stays?</h2>
+    <p>Hospitals want to reduce unnecessary patient days, but that starts with knowing which factors actually move the needle. Objective one was building an interpretable model to identify those key predictors. Objective two was checking whether a more complex model, or a completely different approach like k-NN, could predict length of stay meaningfully better.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>113 hospitals, several operational and clinical factors</h2>
+    <p>Each hospital record includes infection risk, number of beds, average patient and nursing counts, percent of services offered, region, medical school affiliation, average patient age, and diagnostic testing rates, alongside its average length of stay.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">113</span>
+        <span class="metric-label">Hospitals in the dataset</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">3</span>
+        <span class="metric-label">Models compared: Simple MLR, Complex MLR, k-NN</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/length-of-stay-box-plots.png" alt="Boxplots of hospital length of stay by region and by medical school affiliation">
+      <p class="chart-caption">Length of stay was longest in the Northeast and shortest in the West, and ran higher at hospitals with a medical school affiliation.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Start interpretable, then see if complexity earns its keep</h2>
+    <p>I built a simple, additive regression first so every coefficient stays interpretable, then compared it against a complex regression with interaction and polynomial terms, and a k-NN model, to see whether the added flexibility actually improved predictions.</p>
+    <div class="approach-flow">
+      <span class="approach-step">EDA &amp; Correlation Analysis</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Simple MLR</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Complex MLR &amp; k-NN</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Model Comparison</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Recommendation</span>
+    </div>
+    <div class="chart-container" style="margin-top: 18px;">
+      <img src="assets/length-of-stay-corr-matrix.png" alt="Correlation matrix of hospital predictors against log length of stay">
+      <p class="chart-caption">Infection Risk was tied for the strongest correlation with length of stay of any single predictor, a signal that carried through to every model below.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>The complex model won, k-NN didn't</h2>
+    <p>All metrics below are on the log-transformed length of stay scale used for modeling. The complex, interaction-and-polynomial regression beat the simple model on every metric, while k-NN, despite being the most flexible option, performed worst.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">0.669</span>
+        <span class="metric-label">Adjusted R², complex MLR (best)</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">0.077</span>
+        <span class="metric-label">Mean absolute error, complex MLR</span>
+      </div>
+    </div>
+    <div class="model-table-wrap">
+      <table class="model-table">
+        <thead>
+          <tr><th>Model</th><th>MSE</th><th>RMSE</th><th>Adj. R²</th><th>MAE</th><th>AIC</th><th>BIC</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Simple MLR</td><td>0.012</td><td>0.108</td><td>0.597</td><td>0.085</td><td>-127.1</td><td>-104.3</td></tr>
+          <tr class="is-winner"><td>Complex MLR</td><td>0.009</td><td>0.100</td><td>0.669</td><td>0.077</td><td>-138.3</td><td>-69.9</td></tr>
+          <tr><td>k-NN</td><td>0.016</td><td>0.128</td><td>0.352</td><td>0.104</td><td>N/A</td><td>N/A</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-container" style="margin-top: 18px;">
+      <img src="assets/interactions.png" alt="Scatter plots of Infection Risk and Average Patients versus log length of stay, split by region">
+      <p class="chart-caption">Infection Risk climbed with length of stay in every region, though the Northeast showed the steepest relationship, which is what justified the interaction term in the complex model.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What the data actually showed</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Infection Risk was the most consistent predictor</h3>
+        <p>It was significant in every model tested, simple, complex, and as an interaction term, making it the clearest lever for hospitals looking to shorten stays.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>The simple model was a solid, honest baseline</h3>
+        <p>With clear coefficients and meaningful inference, the simple MLR explained 59.7% of variance on its own, before any interaction or polynomial terms were added.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>Added complexity paid off here</h3>
+        <p>Interaction and polynomial terms lifted adjusted R² from 0.597 to 0.669 and lowered every error metric, a substantial improvement for the added complexity.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>More flexibility isn't automatically better</h3>
+        <p>k-NN, the most flexible of the three approaches, had the worst error metrics of the three and none of the interpretability, a useful reminder that flexibility alone doesn't guarantee a better model.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Recommendation</div>
+    <h2>Complex, non-additive MLR</h2>
+    <div class="callout">
+      <strong>The complex MLR is the recommended model.</strong> It kept most of the interpretability of a regression model while meaningfully outperforming both the simple baseline and k-NN on every error metric, making it the most useful option for a hospital trying to both predict and understand length of stay.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Predictive Analytics Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
