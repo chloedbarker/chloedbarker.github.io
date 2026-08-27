@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crab Age Prediction | Chloe Barker</title>
+<meta name="description" content="Predicting a crab's age in months from physical measurements, comparing feature-engineered regression models on a Kaggle-style competition dataset.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — coastal/marine mood for this project only. */
+  body.case-study {
+    --accent:   #0e7490;
+    --accent-2: #0891b2;
+    --accent-3: #cffafe;
+    --bg:       #f7fbfc;
+    --bg-2:     #ecf7f9;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Predictive Analytics · Case Study</span>
+    <h1>Crab Age Prediction</h1>
+    <p class="project-hero-lede">Predicting a crab's age in months from physical measurements alone, since the traditional method, counting growth rings on a cross-section of shell under a microscope, is slow and destroys the animal.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">R</span>
+      <span class="project-tag">Feature Engineering</span>
+      <span class="project-tag">Linear Regression</span>
+      <span class="project-tag">R Shiny</span>
+      <span class="project-tag">Kaggle</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Crab_Age_Prediction_Slides.pdf" target="_blank">View Slides</a>
+      <a class="project-btn" href="Crab_Project_Code.rmd" target="_blank">View Code (.Rmd)</a>
+      <a class="project-btn" href="app.R" target="_blank">Shiny App Code</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/crab-age-prediction" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Can you skip counting shell rings?</h2>
+    <p>Aging a crab the traditional way means cutting a cross-section of its shell and counting growth rings under a microscope, accurate, but slow and invasive. The question here was whether measurements you can take from the outside, like length, weight, and diameter, could predict age well enough to skip that step.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>Physical measurements from a Kaggle competition dataset</h2>
+    <p>Each crab has 8 recorded features: Sex, Length, Diameter, Height, Weight, Shucked Weight, Viscera Weight, and Shell Weight. The target is Age, measured in months.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">8</span>
+        <span class="metric-label">Physical measurements used as predictors</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">3</span>
+        <span class="metric-label">Sex categories: Male, Female, Indeterminate</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">Age</span>
+        <span class="metric-label">Target variable, in months</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/crab_distribution.jpg" alt="Bar chart showing percentage of crabs by sex: Female 30.51%, Indeterminate 33.11%, Male 36.38%">
+      <p class="chart-caption">The dataset is close to evenly split across the three sex categories.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Engineered features did more work than any single measurement</h2>
+    <p>No individual measurement was a strong predictor on its own, so most of the modeling effort went into feature engineering: a constructed body-size measure, polynomial terms, and size-by-sex interactions, since a given length means something different for a male crab than for a female one.</p>
+    <div class="approach-flow">
+      <span class="approach-step">EDA &amp; Cleaning</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Feature Engineering</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Model Comparison</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Final Model</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">R Shiny App</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results</div>
+    <h2>A moderate, honest fit</h2>
+    <p>The final model reached an R² of 0.702 and a mean absolute error of 1.14 months, meaning predictions land, on average, a little over a month off from a crab's true age.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">0.702</span>
+        <span class="metric-label">R², final model</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">1.14</span>
+        <span class="metric-label">Mean absolute error, in months</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/heat-map.png" alt="Correlation heatmap of engineered size measures against Age">
+      <p class="chart-caption">No single measurement stood out: correlations with Age topped out around 0.65, which is why feature engineering mattered more than any one variable.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What the data actually showed</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>"Indeterminate" crabs skew younger</h3>
+        <p>Crabs labeled Indeterminate had a median age of about 7 months, noticeably younger than the roughly 10 to 11 month median for Male and Female crabs, consistent with "Indeterminate" often marking crabs too young to have visibly differentiated.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Sex mattered less than size</h3>
+        <p>Male and Female age distributions were close to each other. Body size measurements carried more of the predictive signal than sex alone did.</p>
+      </div>
+    </div>
+    <div class="chart-container" style="margin-top: 18px;">
+      <img src="assets/crab-age-by-sex.png" alt="Boxplot of crab age by sex category">
+      <p class="chart-caption">Age by sex: Female (median ~11 months), Male (~10 months), Indeterminate (~7 months).</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Model Limitations</div>
+    <h2>Where the predictions still miss</h2>
+    <div class="callout">
+      <strong>Physical measurements are still a proxy.</strong> The true, ring-count age wasn't available for validation beyond the competition labels, and no individual predictor correlated strongly with age (all under 0.65), so an average error of about a month is a reasonable, but not exact, stand-in for the microscope method.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Predictive Analytics Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>

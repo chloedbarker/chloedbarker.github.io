@@ -75,6 +75,10 @@
         <span class="metric-label">No heart disease, the class imbalance every model had to contend with</span>
       </div>
     </div>
+    <div class="chart-container">
+      <img src="assets/box-plots.png" alt="Boxplots of AgeCategory, BMI, PhysicalHealth, and GenHealth split by heart disease status">
+      <p class="chart-caption">Respondents with heart disease skewed visibly older and reported more days of poor physical health, an early signal of which predictors would carry the most weight.</p>
+    </div>
   </div>
 
   <div class="project-section">
@@ -165,6 +169,10 @@
         <h3>Sex was a persistent, moderate factor</h3>
         <p>Men had roughly double the odds of women (95% CI 1.97–2.10) after adjusting for age, health status, and the other 15 predictors.</p>
       </div>
+    </div>
+    <div class="chart-container" style="margin-top: 18px;">
+      <img src="assets/feature-importance.png" alt="Bar chart ranking categorical predictors by the maximum difference in percent heart disease across their categories">
+      <p class="chart-caption">General health and stroke history ranked as the two strongest categorical predictors, consistent with the odds ratios above.</p>
     </div>
   </div>
 
