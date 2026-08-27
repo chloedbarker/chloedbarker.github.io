@@ -34,8 +34,8 @@
     <p>
       Lithium occurs naturally in groundwater at concentrations that vary widely across Texas counties.
       A growing body of epidemiological literature suggests low-dose lithium exposure may be associated
-      with reduced risk of neurodegenerative disease, but evidence at the population level — and in Texas
-      specifically — remains limited.
+      with reduced risk of neurodegenerative disease, but evidence at the population level, and in Texas
+      specifically, remains limited.
     </p>
     <div class="highlight">
       <strong>Research question:</strong> Do Texas counties with higher, more consistent groundwater lithium concentrations exhibit lower dementia prevalence, after accounting for small-sample constraints and exposure heterogeneity?
@@ -73,7 +73,7 @@
   <div class="card">
     <div class="section-header"><h2>Approach</h2></div>
     <ul>
-      <li><strong>Exposure homogeneity classification:</strong> counties classified using a three-criterion framework — at least 10 samples, at least 70% of wells in one tail of the statewide distribution, and a coefficient of variation ≤ 0.50 — to identify counties where a county mean is a defensible proxy for population exposure.</li>
+      <li><strong>Exposure homogeneity classification:</strong> counties classified using a three-criterion framework, at least 10 samples, at least 70% of wells in one tail of the statewide distribution, and a coefficient of variation ≤ 0.50, to identify counties where a county mean is a defensible proxy for population exposure.</li>
       <li><strong>Ingestion &amp; cleaning:</strong> standardized dates, resolved FIPS mismatches, handled missingness, and validated county naming across all sources.</li>
       <li><strong>Feature engineering:</strong> aggregated well-level measurements to county-level summaries; constructed map-ready tables for choropleth visualization.</li>
       <li><strong>Exploration:</strong> choropleth maps and summary statistics characterizing spatial distribution of lithium concentrations and dementia prevalence across Texas.</li>
@@ -104,9 +104,9 @@
       regression coefficients toward zero regardless of the underlying effect.
     </p>
     <ul>
-      <li>Developed a three-criterion exposure homogeneity framework — at least 10 samples, at least 70% of wells in one tail of the statewide distribution, and a coefficient of variation of 0.50 or below — to identify the <strong>14 counties</strong> in which a county mean is a defensible proxy for population exposure.</li>
+      <li>Developed a three-criterion exposure homogeneity framework, at least 10 samples, at least 70% of wells in one tail of the statewide distribution, and a coefficient of variation of 0.50 or below, to identify the <strong>14 counties</strong> in which a county mean is a defensible proxy for population exposure.</li>
       <li>Within that subsample, explanatory power increased from <strong>R² = 0.009 to R² = 0.226</strong>. The lithium coefficient was negative, and <strong>86% of leave-one-out slopes</strong> and <strong>66% of bootstrap slopes</strong> remained in the protective direction, indicating the result was not driven by any single county.</li>
-      <li>Found that <strong>sodium confounding alone is sufficient to reverse the sign</strong> of the association — without adjusting for sodium, the lithium coefficient becomes positive, so controlling for geochemical co-variates is essential rather than optional in this analysis.</li>
+      <li>Found that <strong>sodium confounding alone is sufficient to reverse the sign</strong> of the association, without adjusting for sodium, the lithium coefficient becomes positive, so controlling for geochemical co-variates is essential rather than optional in this analysis.</li>
       <li>Produced choropleth maps showing lithium concentrated in the Panhandle and Trans-Pecos regions, which also show lower dementia prevalence.</li>
     </ul>
     <div class="caveat">
