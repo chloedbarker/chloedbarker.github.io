@@ -45,7 +45,6 @@ body.case-study .page { max-width: 920px; }
   font-size: var(--text-base);
   color: var(--ink-2);
   line-height: 1.7;
-  max-width: 640px;
   margin-bottom: 22px;
 }
 
@@ -115,7 +114,6 @@ body.case-study .page { max-width: 920px; }
   font-size: var(--text-base);
   color: var(--ink-2);
   line-height: 1.75;
-  max-width: 680px;
 }
 
 .project-section p + p { margin-top: 12px; }
@@ -260,7 +258,8 @@ body.case-study .page { max-width: 920px; }
 
 /* ── Chart / figure container ── */
 .chart-container {
-  margin-top: 18px;
+  max-width: 600px;
+  margin: 18px auto 0;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   overflow: hidden;
