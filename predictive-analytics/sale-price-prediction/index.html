@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sale Price Prediction | Chloe Barker</title>
+<meta name="description" content="Two questions on the Ames, Iowa housing dataset: does price-per-square-foot vary by neighborhood, and how accurately can sale price be predicted for a Kaggle competition.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260827">
+<link rel="stylesheet" href="../../assets/project.css?v=20260827">
+<style>
+  /* Palette hook — warm real-estate mood for this project only. */
+  body.case-study {
+    --accent:   #b45309;
+    --accent-2: #d97706;
+    --accent-3: #fef3c7;
+    --bg:       #fdfaf6;
+    --bg-2:     #faf3e9;
+  }
+</style>
+</head>
+<body class="subpage case-study">
+<div class="page">
+
+  <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
+
+  <div class="project-hero">
+    <span class="project-eyebrow">Predictive Analytics · Case Study</span>
+    <h1>Sale Price Prediction</h1>
+    <p class="hero-byline">Co-authored with Tracy Dower</p>
+    <p class="project-hero-lede">Two questions on the same Ames, Iowa housing dataset: does the price you get per square foot depend on which neighborhood you're in, and separately, how accurately can sale price be predicted for a citywide Kaggle competition?</p>
+
+    <div class="project-tags">
+      <span class="project-tag">R</span>
+      <span class="project-tag">Linear Regression</span>
+      <span class="project-tag">LASSO</span>
+      <span class="project-tag">Kaggle</span>
+      <span class="project-tag">Regression Diagnostics</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="Sale_Price_Project_Report.pdf" target="_blank">Read Full Report</a>
+      <a class="project-btn" href="Predicting_Sale_Price_Code.Rmd" target="_blank">View Code (.Rmd)</a>
+      <a class="project-btn" href="https://tracydower.shinyapps.io/StatsFinal_HomeSalesAmes/" target="_blank">R Shiny App</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/sale-price-prediction" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Problem</div>
+    <h2>Does price-per-square-foot depend on the neighborhood, and how well can price be predicted?</h2>
+    <p>A realtor client wanted to know whether an extra 100 square feet of living area is worth the same amount everywhere in Ames, or whether that depends on the neighborhood. Separately, a Kaggle competition asked a broader question: build the most accurate sale price model possible, using whatever predictors help.</p>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Data</div>
+    <h2>Ames, Iowa home sales</h2>
+    <p>1,460 residential home sales with 79 recorded variables covering size, quality, condition, and location. The neighborhood question focused on three neighborhoods: NAmes, Edwards, and BrkSide.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">1,460</span>
+        <span class="metric-label">Homes sold in Ames, Iowa</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">79</span>
+        <span class="metric-label">Recorded variables per home</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">3</span>
+        <span class="metric-label">Neighborhoods compared for the inference question</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Two questions, two ways of answering them</h2>
+    <p>For the neighborhood question, I log-transformed price and living area to satisfy regression assumptions, then tested whether adding a neighborhood-by-area interaction improved the model. For the prediction question, I compared four candidate models of increasing complexity and validated the winner against standard regression diagnostics before submitting to Kaggle.</p>
+    <div class="approach-flow">
+      <span class="approach-step">Log-Transform &amp; Clean</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Test Neighborhood Interaction</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Compare Candidate Models</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Validate Assumptions</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Kaggle Submission</span>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results, Part 1</div>
+    <h2>Yes, the price-per-square-foot effect depends on the neighborhood</h2>
+    <p>The interaction between living area and neighborhood was statistically significant (F = 8.649, p = 0.0002), meaning an extra 100 square feet is not worth the same amount everywhere.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">8.649</span>
+        <span class="metric-label">F-statistic for the neighborhood interaction</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">0.0002</span>
+        <span class="metric-label">p-value, well below the 0.05 threshold</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">~75%</span>
+        <span class="metric-label">Median price increase in BrkSide from doubling living area</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">~38%</span>
+        <span class="metric-label">Same increase in NAmes and Edwards, the reference slope</span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <img src="assets/sale-price.png" alt="Scatter plot of log sale price versus log living area, with separate regression lines for NAmes, BrkSide, and Edwards neighborhoods">
+      <p class="chart-caption">BrkSide homes start from a lower base price but climb faster with size, crossing above NAmes and Edwards by around 300 additional square feet. Edwards tracked NAmes closely enough that a separate slope wasn't statistically justified (p = 0.52).</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Results, Part 2</div>
+    <h2>The full prediction model explained 86.65% of price variance</h2>
+    <p>Adding overall quality, garage area, basement size, and neighborhood on top of living area moved the model from a rough baseline to a strong predictor, and it held up on Kaggle's held-out test set.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">86.65%</span>
+        <span class="metric-label">Variance in log sale price explained by the final model</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">0.150</span>
+        <span class="metric-label">Kaggle RMSLE, down from 0.229 for the simplest model</span>
+      </div>
+    </div>
+    <div class="model-table-wrap">
+      <table class="model-table">
+        <thead>
+          <tr><th>Model</th><th>Adj. R²</th><th>CV PRESS</th><th>AIC</th><th>Kaggle Score</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Simple Linear Regression</td><td>0.668</td><td>77.5</td><td>-2823.5</td><td>0.229</td></tr>
+          <tr><td>Multiple Linear Regression 1</td><td>0.560</td><td>102.8</td><td>-2412.5</td><td>0.283</td></tr>
+          <tr><td>Multiple Linear Regression 2</td><td>0.861</td><td>34.0</td><td>-4067.8</td><td>0.152</td></tr>
+          <tr class="is-winner"><td>Multiple Linear Regression 3 (final)</td><td>0.867</td><td>32.7</td><td>-4121.9</td><td>0.150</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-container" style="margin-top: 18px;">
+      <img src="assets/numeric.png" alt="Bar chart ranking individual predictors by their standalone adjusted R-squared, led by Overall Quality and Neighborhood">
+      <p class="chart-caption">Ranking each predictor on its own explanatory power guided variable selection. Overall quality led every candidate; neighborhood ranked second, ahead of most physical features of the house.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Key Insights</div>
+    <h2>What actually drove price</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>Overall quality was the single strongest predictor</h3>
+        <p>Of every variable tested on its own, a home's overall quality rating explained the most variance in price, ahead of size, location, or age.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Location ranked second, ahead of most physical features</h3>
+        <p>Neighborhood alone outranked garage size, kitchen quality, and bathroom count as a standalone predictor of price.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>BrkSide homes start cheaper but catch up fast</h3>
+        <p>BrkSide's baseline price was significantly lower than NAmes (p = 0.001), but its steeper slope meant BrkSide homes overtook NAmes and Edwards in price once living area got large enough.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>The full model roughly halved the prediction error</h3>
+        <p>Going from a one-variable baseline to the final model dropped the Kaggle score from 0.229 to 0.150 RMSLE, and pushed explained variance from 66.8% to 86.65%.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">Model Limitations</div>
+    <h2>What the model can and can't claim</h2>
+    <div class="callout warn">
+      <strong>This is an observational dataset.</strong> The neighborhood findings describe association, not causation, since homes weren't randomly assigned to neighborhoods. Differences in price-per-square-foot could reflect factors correlated with neighborhood, like lot size or school zoning, rather than location itself.
+    </div>
+    <div class="callout">
+      <strong>Diagnostics were mostly clean.</strong> The Durbin-Watson statistic (2.003, p = 0.94) showed no meaningful autocorrelation, and every home's Cook's D stayed well below 1, so no single sale distorted the model. The main soft spot was a longer left tail in the error distribution and two homes with somewhat higher leverage, though neither had an outsized residual.
+    </div>
+  </div>
+
+  <div class="project-footer-nav">
+    <a href="../index.html">← All Predictive Analytics Projects</a>
+    <a href="../../index.html">Portfolio Home →</a>
+  </div>
+
+</div>
+</body>
+</html>
