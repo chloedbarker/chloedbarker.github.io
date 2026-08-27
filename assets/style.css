@@ -289,6 +289,9 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 
 .link-pill:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
+.link-pill.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.link-pill.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+
 /* ── Highlight / caveat (capstone) ── */
 .highlight {
   background: var(--accent-4);
