@@ -76,8 +76,8 @@ body.case-study .page { max-width: 920px; }
 
 .project-btn:hover { border-color: var(--accent-2); color: var(--accent); transform: translateY(-1px); }
 
-.project-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-.project-btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.project-btn.primary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); font-weight: 600; }
+.project-btn.primary:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); }
 
 .project-hero-image {
   margin-top: 28px;
