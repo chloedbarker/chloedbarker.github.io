@@ -664,13 +664,13 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 /* ── Scrolling content column ── */
 .content { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
-/* Simple 2-up row (Education + Certifications) — stretched so both
-   cards match height and read as a uniform pair */
+/* Simple 2-up row (Education + Certifications) — each card sizes to its
+   own content so a shorter card doesn't get stretched into empty space */
 .pair-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 
 /* ── Scroll reveal ── */
