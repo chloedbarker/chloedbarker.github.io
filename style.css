@@ -49,6 +49,17 @@
     /* Motion */
     --transition-fast: 150ms cubic-bezier(.3, 0, 0, 1);
     --transition-normal: 250ms cubic-bezier(.3, 0, 0, 1);
+
+    /* Compatibility aliases while redesigning */
+    --white: var(--text-base);
+    --light-gray: var(--text-subdued);
+    --gray: var(--text-muted);
+
+    --black: var(--background-base);
+    --black-deep: var(--background-deep);
+
+    --card: var(--background-elevated);
+    --card-hover: var(--background-elevated-hover);
 }
 
 /* =========================================================
@@ -96,6 +107,7 @@ h3,
 
 a {
     color: inherit;
+    text-decoration: none;
 }
 
 a:hover {
@@ -813,9 +825,47 @@ a:hover {
 /* =========================================================
    20. PROJECT CARDS
    ========================================================= */
+/* =========================================================
+   20. PROJECT CARDS
+   ========================================================= */
 
 .project-link,
-.capstone-card,
+.capstone-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 20px;
+
+    background: var(--background-elevated);
+    color: var(--text-base);
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    transition:
+        background var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.project-link:hover,
+.capstone-card:hover {
+    background: var(--background-elevated-hover);
+
+    color: var(--text-base);
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
 .skill-card {
     background: var(--background-elevated);
 
@@ -824,22 +874,10 @@ a:hover {
         transform var(--transition-fast);
 }
 
-.project-link:hover,
-.capstone-card:hover,
 .skill-card:hover {
     background: var(--background-elevated-hover);
-}
 
-
-.project-link:hover,
-.capstone-card:hover {
-    background: var(--card-hover);
-
-    color: var(--white);
-
-    transform: translateY(-4px);
-
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
 }
 
 
@@ -1073,10 +1111,12 @@ a:hover {
 
 .footer a {
     color: var(--light-gray);
-
     text-decoration: none;
-}.project-li
+}
 
+.footer a:hover {
+    color: var(--white);
+}
 
 .footer a:hover {
     color: var(--white);
