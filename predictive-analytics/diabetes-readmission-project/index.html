@@ -3,12 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<<<<<<< HEAD
 <title>Diabetes Transitional Care Resource Allocation System | Chloe Barker</title>
 <meta name="description" content="A decision-support tool that ranks diabetes patients by 30-day readmission risk, plans cost and capacity scenarios, and grounds its guidance in CMS/AHRQ documents via RAG.">
+=======
+<title>Diabetes Transitional Care Decision Support | Chloe Barker</title>
+<meta name="description" content="A deployed decision-support app for diabetes readmission risk, transitional-care resource allocation, cost planning, and RAG-grounded CMS/AHRQ guidance.">
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/style.css?v=20260827">
 <link rel="stylesheet" href="../../assets/project.css?v=20260827">
 <style>
+<<<<<<< HEAD
   /* Palette hook — enterprise/operations mood for this project only. */
   body.case-study {
     --accent:   #334155;
@@ -16,6 +22,15 @@
     --accent-3: #e2e8f0;
     --bg:       #f8fafc;
     --bg-2:     #f1f5f9;
+=======
+  /* Palette hook — clinical decision-support mood for this project only. */
+  body.case-study {
+    --accent:   #0f766e;
+    --accent-2: #14b8a6;
+    --accent-3: #ccfbf1;
+    --bg:       #f7fbfa;
+    --bg-2:     #eef8f6;
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
   }
 </style>
 </head>
@@ -25,6 +40,7 @@
   <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
 
   <div class="project-hero">
+<<<<<<< HEAD
     <span class="project-eyebrow">Predictive Analytics · Case Study</span>
     <h1>Diabetes Transitional Care Resource Allocation System</h1>
     <p class="project-hero-lede">Hospitals can't give every diabetic patient intensive post-discharge support. This tool ranks patients by 30-day readmission risk, plans cost and capacity scenarios, and grounds its guidance in CMS/AHRQ documents, so a care-management leader can decide who gets scarce transitional-care resources first.</p>
@@ -46,10 +62,37 @@
 
     <div class="project-hero-image">
       <img src="assets/hospital.jpg" alt="Hospital hallway with a nurse moving a patient in a wheelchair toward the nurses' station">
+=======
+    <span class="project-eyebrow">Predictive Analytics · Deployed App · Decision Support</span>
+    <h1>Diabetes Transitional Care Resource Allocation System</h1>
+    <p class="project-hero-lede">A deployed care-management tool that ranks diabetes discharges by 30-day readmission risk, translates those risks into limited transitional-care capacity, and gives source-grounded recommendations a hospital leader can act on.</p>
+
+    <div class="project-tags">
+      <span class="project-tag">Python</span>
+      <span class="project-tag">Gradient Boosting</span>
+      <span class="project-tag">scikit-learn</span>
+      <span class="project-tag">RAG</span>
+      <span class="project-tag">FAISS</span>
+      <span class="project-tag">Gradio</span>
+      <span class="project-tag">Hugging Face Spaces</span>
+    </div>
+
+    <div class="project-actions">
+      <a class="project-btn primary" href="https://huggingface.co/spaces/chloebarker/diabetes-care-management-decision-support" target="_blank" rel="noopener">Open Live App</a>
+      <a class="project-btn" href="Final_Project_Chloe_Barker.pdf" target="_blank" rel="noopener">View Slides</a>
+      <a class="project-btn" href="notebooks/diabetes_final_project.ipynb" target="_blank" rel="noopener">View Notebook</a>
+      <a class="project-btn" href="https://youtu.be/sZp3cuSGJ84" target="_blank" rel="noopener">Watch Presentation</a>
+      <a class="project-btn" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank" rel="noopener">GitHub</a>
+    </div>
+
+    <div class="project-hero-image">
+      <img src="assets/hospital.jpg" alt="Hospital care-management setting">
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
     </div>
   </div>
 
   <div class="project-section">
+<<<<<<< HEAD
     <div class="project-section-label">The Problem</div>
     <h2>Who gets scarce transitional-care resources first?</h2>
     <p>A hospital can't fund enhanced follow-up for every discharged diabetes patient, staff hours and intervention slots are fixed. The real decision isn't "who might be readmitted," it's: given a fixed capacity, which patients does supporting actually pay off for, in both clinical and financial terms? That's a resource-allocation problem, not just a classification problem, so the model had to be evaluated on capacity-aware business metrics, not accuracy.</p>
@@ -75,11 +118,29 @@
       <div class="metric-card">
         <span class="metric-value">3</span>
         <span class="metric-label">Tiers in the resulting intervention ladder</span>
+=======
+    <div class="project-section-label">The Decision</div>
+    <h2>Who gets scarce post-discharge support first?</h2>
+    <p>Hospitals cannot give every diabetes patient intensive transitional-care support after discharge. The operational question is not simply whether a patient might be readmitted; it is which patients should receive routine, enhanced, or intensive follow-up when staff hours, intervention slots, and budget are limited.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">99,340</span>
+        <span class="metric-label">Eligible diabetes encounters after decision-population filtering</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">500</span>
+        <span class="metric-label">Highest-risk patients modeled as a realistic care-management worklist</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value">3</span>
+        <span class="metric-label">Support tiers: routine, enhanced, and intensive follow-up</span>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
       </div>
     </div>
   </div>
 
   <div class="project-section">
+<<<<<<< HEAD
     <div class="project-section-label">The Approach</div>
     <h2>Rank, tier, ground, compare, then price it out</h2>
     <p>A tuned Gradient Boosting model scores every patient's 30-day readmission risk; those scores sort patients into a 3-tier intervention ladder, from routine discharge support up to intensive nurse care management. A RAG layer answers care-management questions by retrieving from actual CMS/AHRQ source documents rather than generating unsupported answers, and a separate fine-tuned text classifier is evaluated on the exact same business scorecard as a required comparison.</p>
@@ -99,11 +160,39 @@
     <div class="chart-container">
       <img src="assets/tiers.png" alt="3-tier transitional care intervention ladder: routine discharge support, follow-up call and appointment coordination, intensive nurse care management">
       <p class="chart-caption">Every scored patient maps to one of three support levels, so the model's output is a staffing decision, not just a risk number.</p>
+=======
+    <div class="project-section-label">The System</div>
+    <h2>Risk scoring, capacity planning, and cited guidance in one app</h2>
+    <p>The final deliverable is a Gradio app deployed on Hugging Face Spaces. It scores patient rows, builds a prioritized worklist, lets leaders adjust readmission cost, intervention cost, capacity, and expected effectiveness, then uses retrieval over CMS and AHRQ documents to support plain-language care recommendations.</p>
+    <div class="chart-container">
+      <img src="assets/tiers.png" alt="Three-tier transitional care intervention ladder">
+      <p class="chart-caption">Every patient maps to a support tier, connecting model output to the operational care decision rather than leaving risk scores as abstract probabilities.</p>
+    </div>
+  </div>
+
+  <div class="project-section">
+    <div class="project-section-label">The Approach</div>
+    <h2>Optimize for the care-management decision, not raw accuracy</h2>
+    <p>I filtered the UCI Diabetes 130-Hospitals dataset to a preventable-readmission decision population, used a patient-grouped train/test split to avoid leakage, and tuned model selection around PR-AUC and top-of-list performance because the business value lives in the highest-risk patients who can actually receive intervention.</p>
+    <div class="approach-flow">
+      <span class="approach-step">Decision Population</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Patient-Grouped Split</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Calibrated Gradient Boosting</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Top-500 Worklist</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">Cost / Capacity Planner</span>
+      <span class="approach-arrow">→</span>
+      <span class="approach-step">CMS/AHRQ RAG Guidance</span>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
     </div>
   </div>
 
   <div class="project-section">
     <div class="project-section-label">Results</div>
+<<<<<<< HEAD
     <h2>At the top 500 highest-risk patients, the model roughly triples random targeting</h2>
     <p>Evaluated where a hospital would actually operate, the top 500 highest-risk patients, the calibrated Gradient Boosting model beat a fine-tuned text classifier on every business metric, including going net-positive where the text model went net-negative.</p>
     <div class="metric-grid">
@@ -122,12 +211,29 @@
       <div class="metric-card">
         <span class="metric-value accent">+$113,700</span>
         <span class="metric-label">Expected net value at capacity, default cost assumptions</span>
+=======
+    <h2>The deployed model created measurable lift and positive expected value</h2>
+    <p>Gradient Boosting became the deployed triage engine because it performed better than the required text-based fine-tuned comparison on the actual business scorecard: precision and value inside the limited-capacity worklist.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-value accent">40.8%</span>
+        <span class="metric-label">Precision@500, meaning about 2 in 5 top-ranked patients were true 30-day readmissions</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">3.6×</span>
+        <span class="metric-label">Lift versus random selection in the top-500 worklist</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-value accent">+$113.7K</span>
+        <span class="metric-label">Expected net value at 500 patients under default cost and effectiveness assumptions</span>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
       </div>
     </div>
 
     <div class="model-table-wrap">
       <table class="model-table">
         <thead>
+<<<<<<< HEAD
           <tr><th>Metric (at 500 patients)</th><th>Gradient Boosting (deployed)</th><th>Fine-Tuned Prompt Classifier</th></tr>
         </thead>
         <tbody>
@@ -142,10 +248,23 @@
     </div>
 
     <p style="margin-top: 18px;">Under the default cost assumptions ($15,000 per readmission, $300 per intervention, 10% intervention effectiveness), acting on the top 500 patients avoids an estimated 17.6 readmissions, $263,700 in gross avoided cost against $150,000 in intervention spend, for a net value of +$113,700 and a break-even effectiveness of just 5.7%. All of these assumptions are adjustable live in the app.</p>
+=======
+          <tr><th>Metric</th><th>Gradient Boosting</th><th>Text Classifier</th></tr>
+        </thead>
+        <tbody>
+          <tr class="is-winner"><td>PR-AUC</td><td>0.241</td><td>0.147</td></tr>
+          <tr class="is-winner"><td>Precision@500</td><td>40.8%</td><td>23.0%</td></tr>
+          <tr class="is-winner"><td>Readmissions captured</td><td>204</td><td>115</td></tr>
+          <tr class="is-winner"><td>Expected net value</td><td>+$113,700</td><td>-$14,300</td></tr>
+        </tbody>
+      </table>
+    </div>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
   </div>
 
   <div class="project-section">
     <div class="project-section-label">Key Insights</div>
+<<<<<<< HEAD
     <h2>What the comparison actually showed</h2>
     <div class="insight-grid">
       <div class="insight-card">
@@ -167,11 +286,35 @@
         <span class="insight-number">04</span>
         <h3>Guidance is grounded, not generated</h3>
         <p>The RAG layer retrieves from CMS/AHRQ source documents rather than letting a model freestyle a clinical recommendation, and every answer in the app is cited back to a source page.</p>
+=======
+    <h2>What makes this portfolio piece especially current</h2>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <span class="insight-number">01</span>
+        <h3>The model is tied to an operational constraint</h3>
+        <p>The output is not just a probability; it becomes a capacity-limited worklist and a tiered intervention recommendation.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">02</span>
+        <h3>Evaluation matches the business use case</h3>
+        <p>Top-k precision, lift, and expected net value matter more here than overall accuracy because care managers act only on the highest-risk slice.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">03</span>
+        <h3>RAG is used where it belongs</h3>
+        <p>The retrieval component supports guidance and citations from approved CMS/AHRQ sources instead of replacing the structured risk model.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-number">04</span>
+        <h3>The app is deployable and inspectable</h3>
+        <p>A live Hugging Face demo, notebook, slide deck, source code, and saved artifacts make the project easier to evaluate than a standalone PDF.</p>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
       </div>
     </div>
   </div>
 
   <div class="project-section">
+<<<<<<< HEAD
     <div class="project-section-label">Model Limitations</div>
     <h2>What this prototype should, and shouldn't, be trusted for</h2>
     <div class="callout warn">
@@ -179,6 +322,15 @@
     </div>
     <div class="callout">
       <strong>Recall at capacity is still modest.</strong> Even the deployed model captures only about 1 in 11 true 30-day readmissions within the top 500 patients. Fairness and calibration would need ongoing monitoring before any real deployment, this is decision support, not a finished clinical tool.
+=======
+    <div class="project-section-label">Limitations</div>
+    <h2>Where the system should be handled carefully</h2>
+    <div class="callout warn">
+      <strong>This is a decision-support prototype, not a clinical directive.</strong> The app helps prioritize follow-up resources, but care teams would still need local validation, governance review, fairness checks, and clinical oversight before real deployment.
+    </div>
+    <div class="callout">
+      <strong>Cost assumptions drive the net-value estimate.</strong> Readmission cost, intervention cost, capacity, and effectiveness are adjustable in the app, so the default value estimate should be read as a planning scenario rather than a fixed financial claim.
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
     </div>
   </div>
 

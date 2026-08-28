@@ -1,29 +1,26 @@
 # Chloe Barker – Data Science Portfolio
 
-This repository contains selected graduate-level data science, analytics, and research projects completed as part of my M.S. in Data Science. Projects emphasize applied statistical modeling, machine learning, data engineering, and data storytelling across multiple domains, including healthcare and public-sector data.
+This repository contains my data science portfolio: applied machine learning, healthcare analytics, decision-support apps, data engineering, geospatial analysis, and executive communication projects completed during and after my M.S. in Data Science.
 
 ## Technical Skills
 - Python, R, SQL (MySQL)
 - Statistical modeling & machine learning
 - Data cleaning, feature engineering, and model evaluation
-- Data visualization, dashboards, and data storytelling
-- Applied analytics across real-world datasets
+- Data visualization, decision support, and data storytelling
+- Applied analytics across healthcare, HR, real estate, finance, and public-sector data
 
 ## Project Areas
-- **Capstone Project**
-  - End-to-end data science project integrating data engineering, modeling, and communication
+- **Featured Work**
+  - Award-winning capstone research and deployed decision-support applications
 
-- **Applied Analytics**
-  - Domain-focused projects applying data science methods to real-world datasets, including healthcare and public-sector data
+- **Predictive Modeling & Decision Systems**
+  - Applied classification, regression, forecasting, thresholding, and business-value analysis
 
-- **Machine Learning**
-  - Supervised and unsupervised learning models with performance evaluation
+- **Data Engineering, SQL & Geospatial Systems**
+  - Relational database design, ETL workflows, SQL querying, and interactive geospatial maps
 
-- **Statistics & Modeling**
-  - Regression, inference, feature selection, and validation techniques
+- **Unsupervised Learning & Pattern Discovery**
+  - Clustering, association-rule mining, validation metrics, and pattern interpretation
 
-- **Databases & SQL**
-  - Relational database design, MySQL queries, and data integration workflows
-
-- **Data Storytelling**
-  - Visual narratives, dashboards, and presentations designed for non-technical audiences
+- **Executive Communication & Data Storytelling**
+  - Visual narratives, product analyses, infographics, and presentations designed for decision-makers

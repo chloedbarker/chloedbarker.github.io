@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Chloe Barker | Data Scientist</title>
+<meta name="description" content="Chloe Barker's data science portfolio: applied machine learning, healthcare analytics, decision-support apps, geospatial data engineering, and executive storytelling.">
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css?v=20260827">
 </head>
@@ -26,10 +27,10 @@
 
     <div class="contact-links">
       <a href="mailto:chloedbarkerr@icloud.com">Email</a>
-      <a href="https://linkedin.com/in/chloedbarker" target="_blank">LinkedIn</a>
-      <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank">GitHub</a>
-      <a href="resume/Chloe_Barker_Resume.pdf" target="_blank">Resume</a>
-      <a href="resume/Projects_Overview.pdf" target="_blank">One-Pager</a>
+      <a href="https://linkedin.com/in/chloedbarker" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank" rel="noopener">GitHub</a>
+      <a href="resume/Chloe_Barker_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+      <a href="resume/Projects_Overview.pdf" target="_blank" rel="noopener">One-Pager</a>
     </div>
 
     <div class="hero-stats">
@@ -50,8 +51,26 @@
       <div id="about" class="card reveal">
         <div class="section-header"><h2>About</h2></div>
         <p class="about-text">
-          M.S. Data Science graduate from SMU with hands-on experience applying machine learning, predictive analytics, and data engineering tools to real-world business problems. Recently completed a Data Science internship at Goosehead Insurance, working with Python, SQL, PySpark, Snowflake, and Databricks on lead prioritization and marketing analytics. I am seeking full-time data scientist opportunities beginning in fall 2026!
+          M.S. Data Science graduate from SMU focused on applied machine learning, healthcare analytics, decision support, and data engineering. I build projects that move past notebook metrics into stakeholder decisions: who to prioritize, which model to trust, what trade-off matters, and how to explain the result clearly. Recently completed a Data Science internship at Goosehead Insurance, working with Python, SQL, PySpark, Snowflake, and Databricks on lead prioritization and marketing analytics.
         </p>
+        <div class="proof-grid">
+          <div class="proof-item">
+            <span class="proof-value">Deployed</span>
+            <span class="proof-label">Gradio/Hugging Face care-management app</span>
+          </div>
+          <div class="proof-item">
+            <span class="proof-value">460K+</span>
+            <span class="proof-label">Groundwater records integrated for capstone research</span>
+          </div>
+          <div class="proof-item">
+            <span class="proof-value">64</span>
+            <span class="proof-label">Normalized SQL tables for Texas water-quality data</span>
+          </div>
+          <div class="proof-item">
+            <span class="proof-value">7</span>
+            <span class="proof-label">Applied predictive modeling case studies</span>
+          </div>
+        </div>
       </div>
 
       <!-- Education & Certifications -->
@@ -72,14 +91,14 @@
 
         <div class="card reveal">
           <div class="section-header"><h2>Certifications</h2></div>
-          <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank">
+          <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank" rel="noopener">
             <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png" alt="SMU badge">
             <div class="cert-info">
               <div class="cert-issuer">SMU MSDS</div>
               <div class="cert-name">Best Capstone Presentation</div>
             </div>
           </a>
-          <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank">
+          <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank" rel="noopener">
             <img class="cert-logo" src="certifications/datacamp_logo.png" alt="DataCamp logo">
             <div class="cert-info">
               <div class="cert-issuer">DataCamp</div>
@@ -218,13 +237,29 @@
       <!-- Projects -->
       <div id="projects" class="card reveal">
         <div class="section-header"><h2>Projects</h2></div>
+        <div class="project-toolbar" role="search">
+          <input id="projectSearch" class="project-search" type="search" placeholder="Search projects, methods, or domains" aria-label="Search projects">
+          <div class="project-filters" aria-label="Project filters">
+            <button type="button" class="project-filter active" data-filter="all">All</button>
+            <button type="button" class="project-filter" data-filter="healthcare">Healthcare</button>
+            <button type="button" class="project-filter" data-filter="deployed">Deployed</button>
+            <button type="button" class="project-filter" data-filter="modeling">Modeling</button>
+            <button type="button" class="project-filter" data-filter="engineering">Engineering</button>
+            <button type="button" class="project-filter" data-filter="communication">Communication</button>
+          </div>
+        </div>
         <div class="projects-grid">
 
-          <a class="capstone-card" href="capstone/">
+          <a class="capstone-card" href="capstone/" data-project-card data-tags="healthcare modeling engineering geospatial capstone groundwater lithium dementia python geopandas statsmodels">
             <div class="capstone-badge">★ MS Capstone · Best Presentation</div>
             <div class="capstone-title">Groundwater Lithium &amp; Dementia Prevalence in Texas</div>
             <img class="project-preview" src="capstone/map_lithium_vs_dementia_sidebyside.png" alt="Side-by-side choropleth maps of Texas counties">
-            <div class="capstone-desc">I combined groundwater lithium data with dementia rates across 254 Texas counties. My first pass turned up nothing, so I dug into why, traced it to how I was measuring exposure, and fixed it, and that one fix took the model from explaining almost none of the variation to explaining a meaningful amount.</div>
+            <div class="capstone-desc">I combined groundwater lithium data with dementia rates across 254 Texas counties, traced a null result to exposure misclassification, and built a homogeneity framework that made the county-level analysis more defensible.</div>
+            <div class="project-kpis">
+              <span>R² 0.009 → 0.226</span>
+              <span>254 counties</span>
+              <span>86% LOO slopes protective</span>
+            </div>
             <div class="capstone-pills">
               <span class="pill">Python</span>
               <span class="pill">GeoPandas</span>
@@ -235,39 +270,83 @@
             </div>
           </a>
 
-          <a class="project-link" href="predictive-analytics/">
+          <a class="project-link featured-project" href="predictive-analytics/diabetes-readmission-project/" data-project-card data-tags="healthcare deployed modeling decision support diabetes readmission rag faiss gradio hugging face python scikit-learn gradient boosting">
             <div class="project-link-top">
-              <span class="project-name">Predicting Attrition, Risk &amp; Price</span>
+              <span class="project-name">Diabetes Care Decision Support App</span>
               <span class="project-arrow">→</span>
             </div>
+<<<<<<< HEAD
             <p class="project-desc">Seven different prediction projects, covering who's likely to quit their job, who's at risk for heart disease, which discharged patients need follow-up care, what a house will sell for, and more, each one built end-to-end, from cleaning the data to picking the best model.</p>
+=======
+            <p class="project-desc">Deployed a Gradio app that ranks diabetes discharges by readmission risk, plans care-management capacity and cost scenarios, and grounds recommendations in CMS/AHRQ guidance using RAG.</p>
+            <div class="project-kpis">
+              <span>40.8% Precision@500</span>
+              <span>3.6× lift</span>
+              <span>+$113.7K scenario value</span>
+            </div>
+            <div class="project-link-tags">
+              <span>Python</span>
+              <span>Gradient Boosting</span>
+              <span>RAG</span>
+              <span>Gradio</span>
+            </div>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
           </a>
 
-          <a class="project-link" href="machine-learning/">
+          <a class="project-link" href="predictive-analytics/" data-project-card data-tags="healthcare modeling predictive analytics classification regression hr finance real estate time series attrition heart disease hospital sale price crab age">
             <div class="project-link-top">
-              <span class="project-name">Clustering &amp; Pattern Discovery</span>
+              <span class="project-name">Predictive Modeling &amp; Decision Systems</span>
+              <span class="project-arrow">→</span>
+            </div>
+            <p class="project-desc">Seven applied modeling projects across healthcare, HR, real estate, finance, and operations, built end-to-end from cleaning and feature engineering to validation, thresholding, deployment, and business recommendations.</p>
+            <div class="project-kpis">
+              <span>Healthcare + HR + finance</span>
+              <span>Classification/regression</span>
+              <span>Threshold strategy</span>
+            </div>
+          </a>
+
+          <a class="project-link" href="machine-learning/" data-project-card data-tags="modeling unsupervised learning clustering association rules retail health kmeans dbscan gmm spectral apriori fp-growth python">
+            <div class="project-link-top">
+              <span class="project-name">Unsupervised Learning &amp; Pattern Discovery</span>
               <span class="project-arrow">→</span>
             </div>
             <p class="project-desc">Compared 6 different clustering methods on 100K health records to see which grouped people most sensibly, and mined 541K retail transactions to find which products tend to get bought together.</p>
+            <div class="project-kpis">
+              <span>6 clustering methods</span>
+              <span>541K transactions</span>
+              <span>24× rule lift</span>
+            </div>
           </a>
 
-          <a class="project-link" href="databases-sql/">
+          <a class="project-link" href="databases-sql/" data-project-card data-tags="engineering sql database mysql geospatial groundwater folium geopandas etl normalized schema texas water quality">
             <div class="project-link-top">
-              <span class="project-name">Texas Groundwater Database</span>
+              <span class="project-name">Data Engineering, SQL &amp; Geospatial Systems</span>
               <span class="project-arrow">→</span>
             </div>
-            <p class="project-desc">Built a 64-table MySQL database to organize 20+ years of Texas groundwater data, then made interactive maps to show where contamination shows up.</p>
+            <p class="project-desc">Built a 64-table MySQL database to organize 20+ years of Texas groundwater data, then connected SQL aggregation, geospatial analysis, and interactive maps into a reusable analysis foundation.</p>
+            <div class="project-kpis">
+              <span>64-table schema</span>
+              <span>Interactive Folium maps</span>
+              <span>Capstone foundation</span>
+            </div>
           </a>
 
-          <a class="project-link" href="data-storytelling/">
+          <a class="project-link" href="data-storytelling/" data-project-card data-tags="communication storytelling executive presentation infographic healthcare product analysis nlp medical devices">
             <div class="project-link-top">
-              <span class="project-name">Executive Communication</span>
+              <span class="project-name">Executive Communication &amp; Data Storytelling</span>
               <span class="project-arrow">→</span>
             </div>
             <p class="project-desc">Presentations and infographics that take technical work and explain it clearly to a non-technical audience, covering medical devices, industry news, and product research.</p>
+            <div class="project-kpis">
+              <span>Executive decks</span>
+              <span>Infographics</span>
+              <span>Technical translation</span>
+            </div>
           </a>
 
         </div>
+        <p id="projectEmpty" class="project-empty" hidden>No matching projects yet.</p>
       </div>
 
       <div class="footer reveal">
@@ -319,6 +398,45 @@
 
     navSections.forEach(section => navObserver.observe(section));
   }
+
+  const projectSearch = document.getElementById('projectSearch');
+  const projectCards = [...document.querySelectorAll('[data-project-card]')];
+  const projectFilters = [...document.querySelectorAll('.project-filter')];
+  const projectEmpty = document.getElementById('projectEmpty');
+  let activeProjectFilter = 'all';
+
+  function normalize(value) {
+    return value.toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function updateProjectCards() {
+    const query = normalize(projectSearch?.value || '');
+    let visibleCount = 0;
+
+    projectCards.forEach(card => {
+      const haystack = normalize(`${card.textContent} ${card.dataset.tags || ''}`);
+      const matchesFilter = activeProjectFilter === 'all' || haystack.includes(activeProjectFilter);
+      const matchesQuery = !query || haystack.includes(query);
+      const visible = matchesFilter && matchesQuery;
+      card.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+
+    if (projectEmpty) projectEmpty.hidden = visibleCount !== 0;
+  }
+
+  projectSearch?.addEventListener('input', updateProjectCards);
+  projectFilters.forEach(button => {
+    button.addEventListener('click', () => {
+      activeProjectFilter = button.dataset.filter;
+      projectFilters.forEach(item => {
+        item.classList.toggle('active', item === button);
+        item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+      });
+      updateProjectCards();
+    });
+    button.setAttribute('aria-pressed', button.classList.contains('active') ? 'true' : 'false');
+  });
 </script>
 
 </body>

@@ -14,7 +14,7 @@
 </div>
 
 <p align="center">
-  <img src="images/hospital.jpg" alt="Hospital care-management setting" width="100%">
+  <img src="assets/hospital.jpg" alt="Hospital care-management setting" width="100%">
 </p>
 
 > Hospitals can't give every diabetic patient intensive post-discharge support. This tool ranks patients by readmission risk, plans capacity and cost scenarios, and makes recommendations in CMS/AHRQ guidance, so a care-management leader can decide *who* gets scarce transitional-care resources first.
@@ -40,7 +40,7 @@
 - **Risk tiers** — every scored patient maps to a support level:
 
 <p align="center">
-  <img src="images/tiers.png" alt="3-tier transitional care intervention ladder" width="80%">
+  <img src="assets/tiers.png" alt="3-tier transitional care intervention ladder" width="80%">
 </p>
 
 - **RAG guidance** — MiniLM embeddings + FAISS search over approved CMS/AHRQ documents (TF-IDF fallback, optional LLM answer), every response cited.
@@ -105,5 +105,4 @@ cd uci-diabetes-readmission-project/app
 pip install -r requirements.txt
 python app.py
 ```
-
 
