@@ -9,24 +9,47 @@
    ========================================================= */
 
 :root {
+    /* Brand */
     --green: #1ED760;
 
-    --white: #FFFFFF;
+    /* Text */
+    --text-base: #FFFFFF;
+    --text-subdued: #B3B3B3;
+    --text-muted: #7C7C7C;
 
-    --black: #121212;
-    --black-deep: #000000;
+    /* Backgrounds */
+    --background-base: #121212;
+    --background-deep: #000000;
+    --background-highlight: #1F1F1F;
 
-    --card: #181818;
-    --card-hover: #282828;
+    --background-elevated: #1F1F1F;
+    --background-elevated-hover: #2A2A2A;
+    --background-press: #191919;
 
-    --gray: #535353;
-    --light-gray: #B3B3B3;
+    /* Borders */
+    --border: #292929;
 
-    --border: #2A2A2A;
+    /* Typography */
+    --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-title: "Inter Tight", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-    --sidebar-width: 260px;
+    /* Layout */
+    --sidebar-width: 232px;
+
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+
+    /* Motion */
+    --transition-fast: 150ms cubic-bezier(.3, 0, 0, 1);
+    --transition-normal: 250ms cubic-bezier(.3, 0, 0, 1);
 }
-
 
 /* =========================================================
    2. GLOBAL RESET
@@ -43,27 +66,31 @@ html {
 body {
     margin: 0;
 
-    background: var(--black-deep);
-    color: var(--white);
+    background: var(--background-deep);
+    color: var(--text-subdued);
 
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-    line-height: 1.6;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
 
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
-
 
 /* Remove default spacing */
 
 h1,
 h2,
 h3,
-h4,
-p {
-    margin-top: 0;
+.hero h1,
+.project-name,
+.capstone-title,
+.skill-card-label,
+.exp-company,
+.edu-school {
+    font-family: var(--font-title);
 }
-
 
 /* General links */
 
@@ -131,12 +158,13 @@ a:hover {
 .hero h1 {
     margin: 0 0 2px;
 
-    color: var(--white);
+    color: var(--text-base);
 
+    font-family: var(--font-title);
     font-size: 26px;
-    font-weight: 700;
+    font-weight: 800;
 
-    letter-spacing: -0.5px;
+    letter-spacing: -0.6px;
 }
 
 
@@ -154,15 +182,19 @@ a:hover {
 
 /* Education / job-search line */
 
-.sidebar-meta {
-    margin-top: 8px;
+.sidebar-meta,
+.edu-meta,
+.exp-meta,
+.hero-stat-label,
+.cert-issuer {
+    color: var(--text-muted);
 
-    color: var(--gray);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
 
-    font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.4;
 }
-
 
 /* =========================================================
    5. SIDEBAR NAVIGATION
@@ -349,17 +381,18 @@ a:hover {
    11. ABOUT
    ========================================================= */
 
-.about-text {
-    max-width: 900px;
+.about-text,
+.project-desc,
+.capstone-desc,
+.exp-bullets,
+.edu-degree {
+    color: var(--text-subdued);
 
-    margin-bottom: 0;
+    font-family: var(--font-body);
+    font-weight: 400;
 
-    color: var(--light-gray);
-
-    font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.6;
 }
-
 
 /* =========================================================
    12. EDUCATION + CERTIFICATIONS GRID
@@ -782,30 +815,19 @@ a:hover {
    ========================================================= */
 
 .project-link,
-.capstone-card {
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-
-    min-width: 0;
-
-    padding: 20px;
-
-    background: #202020;
-
-    color: var(--white);
-
-    text-decoration: none;
-
-    border-radius: 8px;
-
-    overflow: hidden;
+.capstone-card,
+.skill-card {
+    background: var(--background-elevated);
 
     transition:
-        background 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+        background var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.project-link:hover,
+.capstone-card:hover,
+.skill-card:hover {
+    background: var(--background-elevated-hover);
 }
 
 
@@ -1053,7 +1075,7 @@ a:hover {
     color: var(--light-gray);
 
     text-decoration: none;
-}
+}.project-li
 
 
 .footer a:hover {
