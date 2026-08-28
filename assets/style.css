@@ -1053,7 +1053,8 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
    One column of full-width "horizontal rectangle" rows instead of a
    grid of squarish boxes: category label sits in a fixed-width left
    column, chips fill the rest of the row. */
-.skills-section { margin-top: 20px; }
+/* No margin-top here: .content already spaces this from the sibling
+   above it via flex gap — an extra margin here would double it. */
 
 .skills-grid {
   display: grid;
@@ -1120,7 +1121,7 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
 }
 
 /* ── Footer ── */
-.footer { text-align: center; margin-top: 32px; font-size: var(--text-sm); color: var(--muted); }
+.footer { text-align: center; font-size: var(--text-sm); color: var(--muted); }
 .footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
 .footer a:hover { text-decoration: underline; }
 
