@@ -664,6 +664,12 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 /* ── Scrolling content column ── */
 .content { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
+/* .card's own margin-bottom exists for subpages (.page is a plain block
+   container, not flex). Here .content already spaces siblings with gap,
+   so a direct .card child would otherwise get gap + margin-bottom
+   stacked on top of each other, doubling the space below it. */
+.content > .card { margin-bottom: 0; }
+
 /* Simple 2-up row (Education + Certifications) — each card sizes to its
    own content so a shorter card doesn't get stretched into empty space */
 .pair-grid {
