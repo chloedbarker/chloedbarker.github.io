@@ -684,37 +684,6 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 /* ── About ── */
 .about-text { font-size: var(--text-base); color: var(--ink-2); line-height: 1.75; }
 
-.proof-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.proof-item {
-  min-width: 0;
-  padding: 12px 12px 13px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg);
-}
-
-.proof-value {
-  display: block;
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1.15;
-}
-
-.proof-label {
-  display: block;
-  margin-top: 4px;
-  font-size: var(--text-2xs);
-  color: var(--muted);
-  line-height: 1.35;
-}
-
 /* ── Experience ── */
 .exp-item {
   display: flex;
@@ -1159,7 +1128,6 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
   .layout { grid-template-columns: 1fr; }
   .hero { position: static; max-height: none; overflow-y: visible; }
   .pair-grid { grid-template-columns: 1fr; }
-  .proof-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 700px) {
@@ -1176,5 +1144,4 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
 
 @media (max-width: 480px) {
   .hero-stats { gap: 10px; }
-  .proof-grid { grid-template-columns: 1fr; }
 }
