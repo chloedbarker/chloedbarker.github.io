@@ -848,33 +848,17 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 }
 .project-link.featured-project::before { background: #0f766e; opacity: 1; }
 
-/* Category accent colors — a quick visual cue for scanning the grid */
-.project-link.cat-modeling::before { background: #2563eb; }
-.project-link.cat-ml::before { background: #7c3aed; }
-.project-link.cat-engineering::before { background: #0f766e; }
-.project-link.cat-communication::before { background: #b45309; }
-.project-link.cat-modeling .project-icon { background: var(--accent-4); }
-.project-link.cat-ml .project-icon { background: #f5f3ff; }
-.project-link.cat-engineering .project-icon { background: #f0fdfa; }
-.project-link.cat-communication .project-icon { background: var(--accent-warm-bg); }
+/* Category accent colors — always visible, a quick visual cue for scanning the grid */
+.project-link.cat-modeling::before { background: #2563eb; opacity: 1; }
+.project-link.cat-ml::before { background: #7c3aed; opacity: 1; }
+.project-link.cat-engineering::before { background: #0f766e; opacity: 1; }
+.project-link.cat-communication::before { background: #b45309; opacity: 1; }
 
 .project-link-top {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 8px;
-}
-
-.project-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: var(--bg-2);
-  font-size: 1.05rem;
 }
 
 .project-name { flex: 1; font-size: var(--text-md); font-weight: 700; color: var(--ink); letter-spacing: -.01em; line-height: 1.3; }
