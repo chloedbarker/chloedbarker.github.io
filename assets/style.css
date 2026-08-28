@@ -6,6 +6,7 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
 
 /* ── Design tokens ── */
 :root {
@@ -199,6 +200,41 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   line-height: 1.6;
   margin-bottom: 14px;
 }
+
+.project-index-card {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.project-index-media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-2);
+  text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
+}
+
+.project-index-media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .24s ease, filter .24s ease;
+}
+
+.project-index-card:hover .project-index-media img {
+  filter: saturate(1.05) contrast(1.02);
+  transform: scale(1.025);
+}
+
+.project-index-body { min-width: 0; }
+.project-index-card .link-row { margin-bottom: 0; }
 
 /* Capstone-only prose (plain <p>/<ul> inside a .card, no .card-desc class).
    Scoped to body.page-capstone so it can't leak onto .about-text or
@@ -648,6 +684,37 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 /* ── About ── */
 .about-text { font-size: var(--text-base); color: var(--ink-2); line-height: 1.75; }
 
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.proof-item {
+  min-width: 0;
+  padding: 12px 12px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.proof-value {
+  display: block;
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.15;
+}
+
+.proof-label {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--text-2xs);
+  color: var(--muted);
+  line-height: 1.35;
+}
+
 /* ── Experience ── */
 .exp-item {
   display: flex;
@@ -681,6 +748,65 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 /* ── Projects ── */
 .projects-grid { display: flex; flex-direction: column; gap: 12px; }
 
+.project-toolbar {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr);
+  gap: 10px;
+  margin: -4px 0 16px;
+}
+
+.project-search {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--text-sm);
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color .16s, box-shadow .16s;
+}
+
+.project-search::placeholder { color: var(--muted-2); }
+.project-search:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-filter {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  min-height: 30px;
+  padding: 4px 11px;
+  transition: background .16s, border-color .16s, color .16s, transform .16s;
+}
+
+.project-filter:hover {
+  border-color: var(--accent-2);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.project-filter.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 .project-link {
   display: block;
   text-decoration: none;
@@ -706,6 +832,11 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 
 .project-link:hover { box-shadow: var(--shadow-md); border-color: var(--accent-2); transform: translateX(3px); }
 .project-link:hover::before { opacity: 1; }
+.project-link.featured-project {
+  background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 52%, #eff6ff 100%);
+  border-color: #99f6e4;
+}
+.project-link.featured-project::before { background: #0f766e; opacity: 1; }
 
 .project-link-top {
   display: flex;
@@ -721,6 +852,55 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .project-link:hover .project-arrow { color: var(--accent); transform: translateX(2px); }
 
 .project-desc { font-size: var(--text-sm); color: var(--muted); line-height: 1.55; }
+
+.project-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.project-kpis span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--accent-4);
+  color: var(--accent);
+  border: 1px solid var(--accent-3);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.project-link-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 9px;
+}
+
+.project-link-tags span {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-2);
+  color: var(--muted);
+  font-size: var(--text-2xs);
+  font-weight: 500;
+  padding: 3px 8px;
+}
+
+.project-empty {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: var(--text-sm);
+  margin-top: 12px;
+  padding: 18px;
+  text-align: center;
+}
 
 /* ── Capstone card (homepage teaser) ── */
 .capstone-card {
@@ -770,6 +950,13 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 }
 
 .capstone-desc { font-size: var(--text-sm); color: rgba(255,255,255,0.6); line-height: 1.55; margin-bottom: 12px; }
+
+.capstone-card .project-kpis span {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.86);
+}
+.capstone-card .project-kpis { margin-bottom: 12px; }
 
 /* ── Education ── */
 .edu-item { margin-bottom: 14px; }
@@ -901,6 +1088,7 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
   .layout { grid-template-columns: 1fr; }
   .hero { position: static; max-height: none; overflow-y: visible; }
   .pair-grid { grid-template-columns: 1fr; }
+  .proof-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 700px) {
@@ -911,8 +1099,10 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
   .page-hero h1 { font-size: var(--text-lg); }
   .skill-card { flex-direction: column; gap: 8px; }
   .skill-card-header { flex: none; padding-top: 0; }
+  .project-filter { flex: 1 1 auto; }
 }
 
 @media (max-width: 480px) {
   .hero-stats { gap: 10px; }
+  .proof-grid { grid-template-columns: 1fr; }
 }

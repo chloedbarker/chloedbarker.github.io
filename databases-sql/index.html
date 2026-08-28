@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Databases & SQL | Chloe Barker</title>
+<meta name="description" content="Database, SQL, ETL, and geospatial analysis projects by Chloe Barker, including a normalized Texas groundwater-quality database.">
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css?v=20260827">
 </head>
@@ -17,28 +18,35 @@
     <p>Projects focused on relational schema design, SQL querying, ETL/data integration, geospatial analysis, and communicating results through interactive maps and diagrams.</p>
   </div>
 
-  <div class="card">
-    <div class="card-top"><h2>Texas Water Quality Database</h2></div>
-    <p class="card-desc">
-      Built a fully normalized MySQL database (64 tables) to organize 20+ years of Texas
-      groundwater data across all 254 counties. Used Python for the ETL pipeline and made
-      interactive maps with Folium to spot contamination hotspots.
-    </p>
-    <div class="tool-tags">
-      <span class="tool-tag">Python</span>
-      <span class="tool-tag">Jupyter</span>
-      <span class="tool-tag">SQL</span>
-      <span class="tool-tag">MySQL</span>
-      <span class="tool-tag">GeoPandas</span>
-      <span class="tool-tag">Folium</span>
-      <span class="tool-tag">pandas</span>
-      <span class="tool-tag">VS Code</span>
-    </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="water-quality-project/">View Case Study</a>
-      <a class="link-pill" href="water-quality-project/Final_Paper.pdf" target="_blank">Final Paper (PDF)</a>
-      <a class="link-pill" href="water-quality-project/Project_Presentation_Slides.pdf" target="_blank">Slides (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql/water-quality-project" target="_blank">GitHub</a>
+  <div class="card project-index-card">
+    <a class="project-index-media" href="water-quality-project/" aria-label="View Texas Water Quality Database case study">
+      <img src="water-quality-project/ER.png" alt="Entity relationship diagram for Texas water quality database">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Texas Water Quality Database</h2></div>
+      <p class="card-desc">
+        Built a fully normalized MySQL database to organize Texas groundwater data across all 254 counties. Python ETL, SQL validation, and Folium maps turned fragmented public records into a queryable foundation for later geospatial and health-outcome analysis.
+      </p>
+      <div class="project-kpis">
+        <span>64-table 3NF schema</span>
+        <span>254 counties</span>
+        <span>Interactive Folium maps</span>
+        <span>Capstone data foundation</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">Python</span>
+        <span class="tool-tag">SQL</span>
+        <span class="tool-tag">MySQL</span>
+        <span class="tool-tag">GeoPandas</span>
+        <span class="tool-tag">Folium</span>
+        <span class="tool-tag">pandas</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="water-quality-project/">View Case Study</a>
+        <a class="link-pill" href="water-quality-project/Final_Paper.pdf" target="_blank" rel="noopener">Final Paper (PDF)</a>
+        <a class="link-pill" href="water-quality-project/Project_Presentation_Slides.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql/water-quality-project" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
   </div>
 

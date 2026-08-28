@@ -14,6 +14,7 @@
 
   <div class="page-hero">
     <h1>Predictive Analytics</h1>
+<<<<<<< HEAD
     <p>Seven classification and regression projects across healthcare, HR, real estate, and finance. The common thread is picking the model that fits the decision, not just the one with the best headline number, using cost-optimized thresholds for attrition, interpretability over black-box gains for hospital stays, and different models for different forecast horizons.</p>
   </div>
 
@@ -32,116 +33,199 @@
       <a class="link-pill" href="https://huggingface.co/spaces/chloebarker/diabetes-care-management-decision-support" target="_blank">Live App</a>
       <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank">GitHub</a>
     </div>
+=======
+    <p>Seven applied modeling projects across healthcare, HR, real estate, finance, and operations. The common thread is choosing the model, threshold, and delivery format that fit the decision, not just the best headline metric: deployed triage workflows, cost-optimized thresholds, interpretable baselines, and horizon-specific forecasts.</p>
+>>>>>>> b4f6d4e (Updates to formatting integration between pages)
   </div>
 
-  <div class="card">
-    <div class="card-top"><h2>Heart Disease Prediction</h2></div>
-    <p class="card-desc">Used CDC survey data on 300K+ people to predict who's at risk for heart disease. I compared five different models, and a more flexible logistic regression came out on top, with self-reported general health turning out to be one of the strongest predictors, even more than several clinical factors.</p>
-    <div class="tool-tags">
-      <span class="tool-tag">R</span>
-      <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">Logistic Regression</span>
-      <span class="tool-tag">GLMNET</span>
-      <span class="tool-tag">KNN</span>
-      <span class="tool-tag">LDA / QDA</span>
-      <span class="tool-tag">ROC / AUC</span>
-    </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="heart-disease-prediction/">View Case Study</a>
-      <a class="link-pill" href="heart-disease-prediction/Heart_Disease_Prediction_Slides.pdf" target="_blank">Slides (PDF)</a>
-      <a class="link-pill" href="heart-disease-prediction/Heart_Disease_Prediction_Project.pdf" target="_blank">Report (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/heart-disease-prediction" target="_blank">GitHub</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-top"><h2>Time Series Forecasting — Eli Lilly (LLY)</h2></div>
-    <p class="card-desc">Forecasted Eli Lilly's stock price for a healthcare investment fund that needed both short and long-term outlooks. I tried several time-series models and found no single winner, one was best for three-month forecasts and a different one was best for a full year, which was a good lesson in matching the model to the actual question being asked.</p>
-    <div class="tool-tags">
-      <span class="tool-tag">R</span>
-      <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">tswge</span>
-      <span class="tool-tag">ARIMA</span>
-      <span class="tool-tag">VAR</span>
-      <span class="tool-tag">MLP Neural Net</span>
-      <span class="tool-tag">Time Series</span>
-    </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="time-series-forecasting-lly/">View Case Study</a>
-      <a class="link-pill" href="time-series-forecasting-lly/presentation.pdf" target="_blank">Slides (PDF)</a>
-      <a class="link-pill" href="time-series-forecasting-lly/final-report.pdf" target="_blank">Report (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/time-series-forecasting-lly" target="_blank">GitHub</a>
+  <div class="card project-index-card">
+    <a class="project-index-media" href="diabetes-readmission-project/" aria-label="View diabetes transitional care case study">
+      <img src="diabetes-readmission-project/assets/tiers.png" alt="Three-tier transitional care intervention ladder">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Diabetes Transitional Care Resource Allocation System</h2></div>
+      <p class="card-desc">Built and deployed a decision-support app for hospital care-management teams to prioritize diabetes discharges for routine, enhanced, or intensive follow-up. The system combines readmission-risk modeling, capacity planning, net-value analysis, and source-grounded CMS/AHRQ guidance through RAG.</p>
+      <div class="project-kpis">
+        <span>40.8% Precision@500</span>
+        <span>3.6× lift</span>
+        <span>Deployed app</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">Python</span>
+        <span class="tool-tag">Gradient Boosting</span>
+        <span class="tool-tag">RAG</span>
+        <span class="tool-tag">FAISS</span>
+        <span class="tool-tag">Gradio</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="diabetes-readmission-project/">View Case Study</a>
+        <a class="link-pill" href="https://huggingface.co/spaces/chloebarker/diabetes-care-management-decision-support" target="_blank" rel="noopener">Live App</a>
+        <a class="link-pill" href="diabetes-readmission-project/Final_Project_Chloe_Barker.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-top"><h2>Hospital Length of Stay Prediction</h2></div>
-    <p class="card-desc">Predicted how long patients would stay in the hospital using data from 113 hospitals. I compared a simple, easy-to-explain model against a more complex one, and the complex model won on accuracy, but I made sure it still made sense before trusting it over the simpler one.</p>
-    <div class="tool-tags">
-      <span class="tool-tag">R</span>
-      <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">Linear Regression</span>
-      <span class="tool-tag">LASSO</span>
-      <span class="tool-tag">KNN</span>
-      <span class="tool-tag">Bootstrap CI</span>
-    </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="hospital-length-of-stay-prediction/">View Case Study</a>
-      <a class="link-pill" href="hospital-length-of-stay-prediction/Hospital_Length_of_Stay_Slides.pdf" target="_blank">Slides (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/hospital-length-of-stay-prediction" target="_blank">GitHub</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-top"><h2>Employee Attrition Prediction — Frito-Lay</h2></div>
-    <p class="card-desc">Built a model to flag Frito-Lay employees at risk of leaving, then tuned it around the real cost of turnover instead of just chasing accuracy, since missing someone who's about to quit is a lot more expensive than a false alarm. Age, job role, and overtime were the biggest predictors.</p>
-    <div class="tool-tags">
-      <span class="tool-tag">R</span>
-      <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">KNN</span>
-      <span class="tool-tag">Naive Bayes</span>
-      <span class="tool-tag">Cost-Based Thresholding</span>
-      <span class="tool-tag">ggplot2</span>
-    </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="employee-attrition-prediction/">View Case Study</a>
-      <a class="link-pill" href="employee-attrition-prediction/Chloe_Barker_Frito_Lay_EDA.pdf" target="_blank">Slides (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/employee-attrition-prediction" target="_blank">GitHub</a>
+  <div class="card project-index-card">
+    <a class="project-index-media" href="heart-disease-prediction/" aria-label="View heart disease prediction case study">
+      <img src="heart-disease-prediction/assets/feature-importance.png" alt="Feature importance chart for heart disease prediction">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Heart Disease Prediction</h2></div>
+      <p class="card-desc">Modeled heart-disease risk from CDC survey data on 300K+ respondents, comparing logistic regression, GLMNET-selected interactions, LDA, QDA, and kNN. The final model balanced discrimination with interpretability and showed how much signal a routinely collected survey can carry.</p>
+      <div class="project-kpis">
+        <span>319,795 respondents</span>
+        <span>0.845 AUROC</span>
+        <span>Rare-outcome evaluation</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">R</span>
+        <span class="tool-tag">Logistic Regression</span>
+        <span class="tool-tag">GLMNET</span>
+        <span class="tool-tag">LDA / QDA</span>
+        <span class="tool-tag">ROC / AUC</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="heart-disease-prediction/">View Case Study</a>
+        <a class="link-pill" href="heart-disease-prediction/Heart_Disease_Prediction_Slides.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="heart-disease-prediction/Heart_Disease_Prediction_Project.pdf" target="_blank" rel="noopener">Report (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/heart-disease-prediction" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-top"><h2>Sale Price Prediction</h2></div>
-    <p class="card-desc">Predicted home sale prices in Ames, Iowa two ways: first digging into whether the price-per-square-foot relationship changes by neighborhood (it does), then building a model that competed on Kaggle and explained about 87% of the variation in price.</p>
-    <div class="tool-tags">
-      <span class="tool-tag">R</span>
-      <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">Linear Regression</span>
-      <span class="tool-tag">LASSO</span>
-      <span class="tool-tag">Kaggle</span>
-      <span class="tool-tag">Regression Diagnostics</span>
-    </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="sale-price-prediction/">View Case Study</a>
-      <a class="link-pill" href="sale-price-prediction/Sale_Price_Project_Report.pdf" target="_blank">Report (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/sale-price-prediction" target="_blank">GitHub</a>
+  <div class="card project-index-card">
+    <a class="project-index-media" href="time-series-forecasting-lly/" aria-label="View Eli Lilly time-series forecasting case study">
+      <img src="time-series-forecasting-lly/assets/forecast-preview.png" alt="Preview slide for Eli Lilly stock forecasting project">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Time Series Forecasting — Eli Lilly (LLY)</h2></div>
+      <p class="card-desc">Forecasted Eli Lilly's stock price for a healthcare investment scenario requiring both short- and long-horizon views. Multiple time-series models were evaluated separately by forecast horizon, showing why a single model choice can hide the real decision trade-off.</p>
+      <div class="project-kpis">
+        <span>136 monthly observations</span>
+        <span>3-month + 12-month horizons</span>
+        <span>ARIMA / VAR / MLP</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">R</span>
+        <span class="tool-tag">tswge</span>
+        <span class="tool-tag">ARIMA</span>
+        <span class="tool-tag">VAR</span>
+        <span class="tool-tag">MLP Neural Net</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="time-series-forecasting-lly/">View Case Study</a>
+        <a class="link-pill" href="time-series-forecasting-lly/presentation.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="time-series-forecasting-lly/final-report.pdf" target="_blank" rel="noopener">Report (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/time-series-forecasting-lly" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-top"><h2>Crab Age Prediction</h2></div>
-    <p class="card-desc">A Kaggle-style competition predicting a crab's age from physical measurements like shell size and weight. I also built a small interactive app so you can play with the predictions yourself.</p>
-    <div class="tool-tags">
-      <span class="tool-tag">R</span>
-      <span class="tool-tag">RStudio</span>
-      <span class="tool-tag">R Shiny</span>
-      <span class="tool-tag">Linear Regression</span>
-      <span class="tool-tag">Model Validation</span>
+  <div class="card project-index-card">
+    <a class="project-index-media" href="hospital-length-of-stay-prediction/" aria-label="View hospital length of stay case study">
+      <img src="hospital-length-of-stay-prediction/assets/interactions.png" alt="Interaction plots for hospital length of stay modeling">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Hospital Length of Stay Prediction</h2></div>
+      <p class="card-desc">Predicted hospital length of stay across 113 hospitals, comparing interpretable regression baselines with more complex specifications. The final recommendation favored accuracy only where the added complexity produced a defensible operational signal.</p>
+      <div class="project-kpis">
+        <span>113 hospitals</span>
+        <span>Operational forecasting</span>
+        <span>Model complexity audit</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">R</span>
+        <span class="tool-tag">Linear Regression</span>
+        <span class="tool-tag">LASSO</span>
+        <span class="tool-tag">KNN</span>
+        <span class="tool-tag">Bootstrap CI</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="hospital-length-of-stay-prediction/">View Case Study</a>
+        <a class="link-pill" href="hospital-length-of-stay-prediction/Hospital_Length_of_Stay_Slides.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/hospital-length-of-stay-prediction" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
-    <div class="link-row">
-      <a class="link-pill primary" href="crab-age-prediction/">View Case Study</a>
-      <a class="link-pill" href="crab-age-prediction/Crab_Age_Prediction_Slides.pdf" target="_blank">Slides (PDF)</a>
-      <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/crab-age-prediction" target="_blank">GitHub</a>
+  </div>
+
+  <div class="card project-index-card">
+    <a class="project-index-media" href="employee-attrition-prediction/" aria-label="View employee attrition prediction case study">
+      <img src="employee-attrition-prediction/assets/attrition.png" alt="Employee attrition scatter plot by income, tenure, and overtime">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Employee Attrition Prediction — Frito-Lay</h2></div>
+      <p class="card-desc">Built an employee attrition model for Frito-Lay and selected the decision threshold around turnover economics rather than overall accuracy. The result connects model sensitivity, replacement-cost exposure, and retention-action cost in one business recommendation.</p>
+      <div class="project-kpis">
+        <span>94.29% sensitivity</span>
+        <span>Cost-based threshold</span>
+        <span>HR decision support</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">R</span>
+        <span class="tool-tag">KNN</span>
+        <span class="tool-tag">Naive Bayes</span>
+        <span class="tool-tag">Cost-Based Thresholding</span>
+        <span class="tool-tag">ggplot2</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="employee-attrition-prediction/">View Case Study</a>
+        <a class="link-pill" href="employee-attrition-prediction/Chloe_Barker_Frito_Lay_EDA.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/employee-attrition-prediction" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card project-index-card">
+    <a class="project-index-media" href="sale-price-prediction/" aria-label="View sale price prediction case study">
+      <img src="sale-price-prediction/assets/sale-price.png" alt="Sale price analysis chart for Ames housing project">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Sale Price Prediction</h2></div>
+      <p class="card-desc">Predicted home sale prices in Ames, Iowa two ways: first testing whether the price-per-square-foot relationship changes by neighborhood, then building a Kaggle-style model that explained about 87% of the variation in price.</p>
+      <div class="project-kpis">
+        <span>86.65% R²</span>
+        <span>Neighborhood interactions</span>
+        <span>Kaggle-style validation</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">R</span>
+        <span class="tool-tag">Linear Regression</span>
+        <span class="tool-tag">LASSO</span>
+        <span class="tool-tag">Kaggle</span>
+        <span class="tool-tag">Regression Diagnostics</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="sale-price-prediction/">View Case Study</a>
+        <a class="link-pill" href="sale-price-prediction/Sale_Price_Project_Report.pdf" target="_blank" rel="noopener">Report (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/sale-price-prediction" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card project-index-card">
+    <a class="project-index-media" href="crab-age-prediction/" aria-label="View crab age prediction case study">
+      <img src="crab-age-prediction/assets/crab-age-by-sex.png" alt="Crab age by sex chart">
+    </a>
+    <div class="project-index-body">
+      <div class="card-top"><h2>Crab Age Prediction</h2></div>
+      <p class="card-desc">Predicted crab age from physical measurements in a Kaggle-style regression setting, then built a small Shiny interface to make the model explorable beyond the static report.</p>
+      <div class="project-kpis">
+        <span>Interactive Shiny app</span>
+        <span>Feature engineering</span>
+        <span>Model validation</span>
+      </div>
+      <div class="tool-tags">
+        <span class="tool-tag">R</span>
+        <span class="tool-tag">R Shiny</span>
+        <span class="tool-tag">Linear Regression</span>
+        <span class="tool-tag">Model Validation</span>
+      </div>
+      <div class="link-row">
+        <a class="link-pill primary" href="crab-age-prediction/">View Case Study</a>
+        <a class="link-pill" href="crab-age-prediction/Crab_Age_Prediction_Slides.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+        <a class="link-pill" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/crab-age-prediction" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
   </div>
 
