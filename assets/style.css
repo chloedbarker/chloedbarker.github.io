@@ -898,19 +898,26 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
   line-height: 1.25;
 }
 
-/* The four plain category cards read their stats as colored text, not
-   boxed chips, so the grid doesn't turn into a wall of little buttons. */
+/* The four plain category cards read their stats as a clean stacked list
+   of colored text, not boxed chips, so the grid doesn't turn into a wall
+   of little buttons — and stacking (instead of inline + wrap) avoids the
+   ragged look of a dot separator landing at the start of a wrapped line. */
 .project-link.cat-modeling .project-kpis,
 .project-link.cat-ml .project-kpis,
 .project-link.cat-engineering .project-kpis,
 .project-link.cat-communication .project-kpis {
-  gap: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
 }
 
 .project-link.cat-modeling .project-kpis span,
 .project-link.cat-ml .project-kpis span,
 .project-link.cat-engineering .project-kpis span,
 .project-link.cat-communication .project-kpis span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   background: none;
   border: none;
   padding: 0;
@@ -925,15 +932,17 @@ body.page-capstone .card ul li strong { color: var(--ink); font-weight: 600; }
 .project-link.cat-engineering .project-kpis span { color: #0f766e; }
 .project-link.cat-communication .project-kpis span { color: #c2410c; }
 
-.project-link.cat-modeling .project-kpis span:not(:first-child)::before,
-.project-link.cat-ml .project-kpis span:not(:first-child)::before,
-.project-link.cat-engineering .project-kpis span:not(:first-child)::before,
-.project-link.cat-communication .project-kpis span:not(:first-child)::before {
-  content: '·';
-  display: inline-block;
-  color: var(--border);
-  font-weight: 700;
-  margin-right: 9px;
+.project-link.cat-modeling .project-kpis span::before,
+.project-link.cat-ml .project-kpis span::before,
+.project-link.cat-engineering .project-kpis span::before,
+.project-link.cat-communication .project-kpis span::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .55;
 }
 
 .project-link-tags {
