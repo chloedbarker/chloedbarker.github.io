@@ -1,0 +1,1287 @@
+/* =========================================================
+   CHLOE BARKER PORTFOLIO
+   Spotify-inspired redesign
+   ========================================================= */
+
+
+/* =========================================================
+   1. DESIGN SYSTEM
+   ========================================================= */
+
+:root {
+    --green: #1ED760;
+
+    --white: #FFFFFF;
+
+    --black: #121212;
+    --black-deep: #000000;
+
+    --card: #181818;
+    --card-hover: #282828;
+
+    --gray: #535353;
+    --light-gray: #B3B3B3;
+
+    --border: #2A2A2A;
+
+    --sidebar-width: 260px;
+}
+
+
+/* =========================================================
+   2. GLOBAL RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    background: var(--black-deep);
+    color: var(--white);
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* Remove default spacing */
+
+h1,
+h2,
+h3,
+h4,
+p {
+    margin-top: 0;
+}
+
+
+/* General links */
+
+a {
+    color: inherit;
+}
+
+a:hover {
+    color: var(--green);
+}
+
+
+/* =========================================================
+   3. MAIN PAGE LAYOUT
+   ========================================================= */
+
+.layout {
+    display: flex;
+
+    min-height: 100vh;
+
+    background: var(--black-deep);
+}
+
+
+/* =========================================================
+   4. SIDEBAR
+   ========================================================= */
+
+.hero {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: var(--sidebar-width);
+    height: 100vh;
+
+    padding: 32px 24px;
+
+    background: var(--black-deep);
+
+    overflow-y: auto;
+}
+
+
+/* Profile image */
+
+.headshot {
+    display: block;
+
+    width: 150px;
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    margin-bottom: 18px;
+}
+
+
+/* Name */
+
+.hero h1 {
+    margin: 0 0 2px;
+
+    color: var(--white);
+
+    font-size: 26px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* Role */
+
+.hero-role {
+    margin: 0;
+
+    color: var(--light-gray);
+
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+/* Education / job-search line */
+
+.sidebar-meta {
+    margin-top: 8px;
+
+    color: var(--gray);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   5. SIDEBAR NAVIGATION
+   ========================================================= */
+
+.side-nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    margin-top: 32px;
+}
+
+
+.side-nav a {
+    display: block;
+
+    padding: 10px 12px;
+
+    color: var(--light-gray);
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    border-radius: 6px;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.side-nav a:hover {
+    color: var(--white);
+
+    background: var(--card);
+}
+
+
+.side-nav a.active {
+    color: var(--white);
+
+    background: var(--card-hover);
+}
+
+
+/* =========================================================
+   6. CONTACT LINKS
+   ========================================================= */
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-top: 30px;
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+.contact-links a {
+    color: var(--light-gray);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+}
+
+
+.contact-links a:hover {
+    color: var(--white);
+}
+
+
+/* =========================================================
+   7. SIDEBAR STATS
+   ========================================================= */
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin-top: 28px;
+}
+
+
+.hero-stat {
+    padding: 12px;
+
+    background: var(--card);
+
+    border-radius: 8px;
+}
+
+
+.hero-stat-value {
+    display: block;
+
+    color: var(--white);
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+.hero-stat-label {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--gray);
+
+    font-size: 10px;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   8. MAIN CONTENT
+   ========================================================= */
+
+.content {
+    width: calc(100% - var(--sidebar-width));
+
+    min-height: 100vh;
+
+    margin-left: var(--sidebar-width);
+
+    padding: 32px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #242424 0,
+            var(--black) 350px
+        );
+}
+
+
+/* =========================================================
+   9. GENERAL CARDS
+   ========================================================= */
+
+.card {
+    margin-bottom: 24px;
+    padding: 28px;
+
+    background: var(--card);
+
+    border-radius: 10px;
+
+    border: 1px solid transparent;
+}
+
+
+/* =========================================================
+   10. SECTION HEADINGS
+   ========================================================= */
+
+.section-header h2 {
+    margin: 0 0 22px;
+
+    color: var(--white);
+
+    font-size: 26px;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* =========================================================
+   11. ABOUT
+   ========================================================= */
+
+.about-text {
+    max-width: 900px;
+
+    margin-bottom: 0;
+
+    color: var(--light-gray);
+
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   12. EDUCATION + CERTIFICATIONS GRID
+   ========================================================= */
+
+.pair-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   13. EDUCATION
+   ========================================================= */
+
+.edu-item {
+    padding: 16px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.edu-item:first-of-type {
+    padding-top: 0;
+}
+
+
+.edu-item:last-child {
+    padding-bottom: 0;
+
+    border-bottom: none;
+}
+
+
+.edu-school {
+    color: var(--white);
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+.edu-degree {
+    margin-top: 3px;
+
+    color: var(--light-gray);
+
+    font-size: 14px;
+}
+
+
+.edu-meta {
+    margin-top: 5px;
+
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   14. CERTIFICATIONS
+   ========================================================= */
+
+.cert-item {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 14px;
+
+    color: var(--white);
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.cert-item:hover {
+    background: var(--card-hover);
+
+    color: var(--white);
+
+    transform: translateY(-2px);
+}
+
+
+.cert-logo {
+    width: 46px;
+    height: 46px;
+
+    object-fit: contain;
+
+    border-radius: 6px;
+
+    background: var(--white);
+}
+
+
+.cert-info {
+    min-width: 0;
+}
+
+
+.cert-issuer {
+    color: var(--gray);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+
+.cert-name {
+    color: var(--white);
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   15. EXPERIENCE
+   ========================================================= */
+
+.exp-item {
+    display: flex;
+
+    gap: 20px;
+}
+
+
+.exp-logo {
+    flex-shrink: 0;
+}
+
+
+.exp-logo img {
+    width: 60px;
+    height: 60px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+}
+
+
+.exp-body {
+    flex: 1;
+}
+
+
+.exp-company {
+    color: var(--white);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.exp-title {
+    margin-top: 2px;
+
+    color: var(--light-gray);
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+.exp-meta {
+    margin-top: 3px;
+
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+
+.exp-bullets {
+    margin: 16px 0 0;
+    padding-left: 20px;
+
+    color: var(--light-gray);
+}
+
+
+.exp-bullets li {
+    margin-bottom: 8px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   16. SKILLS
+   ========================================================= */
+
+.skills-section {
+    margin-bottom: 24px;
+}
+
+
+.skills-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+.skill-card {
+    padding: 20px;
+
+    background: #202020;
+
+    border-radius: 8px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.skill-card:hover {
+    background: var(--card-hover);
+
+    transform: translateY(-2px);
+}
+
+
+.skill-card-header {
+    margin-bottom: 14px;
+}
+
+
+.skill-card-label {
+    color: var(--white);
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+.skill-chip {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    background: #303030;
+
+    color: var(--light-gray);
+
+    text-decoration: none;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.skill-chip:hover {
+    background: #404040;
+
+    color: var(--white);
+}
+
+
+.skill-chip-icon {
+    width: 15px;
+    height: 15px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   17. PROJECT TOOLBAR
+   ========================================================= */
+
+.project-toolbar {
+    margin-bottom: 26px;
+}
+
+
+/* Search input */
+
+.project-search {
+    width: 100%;
+
+    margin-bottom: 14px;
+    padding: 12px 16px;
+
+    background: #242424;
+
+    color: var(--white);
+
+    border: 1px solid var(--gray);
+
+    border-radius: 999px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.project-search::placeholder {
+    color: var(--gray);
+}
+
+
+.project-search:focus {
+    background: #2A2A2A;
+
+    border-color: var(--white);
+}
+
+
+/* =========================================================
+   18. PROJECT FILTERS
+   ========================================================= */
+
+.project-filters {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+.project-filter {
+    padding: 8px 16px;
+
+    background: var(--card-hover);
+
+    color: var(--white);
+
+    border: none;
+
+    border-radius: 999px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.project-filter:hover {
+    background: #3E3E3E;
+
+    transform: scale(1.02);
+}
+
+
+.project-filter.active {
+    background: var(--white);
+
+    color: var(--black-deep);
+}
+
+
+/* =========================================================
+   19. PROJECT GRID
+   ========================================================= */
+
+.projects-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   20. PROJECT CARDS
+   ========================================================= */
+
+.project-link,
+.capstone-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 20px;
+
+    background: #202020;
+
+    color: var(--white);
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.project-link:hover,
+.capstone-card:hover {
+    background: var(--card-hover);
+
+    color: var(--white);
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   21. PROJECT CARD HEADER
+   ========================================================= */
+
+.project-link-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+}
+
+
+.project-name,
+.capstone-title {
+    color: var(--white);
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+.project-arrow {
+    flex-shrink: 0;
+
+    color: var(--light-gray);
+
+    font-size: 20px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.project-link:hover .project-arrow {
+    color: var(--green);
+
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   22. PROJECT EYEBROWS / CATEGORY LABELS
+   ========================================================= */
+
+.project-eyebrow {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--green);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   23. PROJECT DESCRIPTION
+   ========================================================= */
+
+.project-desc,
+.capstone-desc {
+    margin: 12px 0 16px;
+
+    color: var(--light-gray);
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   24. PROJECT KPI CHIPS
+   ========================================================= */
+
+.project-kpis {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: auto;
+}
+
+
+.project-kpis span {
+    padding: 5px 9px;
+
+    background: #303030;
+
+    color: var(--light-gray);
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   25. PROJECT TECHNOLOGY TAGS
+   ========================================================= */
+
+.project-link-tags,
+.capstone-pills {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 14px;
+}
+
+
+.project-link-tags span,
+.pill {
+    padding: 5px 9px;
+
+    background: #303030;
+
+    color: var(--light-gray);
+
+    border-radius: 999px;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   26. CAPSTONE
+   ========================================================= */
+
+.capstone-badge {
+    margin-bottom: 10px;
+
+    color: var(--green);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+}
+
+
+.project-preview {
+    width: 100%;
+
+    margin-top: 16px;
+
+    border-radius: 6px;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   27. OPTIONAL PLAY BUTTON
+   ========================================================= */
+
+.play-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    background: var(--green);
+
+    color: var(--black-deep);
+
+    border: none;
+
+    border-radius: 50%;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.play-button:hover {
+    transform: scale(1.06);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   28. EMPTY PROJECT SEARCH STATE
+   ========================================================= */
+
+.project-empty {
+    padding: 30px 0;
+
+    color: var(--light-gray);
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   29. FOOTER
+   ========================================================= */
+
+.footer {
+    padding: 20px 4px 40px;
+
+    color: var(--gray);
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+.footer a {
+    color: var(--light-gray);
+
+    text-decoration: none;
+}
+
+
+.footer a:hover {
+    color: var(--white);
+}
+
+
+/* =========================================================
+   30. REVEAL ANIMATION
+   ========================================================= */
+
+.reveal {
+    opacity: 0;
+
+    transform: translateY(16px);
+
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+}
+
+
+.reveal.visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   31. ACCESSIBILITY
+   ========================================================= */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--green);
+
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   32. TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    :root {
+        --sidebar-width: 220px;
+    }
+
+
+    .hero {
+        padding: 26px 18px;
+    }
+
+
+    .content {
+        padding: 24px;
+    }
+
+
+    .headshot {
+        width: 125px;
+        height: 125px;
+    }
+
+
+    .pair-grid,
+    .projects-grid,
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   33. MOBILE
+   ========================================================= */
+
+@media (max-width: 720px) {
+
+    .layout {
+        display: block;
+    }
+
+
+    .hero {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        padding: 28px 22px;
+
+        border-bottom: 1px solid var(--border);
+    }
+
+
+    .content {
+        width: 100%;
+
+        margin-left: 0;
+
+        padding: 20px;
+
+        background:
+            linear-gradient(
+                180deg,
+                #242424 0,
+                var(--black) 250px
+            );
+    }
+
+
+    .headshot {
+        width: 110px;
+        height: 110px;
+    }
+
+
+    .side-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        margin-top: 22px;
+    }
+
+
+    .side-nav a {
+        padding: 8px 10px;
+    }
+
+
+    .contact-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+
+    .hero-stats {
+        max-width: 320px;
+    }
+
+
+    .card {
+        padding: 20px;
+    }
+
+
+    .section-header h2 {
+        font-size: 23px;
+    }
+
+
+    .exp-item {
+        flex-direction: column;
+    }
+
+
+    .projects-grid,
+    .pair-grid,
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   34. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+    .hero {
+        padding: 24px 18px;
+    }
+
+
+    .content {
+        padding: 14px;
+    }
+
+
+    .card {
+        padding: 18px;
+    }
+
+
+    .project-link,
+    .capstone-card {
+        padding: 17px;
+    }
+
+
+    .project-filters {
+        gap: 6px;
+    }
+
+
+    .project-filter {
+        padding: 7px 12px;
+
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   35. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+
+
+    .reveal {
+        opacity: 1;
+
+        transform: none;
+    }
+}
