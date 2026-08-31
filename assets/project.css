@@ -266,6 +266,10 @@ body.case-study .page { max-width: 920px; }
   background: var(--surface);
 }
 
+/* Wide variant for side-by-side comparison figures (e.g. paired maps)
+   that lose too much detail capped at the default 600px. */
+.chart-container.wide { max-width: 100%; }
+
 .chart-container img { display: block; width: 100%; height: auto; }
 
 .chart-caption {
