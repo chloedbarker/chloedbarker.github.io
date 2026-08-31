@@ -853,8 +853,8 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 .capstone-card {
   display: block;
   text-decoration: none;
-  background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 100%);
-  border: 1px solid #1e3a5f;
+  background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 52%, #eff6ff 100%);
+  border: 1px solid #99f6e4;
   border-radius: 18px;
   padding: 22px 24px;
   transition: box-shadow .2s, transform .2s, border-color .2s;
@@ -863,9 +863,9 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 }
 
 .capstone-card:hover {
-  box-shadow: 0 8px 28px rgba(37,99,235,.45);
-  transform: translateY(-2px);
-  border-color: #3b82f6;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--accent-2);
 }
 
 .capstone-badge {
@@ -883,7 +883,7 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   margin-bottom: 8px;
 }
 
-.capstone-title { font-size: var(--text-md); font-weight: 700; letter-spacing: -.01em; color: #fff; line-height: 1.35; margin-bottom: 6px; }
+.capstone-title { font-size: var(--text-md); font-weight: 700; letter-spacing: -.01em; color: var(--ink); line-height: 1.35; margin-bottom: 6px; }
 
 .project-preview {
   width: 100%;
@@ -896,14 +896,18 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   display: block;
 }
 
-.capstone-desc { font-size: var(--text-sm); color: rgba(255,255,255,0.6); line-height: 1.55; margin-bottom: 12px; }
+.capstone-desc { font-size: var(--text-sm); color: var(--muted); line-height: 1.55; margin-bottom: 12px; }
 
-.capstone-card .project-kpis span {
-  background: rgba(255,255,255,.1);
-  border-color: rgba(255,255,255,.18);
-  color: rgba(255,255,255,.86);
-}
 .capstone-card .project-kpis { margin-bottom: 12px; }
+
+/* .pill defaults to the light-on-dark treatment used on dark hero
+   surfaces; the capstone card is light now, so give its tags the same
+   look as the other project cards' tool tags. */
+.capstone-card .pill {
+  background: var(--bg-2);
+  border-color: var(--border);
+  color: var(--muted);
+}
 
 /* ── Education ── */
 .edu-item { margin-bottom: 14px; }
