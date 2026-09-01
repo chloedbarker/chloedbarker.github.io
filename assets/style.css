@@ -571,13 +571,13 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
    stacked on top of each other, doubling the space below it. */
 .content > .card { margin-bottom: 0; }
 
-/* Simple 2-up row (Education + Certifications) — each card sizes to its
-   own content so a shorter card doesn't get stretched into empty space */
+/* Simple 2-up row (Education + Certifications) — stretched so both
+   cards match height and read as a uniform pair */
 .pair-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ── Scroll reveal ── */
