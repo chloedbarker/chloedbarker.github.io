@@ -147,6 +147,7 @@ a:hover {
     background: var(--black-deep);
 
     overflow: hidden;
+    overscroll-behavior: none;
 }
 
 
@@ -159,7 +160,7 @@ a:hover {
     height: 118px;
 
     object-fit: cover;
-    object-position: center 32%;
+    object-position: center 12%;
 
     border-radius: 50%;
 
@@ -1286,7 +1287,7 @@ input:focus-visible {
         height: 150px;
 
         object-fit: cover;
-        object-position: center 32%;
+        object-position: center 12%;
 
         border-radius: 50%;
 

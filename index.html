@@ -438,6 +438,16 @@
     });
     button.setAttribute('aria-pressed', button.classList.contains('active') ? 'true' : 'false');
   });
+
+  const sidebar = document.querySelector('.hero');
+  const desktopSidebar = window.matchMedia('(min-width: 721px)');
+
+  function lockSidebarScroll(event) {
+    if (desktopSidebar.matches) event.preventDefault();
+  }
+
+  sidebar?.addEventListener('wheel', lockSidebarScroll, { passive: false });
+  sidebar?.addEventListener('touchmove', lockSidebarScroll, { passive: false });
 </script>
 
 </body>
