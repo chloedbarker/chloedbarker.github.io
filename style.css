@@ -11,6 +11,7 @@
 :root {
     /* Brand */
     --green: #1ED760;
+    --green-soft: rgba(30, 215, 96, 0.16);
 
     /* Text */
     --text-base: #FFFFFF;
@@ -35,6 +36,13 @@
 
     /* Layout */
     --sidebar-width: 232px;
+    --left-gutter: 8px;
+    --right-gutter: 8px;
+    --panel-gap: 8px;
+    --content-spacing: 16px;
+    --content-spacing-negative: -16px;
+    --top-bar-height: 56px;
+    --top-bar-z-index: 10;
 
     /* Spacing */
     --space-1: 4px;
@@ -71,13 +79,33 @@
 }
 
 html {
+    background-color: var(--background-deep);
     scroll-behavior: smooth;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 body {
     margin: 0;
 
-    background: var(--background-deep);
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+        var(--background-deep);
+    background-size: 3px 3px, 3px 3px, auto;
     color: var(--text-subdued);
 
     font-family: var(--font-body);
@@ -135,19 +163,23 @@ a:hover {
 .hero {
     position: fixed;
 
-    top: 0;
-    left: 0;
+    top: var(--left-gutter);
+    bottom: var(--left-gutter);
+    left: var(--left-gutter);
 
     width: var(--sidebar-width);
-    height: 100vh;
-    height: 100dvh;
+    height: auto;
+    max-height: calc(100dvh - 16px);
 
-    padding: 22px 22px;
+    padding: 18px 18px;
 
-    background: var(--black-deep);
+    background: var(--background-base);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
 
     overflow: hidden;
     overscroll-behavior: none;
+    touch-action: none;
 }
 
 
@@ -160,7 +192,7 @@ a:hover {
     height: 118px;
 
     object-fit: cover;
-    object-position: center 12%;
+    object-position: center top;
 
     border-radius: 50%;
 
@@ -348,36 +380,143 @@ a:hover {
    ========================================================= */
 
 .content {
-    width: calc(100% - var(--sidebar-width));
+    width: calc(100% - var(--left-gutter) - var(--sidebar-width) - var(--panel-gap) - var(--right-gutter));
 
-    min-height: 100vh;
+    min-height: calc(100vh - 16px);
+    min-height: calc(100dvh - 16px);
 
-    margin-left: var(--sidebar-width);
+    margin: var(--left-gutter) var(--right-gutter) var(--left-gutter) calc(var(--left-gutter) + var(--sidebar-width) + var(--panel-gap));
 
-    padding: 32px;
+    padding: 0 var(--content-spacing) var(--content-spacing);
 
     background:
         linear-gradient(
             180deg,
-            #242424 0,
-            var(--black) 350px
+            rgba(45, 95, 66, 0.74) 0,
+            #181818 230px,
+            var(--black) 520px
         );
+    border-radius: 8px;
 }
 
 
 /* =========================================================
-   9. GENERAL CARDS
+   9. TOP BAR
+   ========================================================= */
+
+.top-bar {
+    position: sticky;
+    top: var(--left-gutter);
+    z-index: var(--top-bar-z-index);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: var(--top-bar-height);
+
+    margin: 0 var(--content-spacing-negative) var(--content-spacing);
+    padding: 8px var(--content-spacing);
+
+    background: rgba(18, 18, 18, 0.74);
+
+    border-radius: 8px 8px 0 0;
+
+    backdrop-filter: blur(18px);
+}
+
+
+.history-controls,
+.top-bar-actions,
+.profile-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.circle-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    background: rgba(0, 0, 0, 0.48);
+    color: var(--text-subdued);
+
+    border-radius: 50%;
+
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+.top-bar-link,
+.top-bar-pill,
+.profile-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 32px;
+    padding: 7px 16px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+
+.top-bar-link {
+    color: var(--text-base);
+}
+
+
+.top-bar-pill,
+.profile-button.primary {
+    background: var(--text-base);
+    color: var(--background-deep);
+}
+
+
+.profile-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-base);
+}
+
+
+.top-bar-link:hover,
+.top-bar-pill:hover,
+.profile-button:hover {
+    color: inherit;
+
+    transform: scale(1.04);
+}
+
+
+/* =========================================================
+   10. GENERAL CARDS
    ========================================================= */
 
 .card {
-    margin-bottom: 24px;
+    margin-bottom: var(--content-spacing);
     padding: 28px;
 
-    background: var(--card);
+    background: rgba(31, 31, 31, 0.92);
 
-    border-radius: 10px;
+    border-radius: 8px;
 
-    border: 1px solid transparent;
+    border: 1px solid rgba(255, 255, 255, 0.035);
 }
 
 
@@ -394,6 +533,16 @@ a:hover {
     font-weight: 700;
 
     letter-spacing: -0.5px;
+}
+
+
+.section-header p {
+    max-width: 680px;
+    margin: -12px 0 24px;
+
+    color: var(--text-subdued);
+
+    font-size: 14px;
 }
 
 
@@ -414,6 +563,108 @@ a:hover {
     line-height: 1.6;
 }
 
+
+.profile-overview {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 320px);
+    gap: 28px;
+    align-items: end;
+
+    margin-bottom: var(--content-spacing);
+    padding: 42px 36px 32px;
+
+    background:
+        linear-gradient(135deg, rgba(30, 215, 96, 0.32), rgba(19, 56, 72, 0.5) 45%, rgba(18, 18, 18, 0.95) 100%);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+
+.profile-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text-base);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.profile-overview h2 {
+    margin: 0;
+
+    color: var(--text-base);
+
+    font-size: clamp(48px, 7vw, 92px);
+    font-weight: 800;
+    line-height: 0.95;
+}
+
+
+.profile-subtitle {
+    margin: 14px 0 0;
+
+    color: var(--text-base);
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+.profile-overview .about-text {
+    max-width: 780px;
+    margin: 14px 0 0;
+}
+
+
+.profile-actions {
+    margin-top: 22px;
+}
+
+
+.profile-highlights {
+    display: grid;
+    gap: 10px;
+}
+
+
+.profile-highlights div {
+    padding: 16px;
+
+    background: rgba(0, 0, 0, 0.28);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+}
+
+
+.profile-stat-value,
+.profile-stat-label {
+    display: block;
+}
+
+
+.profile-stat-value {
+    color: var(--text-base);
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+
+.profile-stat-label {
+    margin-top: 2px;
+
+    color: var(--text-subdued);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
 /* =========================================================
    12. EDUCATION + CERTIFICATIONS GRID
    ========================================================= */
@@ -424,8 +675,23 @@ a:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 24px;
+    margin-bottom: var(--content-spacing);
 
-    align-items: start;
+    align-items: stretch;
+}
+
+
+.pair-grid > .card {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    margin-bottom: 0;
+}
+
+
+.certifications-card {
+    gap: 8px;
 }
 
 
@@ -824,9 +1090,9 @@ a:hover {
 .projects-grid {
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 
-    gap: 18px;
+    gap: var(--content-spacing);
 }
 
 
@@ -845,10 +1111,11 @@ a:hover {
     flex-direction: column;
 
     min-width: 0;
+    min-height: 280px;
 
-    padding: 20px;
+    padding: 18px;
 
-    background: var(--background-elevated);
+    background: linear-gradient(180deg, #242424 0, var(--background-elevated) 42%);
     color: var(--text-base);
 
     text-decoration: none;
@@ -863,9 +1130,65 @@ a:hover {
         box-shadow var(--transition-fast);
 }
 
+
+[data-project-card][hidden],
+.project-link.is-hidden,
+.capstone-card.is-hidden {
+    display: none;
+}
+
+
+.project-link::before,
+.capstone-card::before {
+    content: "";
+
+    display: block;
+
+    width: 64px;
+    height: 64px;
+
+    margin-bottom: 16px;
+
+    background:
+        linear-gradient(135deg, rgba(30, 215, 96, 0.9), rgba(36, 36, 36, 0.95));
+
+    border-radius: 6px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+
+.cat-capstone::before {
+    background: linear-gradient(135deg, #1ED760, #0f3d2a 50%, #222222);
+}
+
+
+.featured-project::before {
+    background: linear-gradient(135deg, #539df5, #1ED760 58%, #202020);
+}
+
+
+.cat-modeling::before {
+    background: linear-gradient(135deg, #ff7a45, #7c3aed 60%, #202020);
+}
+
+
+.cat-ml::before {
+    background: linear-gradient(135deg, #c084fc, #22d3ee 58%, #202020);
+}
+
+
+.cat-engineering::before {
+    background: linear-gradient(135deg, #38bdf8, #0f766e 62%, #202020);
+}
+
+
+.cat-communication::before {
+    background: linear-gradient(135deg, #facc15, #ef4444 58%, #202020);
+}
+
 .project-link:hover,
 .capstone-card:hover {
-    background: var(--background-elevated-hover);
+    background: linear-gradient(180deg, #303030 0, var(--background-elevated-hover) 42%);
 
     color: var(--text-base);
 
@@ -914,11 +1237,20 @@ a:hover {
 
 
 .project-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 
+    width: 30px;
+    height: 30px;
+
+    background: rgba(0, 0, 0, 0.28);
     color: var(--light-gray);
 
-    font-size: 20px;
+    border-radius: 50%;
+
+    font-size: 18px;
 
     transition:
         color 0.2s ease,
@@ -1221,7 +1553,7 @@ input:focus-visible {
 
 
     .content {
-        padding: 24px;
+        padding: 0 var(--content-spacing) var(--content-spacing);
     }
 
 
@@ -1232,7 +1564,6 @@ input:focus-visible {
 
 
     .pair-grid,
-    .projects-grid,
     .skills-grid {
         grid-template-columns: 1fr;
     }
@@ -1252,31 +1583,63 @@ input:focus-visible {
 
     .hero {
         position: relative;
+        top: auto;
+        bottom: auto;
+        left: auto;
 
         width: 100%;
+        max-height: none;
         height: auto;
 
         padding: 28px 22px;
 
         border-bottom: 1px solid var(--border);
+        border-radius: 0;
 
         overflow: visible;
+        touch-action: auto;
     }
 
 
     .content {
         width: 100%;
 
-        margin-left: 0;
+        margin: 0;
 
-        padding: 20px;
+        padding: 0 14px 14px;
 
         background:
             linear-gradient(
                 180deg,
-                #242424 0,
-                var(--black) 250px
+                rgba(45, 95, 66, 0.74) 0,
+                #181818 210px,
+                var(--black) 420px
             );
+
+        border-radius: 0;
+    }
+
+
+    .top-bar {
+        top: 0;
+        height: 52px;
+    }
+
+
+    .profile-overview {
+        grid-template-columns: 1fr;
+
+        padding: 30px 22px 24px;
+    }
+
+
+    .profile-overview h2 {
+        font-size: 48px;
+    }
+
+
+    .profile-highlights {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
 
@@ -1287,7 +1650,7 @@ input:focus-visible {
         height: 150px;
 
         object-fit: cover;
-        object-position: center 12%;
+        object-position: center top;
 
         border-radius: 50%;
 
@@ -1354,12 +1717,27 @@ input:focus-visible {
 
 
     .content {
-        padding: 14px;
+        padding: 0 10px 10px;
     }
 
 
     .card {
         padding: 18px;
+    }
+
+
+    .profile-overview {
+        padding: 26px 18px 22px;
+    }
+
+
+    .profile-overview h2 {
+        font-size: 40px;
+    }
+
+
+    .profile-highlights {
+        grid-template-columns: 1fr;
     }
 
 
