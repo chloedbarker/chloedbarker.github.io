@@ -1,20 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Chloe Barker | Data Scientist</title>
-<meta name="description" content="Chloe Barker's data science portfolio: applied machine learning, healthcare analytics, decision-support apps, geospatial data engineering, and executive storytelling.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chloe Barker | Data Scientist</title>
+  <meta name="description" content="Chloe Barker's data science portfolio: applied machine learning, healthcare analytics, decision-support apps, geospatial data engineering, and executive storytelling.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap"
-  rel="stylesheet"
->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap"
+    rel="stylesheet"
+  >
 
-<link rel="stylesheet" href="style.css"></head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 <div class="layout">
 
@@ -54,17 +55,50 @@
 
   <main class="content">
 
-      <!-- About -->
-      <div id="about" class="card reveal">
-        <div class="section-header"><h2>About</h2></div>
-        <p class="about-text">
-          M.S. Data Science graduate from SMU focused on applied machine learning, healthcare analytics, decision support, and data engineering. I build projects that move past notebook metrics into stakeholder decisions: who to prioritize, which model to trust, what trade-off matters, and how to explain the result clearly. Recently completed a Data Science internship at Goosehead Insurance, working with Python, SQL, PySpark, Snowflake, and Databricks on lead prioritization and marketing analytics.
-        </p>
+      <div class="top-bar">
+        <div class="history-controls" aria-hidden="true">
+          <span class="circle-control">‹</span>
+          <span class="circle-control">›</span>
+        </div>
+        <div class="top-bar-actions">
+          <a class="top-bar-link" href="resume/Chloe_Barker_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+          <a class="top-bar-pill" href="mailto:chloedbarkerr@icloud.com">Open to Work</a>
+        </div>
       </div>
+
+      <!-- About -->
+      <section id="about" class="profile-overview reveal">
+        <div class="profile-copy">
+          <span class="profile-label">Portfolio Profile</span>
+          <h2>Chloe Barker</h2>
+          <p class="profile-subtitle">Data Scientist · Healthcare Analytics · Machine Learning</p>
+          <p class="about-text">
+            M.S. Data Science graduate from SMU focused on applied machine learning, healthcare analytics, decision support, and data engineering. I build projects that move past notebook metrics into stakeholder decisions: who to prioritize, which model to trust, what trade-off matters, and how to explain the result clearly. Recently completed a Data Science internship at Goosehead Insurance, working with Python, SQL, PySpark, Snowflake, and Databricks on lead prioritization and marketing analytics.
+          </p>
+          <div class="profile-actions">
+            <a class="profile-button primary" href="#projects">View Projects</a>
+            <a class="profile-button" href="resume/Projects_Overview.pdf" target="_blank" rel="noopener">One-Pager</a>
+          </div>
+        </div>
+        <div class="profile-highlights" aria-label="Portfolio highlights">
+          <div>
+            <span class="profile-stat-value">2026</span>
+            <span class="profile-stat-label">M.S. Data Science</span>
+          </div>
+          <div>
+            <span class="profile-stat-value">ML</span>
+            <span class="profile-stat-label">Healthcare decision systems</span>
+          </div>
+          <div>
+            <span class="profile-stat-value">SQL</span>
+            <span class="profile-stat-label">Data engineering + maps</span>
+          </div>
+        </div>
+      </section>
 
       <!-- Education & Certifications -->
       <div class="pair-grid">
-        <div class="card reveal">
+        <div class="card education-card reveal">
           <div class="section-header"><h2>Education</h2></div>
 
           <div class="edu-item">
@@ -80,7 +114,7 @@
           </div>
         </div>
 
-        <div class="card reveal">
+        <div class="card certifications-card reveal">
           <div class="section-header"><h2>Certifications</h2></div>
           <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank" rel="noopener">
             <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png?v=2" alt="SMU badge">
@@ -227,7 +261,10 @@
 
       <!-- Projects -->
       <div id="projects" class="card reveal">
-        <div class="section-header"><h2>Projects</h2></div>
+        <div class="section-header">
+          <h2>Project Playlists</h2>
+          <p>Curated collections of applied analytics, modeling, engineering, and storytelling work.</p>
+        </div>
         <div class="project-toolbar" role="search">
           <input id="projectSearch" class="project-search" type="search" placeholder="Search projects, methods, or domains" aria-label="Search projects">
           <div class="project-filters" aria-label="Project filters">
@@ -241,7 +278,7 @@
         </div>
         <div class="projects-grid">
 
-          <a class="project-link" href="capstone/" data-project-card data-tags="healthcare modeling engineering geospatial capstone groundwater lithium dementia python geopandas statsmodels">
+          <a class="project-link cat-capstone" href="capstone/index.html" data-project-card data-categories="healthcare modeling engineering" data-tags="healthcare modeling engineering geospatial capstone groundwater lithium dementia python geopandas statsmodels">
             <span class="project-eyebrow">MS Capstone · Best Presentation</span>
             <div class="project-link-top">
               <span class="project-name">Groundwater Lithium &amp; Dementia Prevalence in Texas</span>
@@ -263,14 +300,10 @@
             </div>
           </a>
 
-          <a class="project-link featured-project" href="predictive-analytics/diabetes-readmission-project/" data-project-card data-tags="healthcare deployed modeling decision support diabetes readmission rag faiss gradio hugging face python scikit-learn gradient boosting">
+          <a class="project-link featured-project" href="predictive-analytics/diabetes-readmission-project/index.html" data-project-card data-categories="healthcare deployed modeling" data-tags="healthcare deployed modeling decision support diabetes readmission rag faiss gradio hugging face python scikit-learn gradient boosting">
             <div class="project-link-top">
               <span class="project-name">Diabetes Care Decision Support App</span>
-              <span class="project-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                    <path d="M5 12h14M13 6l6 6-6 6"></path>
-                </svg>
-              </span>
+              <span class="project-arrow">→</span>
             </div>
             <p class="project-desc">Deployed app that ranks diabetes discharges by readmission risk and grounds care recommendations in CMS/AHRQ guidance via RAG.</p>
             <div class="project-kpis">
@@ -286,7 +319,7 @@
             </div>
           </a>
 
-          <a class="project-link cat-modeling" href="predictive-analytics/" data-project-card data-tags="healthcare modeling predictive analytics classification regression hr finance real estate time series attrition heart disease hospital sale price crab age">
+          <a class="project-link cat-modeling" href="predictive-analytics/index.html" data-project-card data-categories="healthcare modeling" data-tags="healthcare modeling predictive analytics classification regression hr finance real estate time series attrition heart disease hospital sale price crab age">
             <span class="project-eyebrow">Modeling</span>
             <div class="project-link-top">
               <span class="project-name">Predictive Modeling &amp; Decision Systems</span>
@@ -300,7 +333,7 @@
             </div>
           </a>
 
-          <a class="project-link cat-ml" href="machine-learning/" data-project-card data-tags="modeling unsupervised learning clustering association rules retail health kmeans dbscan gmm spectral apriori fp-growth python">
+          <a class="project-link cat-ml" href="machine-learning/index.html" data-project-card data-categories="modeling" data-tags="modeling unsupervised learning clustering association rules retail health kmeans dbscan gmm spectral apriori fp-growth python">
             <span class="project-eyebrow">Unsupervised ML</span>
             <div class="project-link-top">
               <span class="project-name">Unsupervised Learning &amp; Pattern Discovery</span>
@@ -314,7 +347,7 @@
             </div>
           </a>
 
-          <a class="project-link cat-engineering" href="databases-sql/" data-project-card data-tags="engineering sql database mysql geospatial groundwater folium geopandas etl normalized schema texas water quality">
+          <a class="project-link cat-engineering" href="databases-sql/index.html" data-project-card data-categories="engineering" data-tags="engineering sql database mysql geospatial groundwater folium geopandas etl normalized schema texas water quality">
             <span class="project-eyebrow">Data Engineering</span>
             <div class="project-link-top">
               <span class="project-name">Data Engineering, SQL &amp; Geospatial Systems</span>
@@ -328,7 +361,7 @@
             </div>
           </a>
 
-          <a class="project-link cat-communication" href="data-storytelling/" data-project-card data-tags="communication storytelling executive presentation infographic healthcare product analysis nlp medical devices">
+          <a class="project-link cat-communication" href="data-storytelling/index.html" data-project-card data-categories="communication" data-tags="communication storytelling executive presentation infographic healthcare product analysis nlp medical devices">
             <span class="project-eyebrow">Communication</span>
             <div class="project-link-top">
               <span class="project-name">Executive Communication &amp; Data Storytelling</span>
@@ -411,11 +444,13 @@
     let visibleCount = 0;
 
     projectCards.forEach(card => {
+      const categories = normalize(card.dataset.categories || '').split(' ').filter(Boolean);
       const haystack = normalize(`${card.textContent} ${card.dataset.tags || ''}`);
-      const matchesFilter = activeProjectFilter === 'all' || haystack.includes(activeProjectFilter);
+      const matchesFilter = activeProjectFilter === 'all' || categories.includes(activeProjectFilter);
       const matchesQuery = !query || haystack.includes(query);
       const visible = matchesFilter && matchesQuery;
       card.hidden = !visible;
+      card.classList.toggle('is-hidden', !visible);
       if (visible) visibleCount += 1;
     });
 
@@ -434,12 +469,15 @@
     });
     button.setAttribute('aria-pressed', button.classList.contains('active') ? 'true' : 'false');
   });
+  updateProjectCards();
 
   const sidebar = document.querySelector('.hero');
   const desktopSidebar = window.matchMedia('(min-width: 721px)');
 
   function lockSidebarScroll(event) {
-    if (desktopSidebar.matches) event.preventDefault();
+    if (!desktopSidebar.matches) return;
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   sidebar?.addEventListener('wheel', lockSidebarScroll, { passive: false });
