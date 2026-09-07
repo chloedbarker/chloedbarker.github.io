@@ -82,6 +82,7 @@ html {
     background-color: var(--background-deep);
     scroll-behavior: smooth;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    overscroll-behavior-y: none;
 }
 
 ::-webkit-scrollbar {
