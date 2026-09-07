@@ -1111,9 +1111,9 @@ a:hover {
     flex-direction: column;
 
     min-width: 0;
-    min-height: 280px;
+    min-height: 360px;
 
-    padding: 18px;
+    padding: 16px;
 
     background: linear-gradient(180deg, #242424 0, var(--background-elevated) 42%);
     color: var(--text-base);
@@ -1138,52 +1138,82 @@ a:hover {
 }
 
 
-.project-link::before,
-.capstone-card::before {
-    content: "";
+.project-cover {
+    position: relative;
 
-    display: block;
-
-    width: 64px;
-    height: 64px;
+    width: 100%;
 
     margin-bottom: 16px;
 
+    aspect-ratio: 1;
+
     background:
-        linear-gradient(135deg, rgba(30, 215, 96, 0.9), rgba(36, 36, 36, 0.95));
+        linear-gradient(135deg, rgba(30, 215, 96, 0.18), rgba(255, 255, 255, 0.05));
 
     border-radius: 6px;
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.36);
+
+    overflow: hidden;
 }
 
 
-.cat-capstone::before {
-    background: linear-gradient(135deg, #1ED760, #0f3d2a 50%, #222222);
+.project-cover::after,
+.project-cover::before {
+    content: "";
+
+    position: absolute;
+
+    opacity: 0;
+
+    transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 
-.featured-project::before {
-    background: linear-gradient(135deg, #539df5, #1ED760 58%, #202020);
+.project-cover::after {
+    right: 12px;
+    bottom: 12px;
+
+    width: 46px;
+    height: 46px;
+
+    background: var(--green);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.38);
+
+    border-radius: 50%;
+
+    transform: translateY(8px) scale(0.96);
 }
 
 
-.cat-modeling::before {
-    background: linear-gradient(135deg, #ff7a45, #7c3aed 60%, #202020);
+.project-cover::before {
+    right: 28px;
+    bottom: 27px;
+    z-index: 1;
+
+    width: 0;
+    height: 0;
+
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid var(--background-deep);
+
+    transform: translateY(8px) scale(0.96);
 }
 
 
-.cat-ml::before {
-    background: linear-gradient(135deg, #c084fc, #22d3ee 58%, #202020);
-}
+.project-cover img {
+    display: block;
 
+    width: 100%;
+    height: 100%;
 
-.cat-engineering::before {
-    background: linear-gradient(135deg, #38bdf8, #0f766e 62%, #202020);
-}
+    object-fit: cover;
 
-
-.cat-communication::before {
-    background: linear-gradient(135deg, #facc15, #ef4444 58%, #202020);
+    transition:
+        transform var(--transition-normal),
+        filter var(--transition-normal);
 }
 
 .project-link:hover,
@@ -1195,6 +1225,24 @@ a:hover {
     transform: translateY(-4px);
 
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+
+.project-link:hover .project-cover img,
+.capstone-card:hover .project-cover img {
+    filter: brightness(1.08) saturate(1.08);
+
+    transform: scale(1.035);
+}
+
+
+.project-link:hover .project-cover::after,
+.project-link:hover .project-cover::before,
+.capstone-card:hover .project-cover::after,
+.capstone-card:hover .project-cover::before {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
 }
 
 .skill-card {
