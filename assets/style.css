@@ -56,12 +56,23 @@
 }
 
 /* ── Base ── */
+html {
+  scrollbar-color: rgba(255,255,255,.3) transparent;
+  overscroll-behavior-y: none;
+}
+
+::-webkit-scrollbar { width: 16px; }
+::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,.3); }
+::-webkit-scrollbar-track { background: transparent; }
+
 body {
   font-family: 'Google Sans', sans-serif;
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .page {
