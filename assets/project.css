@@ -64,20 +64,20 @@ body.case-study .page { max-width: 920px; }
 
 .project-btn {
   font-size: var(--text-sm);
-  font-weight: 500;
-  padding: 9px 18px;
-  border-radius: var(--radius-sm);
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
-  border: 1px solid var(--border);
-  color: var(--ink-2);
-  background: var(--surface);
+  border: 1px solid var(--muted-2);
+  color: var(--ink);
+  background: transparent;
   transition: background .15s, color .15s, border-color .15s, transform .15s;
 }
 
-.project-btn:hover { border-color: var(--accent-2); color: var(--accent); transform: translateY(-1px); }
+.project-btn:hover { border-color: var(--ink); background: rgba(255,255,255,.08); transform: translateY(-1px); }
 
-.project-btn.primary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); font-weight: 600; }
-.project-btn.primary:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); }
+.project-btn.primary { background: var(--accent); color: #000; border: 1.5px solid var(--accent); font-weight: 700; }
+.project-btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: #000; transform: translateY(-1px) scale(1.03); }
 
 .project-hero-image {
   margin-top: 28px;
@@ -254,7 +254,7 @@ body.case-study .page { max-width: 920px; }
 .callout strong { color: var(--ink); font-weight: 600; }
 
 .callout.warn { border-left-color: var(--accent-warm); background: var(--accent-warm-bg); }
-.callout.warn strong { color: #78350f; }
+.callout.warn strong { color: var(--accent-warm); }
 
 /* ── Chart / figure container ── */
 .chart-container {
