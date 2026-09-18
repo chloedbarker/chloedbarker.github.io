@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chloedbarker.github.io/sitemap.xml

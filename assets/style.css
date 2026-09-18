@@ -8,30 +8,32 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
 
-/* ── Design tokens ── */
+/* ── Design tokens ──
+   Spotify-inspired dark theme: near-black surfaces, bright green accent,
+   pill-shaped controls. */
 :root {
   /* Ink / neutrals */
-  --ink:       #0d1b2a;
-  --ink-2:     #2c3e50;
-  --muted:     #64748b;
-  --muted-2:   #94a3b8;
-  --border:    #e2e8f0;
-  --surface:   #ffffff;
-  --bg:        #f8fafc;
-  --bg-2:      #f1f5f9;
+  --ink:       #ffffff;
+  --ink-2:     #d9d9d9;
+  --muted:     #a7a7a7;
+  --muted-2:   #727272;
+  --border:    #2a2a2a;
+  --surface:   #181818;
+  --bg:        #121212;
+  --bg-2:      #1f1f1f;
 
-  /* Primary accent (blue) — links, primary UI, hover states */
-  --accent:    #2563eb;
-  --accent-2:  #3b82f6;
-  --accent-3:  #dbeafe;
-  --accent-4:  #eff6ff;
+  /* Primary accent (Spotify green) — links, primary UI, hover states */
+  --accent:    #1db954;
+  --accent-2:  #1ed760;
+  --accent-3:  #123524;
+  --accent-4:  #0e2a1c;
 
   /* Secondary accent (warm) — used sparingly, for achievement/highlight
      moments only (Best Presentation badge, star stat). Never used for
      links or primary UI so it stays legible as a distinct signal. */
-  --accent-warm:      #b45309;
-  --accent-warm-bg:   #fef3e2;
-  --accent-warm-glow: rgba(180, 83, 9, .22);
+  --accent-warm:      #ffa42b;
+  --accent-warm-bg:   #3a2712;
+  --accent-warm-glow: rgba(255, 164, 43, .28);
 
   /* Type scale — 8 steps instead of ~18 ad-hoc sizes. Named by role,
      not by number, so a page never has to guess which one to reach for. */
@@ -45,20 +47,32 @@
   --text-2xl:  2.2rem;    /* homepage hero h1 */
 
   /* Shape / elevation */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
-  --shadow-lg: 0 10px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.04);
-  --radius:    14px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.3);
+  --shadow-lg: 0 12px 36px rgba(0,0,0,.55), 0 2px 10px rgba(0,0,0,.35);
+  --radius:    12px;
   --radius-sm: 8px;
+  --radius-pill: 500px;
 }
 
 /* ── Base ── */
+html {
+  scrollbar-color: rgba(255,255,255,.3) transparent;
+  overscroll-behavior-y: none;
+}
+
+::-webkit-scrollbar { width: 16px; }
+::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,.3); }
+::-webkit-scrollbar-track { background: transparent; }
+
 body {
   font-family: 'Google Sans', sans-serif;
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .page {
@@ -87,19 +101,22 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   align-items: center;
   gap: 6px;
   margin-bottom: 20px;
-  color: var(--accent);
+  color: var(--muted);
   text-decoration: none;
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 700;
   animation: fadeUp .4s ease both;
+  transition: color .15s;
 }
-.back-link:hover { text-decoration: underline; }
+.back-link:hover { color: var(--ink); text-decoration: none; }
 
-/* ── Page hero (subpages + capstone) ── */
+/* ── Page hero (subpages + capstone) ──
+   Spotify playlist-header style: a wash of the accent color fading down
+   into the page's near-black background. */
 .page-hero {
-  background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-  border-radius: 18px;
-  padding: 28px 32px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 55%, #121212) 0%, var(--bg) 100%);
+  border-radius: 12px;
+  padding: 32px 32px 28px;
   margin-bottom: 20px;
   box-shadow: var(--shadow-lg);
   animation: fadeUp .4s ease both;
@@ -210,13 +227,14 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .project-index-media {
   display: block;
+  position: relative;
   aspect-ratio: 16 / 10;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--bg-2);
   text-decoration: none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);
 }
 
 .project-index-media img {
@@ -229,8 +247,36 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 }
 
 .project-index-card:hover .project-index-media img {
-  filter: saturate(1.05) contrast(1.02);
-  transform: scale(1.025);
+  filter: saturate(1.1) brightness(.85);
+  transform: scale(1.04);
+}
+
+/* Spotify-style floating "play" button on cover art, revealed on hover */
+.project-index-media::after {
+  content: '▶';
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #000;
+  font-size: 15px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.5);
+  opacity: 0;
+  transform: translateY(8px) scale(.9);
+  transition: opacity .2s ease, transform .2s ease;
+  pointer-events: none;
+}
+
+.project-index-card:hover .project-index-media::after {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .project-index-body { min-width: 0; }
@@ -288,21 +334,26 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .link-pill {
   display: inline-block;
-  color: var(--ink-2);
+  color: var(--ink);
   text-decoration: none;
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 600;
   background: transparent;
-  border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  transition: background .16s, color .16s, border-color .16s;
+  border: 1px solid var(--muted-2);
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  transition: background .16s, color .16s, border-color .16s, transform .16s;
 }
 
-.link-pill:hover { background: var(--bg-2); color: var(--accent); border-color: var(--accent-2); }
+.link-pill:hover { background: rgba(255,255,255,.08); color: var(--ink); border-color: var(--ink); transform: translateY(-1px); }
 
-.link-pill.primary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); font-weight: 600; }
-.link-pill.primary:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.link-pill.primary {
+  background: var(--accent);
+  color: #000;
+  border: 1.5px solid var(--accent);
+  font-weight: 700;
+}
+.link-pill.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: #000; transform: translateY(-1px) scale(1.03); }
 
 /* ── References (capstone) ── */
 .ref-list { padding-left: 18px; }
@@ -343,17 +394,17 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .map-tab {
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--muted);
   background: var(--bg-2);
   border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: background .16s, color .16s, border-color .16s;
+  transition: background .16s, color .16s, border-color .16s, transform .16s;
 }
-.map-tab:hover { border-color: var(--accent-2); color: var(--ink); }
-.map-tab.active { background: var(--accent-4); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+.map-tab:hover { border-color: var(--ink); color: var(--ink); transform: translateY(-1px); }
+.map-tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
 
 .map-frame {
   width: 100%;
@@ -380,16 +431,16 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .map-load-btn {
   font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--accent);
-  background: transparent;
+  font-weight: 700;
+  color: #000;
+  background: var(--accent);
   border: 1.5px solid var(--accent);
-  padding: 9px 20px;
-  border-radius: var(--radius-sm);
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: background .16s, color .16s;
+  transition: background .16s, transform .16s;
 }
-.map-load-btn:hover { background: var(--accent); color: #fff; }
+.map-load-btn:hover { background: var(--accent-2); border-color: var(--accent-2); transform: scale(1.04); }
 
 .map-placeholder-note { font-size: var(--text-xs); color: var(--muted); max-width: 380px; }
 
@@ -414,8 +465,8 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 /* Sticky sidebar: photo, identity, nav, contact, stats — stays in view
    while .content scrolls past on the right */
 .hero {
-  background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-  border-radius: 20px;
+  background: linear-gradient(180deg, #1a3b28 0%, #0a0a0a 65%, #000000 100%);
+  border-radius: 12px;
   padding: 32px 24px;
   position: sticky;
   top: 32px;
@@ -444,8 +495,8 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   border-radius: 50%;
   object-fit: cover;
   object-position: center top;
-  border: 3px solid rgba(255,255,255,0.3);
-  box-shadow: 0 0 0 6px rgba(255,255,255,0.08);
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 0 6px rgba(29,185,84,0.15);
   flex-shrink: 0;
   margin-bottom: 14px;
 }
@@ -464,7 +515,7 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   position: relative;
   font-size: var(--text-sm);
   font-weight: 600;
-  color: #93c5fd;
+  color: var(--accent-2);
   margin-bottom: 4px;
 }
 
@@ -489,17 +540,31 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 }
 
 .side-nav a {
+  position: relative;
   color: rgba(255,255,255,0.68);
   text-decoration: none;
   font-size: var(--text-sm);
-  font-weight: 500;
-  padding: 7px 10px;
+  font-weight: 600;
+  padding: 7px 10px 7px 16px;
   border-radius: 8px;
   text-align: left;
   transition: background .15s, color .15s;
 }
+.side-nav a::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 60%;
+  border-radius: 3px;
+  background: var(--accent);
+  transition: transform .15s;
+}
 .side-nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
-.side-nav a.active { background: rgba(255,255,255,0.14); color: #fff; }
+.side-nav a.active { background: rgba(255,255,255,0.1); color: #fff; }
+.side-nav a.active::before { transform: translateY(-50%) scaleY(1); }
 
 .contact-links {
   position: relative;
@@ -512,17 +577,17 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .contact-links a {
   font-size: var(--text-2xs);
-  font-weight: 500;
+  font-weight: 700;
   color: rgba(255,255,255,0.9);
   text-decoration: none;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.22);
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  transition: background .18s, border-color .18s;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.24);
+  padding: 5px 13px;
+  border-radius: var(--radius-pill);
+  transition: background .18s, border-color .18s, transform .18s;
   white-space: nowrap;
 }
-.contact-links a:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.4); }
+.contact-links a:hover { background: var(--accent); border-color: var(--accent); color: #000; transform: translateY(-1px); }
 
 .hero-stats {
   position: relative;
@@ -657,7 +722,7 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 .project-search::placeholder { color: var(--muted-2); }
 .project-search:focus {
   border-color: var(--accent-2);
-  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+  box-shadow: 0 0 0 3px rgba(29,185,84,.18);
 }
 
 .project-filters {
@@ -689,7 +754,8 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 .project-filter.active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: #000;
+  font-weight: 700;
 }
 
 .project-link {
@@ -698,17 +764,17 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   text-decoration: none;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 12px;
   padding: 22px 24px;
-  transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+  transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease, background .2s ease;
   position: relative;
   overflow: hidden;
 }
 
-.project-link:hover { box-shadow: var(--shadow-lg); border-color: var(--accent-2); transform: translateY(-4px); }
+.project-link:hover { box-shadow: var(--shadow-lg); border-color: var(--accent-2); transform: translateY(-4px); background: var(--bg-2); }
 .project-link.featured-project {
-  background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 52%, #eff6ff 100%);
-  border-color: #99f6e4;
+  background: linear-gradient(135deg, var(--accent-3) 0%, var(--surface) 55%, var(--bg-2) 100%);
+  border-color: var(--accent);
 }
 
 /* Category accent — a small colored dot on the eyebrow instead of a boxed chip */
@@ -732,10 +798,10 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   background: currentColor;
 }
 
-.project-link.cat-modeling .project-eyebrow { color: #2563eb; }
-.project-link.cat-ml .project-eyebrow { color: #9333ea; }
-.project-link.cat-engineering .project-eyebrow { color: #0f766e; }
-.project-link.cat-communication .project-eyebrow { color: #c2410c; }
+.project-link.cat-modeling .project-eyebrow { color: #5b9dff; }
+.project-link.cat-ml .project-eyebrow { color: #c084fc; }
+.project-link.cat-engineering .project-eyebrow { color: #2dd4bf; }
+.project-link.cat-communication .project-eyebrow { color: #fb923c; }
 
 .project-link-top {
   display: flex;
@@ -803,10 +869,10 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   font-weight: 700;
 }
 
-.project-link.cat-modeling .project-kpis span { color: #2563eb; }
-.project-link.cat-ml .project-kpis span { color: #9333ea; }
-.project-link.cat-engineering .project-kpis span { color: #0f766e; }
-.project-link.cat-communication .project-kpis span { color: #c2410c; }
+.project-link.cat-modeling .project-kpis span { color: #5b9dff; }
+.project-link.cat-ml .project-kpis span { color: #c084fc; }
+.project-link.cat-engineering .project-kpis span { color: #2dd4bf; }
+.project-link.cat-communication .project-kpis span { color: #fb923c; }
 
 .project-link.cat-modeling .project-kpis span::before,
 .project-link.cat-ml .project-kpis span::before,
@@ -853,11 +919,11 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 .capstone-card {
   display: block;
   text-decoration: none;
-  background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 52%, #eff6ff 100%);
-  border: 1px solid #99f6e4;
-  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent-3) 0%, var(--surface) 55%, var(--bg-2) 100%);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
   padding: 22px 24px;
-  transition: box-shadow .2s, transform .2s, border-color .2s;
+  transition: box-shadow .2s, transform .2s, border-color .2s, background .2s;
   position: relative;
   overflow: hidden;
 }
@@ -872,7 +938,7 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
   display: inline-flex;
   align-items: center;
   background: var(--accent-warm-bg);
-  border: 1px solid rgba(180,83,9,.4);
+  border: 1px solid rgba(255,164,43,.4);
   color: var(--accent-warm);
   font-size: var(--text-2xs);
   font-weight: 700;
@@ -888,8 +954,8 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 .project-preview {
   width: 100%;
   border-radius: 8px;
-  border: 2px solid rgba(59,130,246,0.5);
-  box-shadow: 0 0 0 1px rgba(59,130,246,0.15), 0 4px 12px rgba(0,0,0,.25);
+  border: 2px solid rgba(29,185,84,0.5);
+  box-shadow: 0 0 0 1px rgba(29,185,84,0.15), 0 4px 12px rgba(0,0,0,.5);
   margin-bottom: 12px;
   object-fit: cover;
   max-height: 140px;
@@ -900,9 +966,9 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 
 .capstone-card .project-kpis { margin-bottom: 12px; }
 
-/* .pill defaults to the light-on-dark treatment used on dark hero
-   surfaces; the capstone card is light now, so give its tags the same
-   look as the other project cards' tool tags. */
+/* .pill defaults to the light-on-dark treatment used on the sidebar
+   hero surface; give the capstone card's tags the same look as the
+   other project cards' tool tags instead. */
 .capstone-card .pill {
   background: var(--bg-2);
   border-color: var(--border);
@@ -1019,7 +1085,7 @@ a.skill-chip {
   text-decoration: none;
   transition: background .16s, color .16s, border-color .16s;
 }
-a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+a.skill-chip:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
 .skill-chip-icon {
   width: 13px;
