@@ -16,7 +16,7 @@
     /* Text */
     --text-base: #FFFFFF;
     --text-subdued: #B3B3B3;
-    --text-muted: #7C7C7C;
+    --text-muted: #9A9A9A;
 
     /* Backgrounds */
     --background-base: #121212;
@@ -315,6 +315,10 @@ a:hover {
 
 
 .contact-links a {
+    display: block;
+
+    padding: 4px 0;
+
     color: var(--light-gray);
 
     text-decoration: none;
@@ -1723,6 +1727,15 @@ input:focus-visible {
     .contact-links {
         flex-direction: row;
         flex-wrap: wrap;
+    }
+
+
+    .contact-links a {
+        padding: 8px 10px;
+
+        background: var(--card);
+
+        border-radius: 6px;
     }
 
 
