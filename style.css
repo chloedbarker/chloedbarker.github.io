@@ -1222,6 +1222,7 @@ a:hover {
 }
 
 .project-link:hover,
+.project-link:focus-within,
 .capstone-card:hover {
     background: linear-gradient(180deg, #303030 0, var(--background-elevated-hover) 42%);
 
@@ -1234,6 +1235,7 @@ a:hover {
 
 
 .project-link:hover .project-cover img,
+.project-link:focus-within .project-cover img,
 .capstone-card:hover .project-cover img {
     filter: brightness(1.08) saturate(1.08);
 
@@ -1243,11 +1245,33 @@ a:hover {
 
 .project-link:hover .project-cover::after,
 .project-link:hover .project-cover::before,
+.project-link:focus-within .project-cover::after,
+.project-link:focus-within .project-cover::before,
 .capstone-card:hover .project-cover::after,
 .capstone-card:hover .project-cover::before {
     opacity: 1;
 
     transform: translateY(0) scale(1);
+}
+
+
+/* Whole-card click target: an invisible link stretched over the card
+   so the card stays clickable while quicklinks below remain their
+   own separate, keyboard-reachable links (anchors can't nest). */
+
+.project-link-stretch {
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+
+    border-radius: inherit;
+}
+
+
+.project-link-stretch:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: -2px;
 }
 
 .skill-card {
@@ -1311,10 +1335,64 @@ a:hover {
 }
 
 
-.project-link:hover .project-arrow {
+.project-link:hover .project-arrow,
+.project-link:focus-within .project-arrow {
     color: var(--green);
 
     transform: translateX(4px);
+}
+
+
+/* =========================================================
+   21b. PROJECT QUICKLINKS (source / live demo)
+   ========================================================= */
+
+.project-quicklinks {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 14px;
+}
+
+
+.project-quicklink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 12px;
+
+    background: var(--background-elevated-hover);
+    color: var(--text-subdued);
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    border-radius: 999px;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.project-quicklink:hover,
+.project-quicklink:focus-visible {
+    color: var(--background-deep);
+
+    background: var(--green);
+}
+
+
+.project-quicklink-icon {
+    width: 13px;
+    height: 13px;
 }
 
 
