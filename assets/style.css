@@ -402,26 +402,24 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
    ========================================================================== */
 
 .layout {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 48px 24px 80px;
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 32px;
-  align-items: start;
+  min-height: 100vh;
 }
 
-/* Sticky sidebar: photo, identity, nav, contact, stats — stays in view
-   while .content scrolls past on the right */
+/* Fixed sidebar: flush to the browser's left edge, full viewport height —
+   photo, identity, nav, contact, stats stay in view while .content
+   scrolls past on the right, like a full site shell rather than a card
+   floating on a page. */
 .hero {
   background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 55%, #1d4ed8 100%);
-  border-radius: 20px;
   padding: 32px 24px;
-  position: sticky;
-  top: 32px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  height: 100vh;
   overflow: hidden;
   overflow-y: auto;
-  max-height: calc(100vh - 64px);
   box-shadow: var(--shadow-lg);
   animation: fadeUp .5s ease both;
   display: flex;
@@ -563,7 +561,16 @@ body.subpage .page { max-width: 860px; padding: 40px 24px 72px; }
 }
 
 /* ── Scrolling content column ── */
-.content { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+
+  margin-left: 300px;
+  max-width: 1600px;
+  padding: 48px 48px 80px;
+}
 
 /* .card's own margin-bottom exists for subpages (.page is a plain block
    container, not flex). Here .content already spaces siblings with gap,
@@ -1042,7 +1049,7 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
    with browser chrome) so everything fits without an internal scrollbar,
    while wide/tall desktop windows keep the roomier default spacing. */
 @media (min-width: 901px) and (max-height: 820px) {
-  .hero { padding: 22px 20px; top: 20px; max-height: calc(100vh - 40px); }
+  .hero { padding: 22px 20px; }
   .headshot { width: 76px; height: 76px; margin-bottom: 10px; }
   .sidebar-meta { margin-bottom: 10px; }
   .side-nav { padding: 10px 0; margin-bottom: 10px; }
@@ -1052,15 +1059,15 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
 }
 
 @media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-  .hero { position: static; max-height: none; overflow-y: visible; }
+  .hero { position: static; width: auto; height: auto; }
+  .content { margin-left: 0; }
   .pair-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 700px) {
-  .layout { padding: 24px 16px 60px; }
+  .content { padding: 24px 16px 60px; }
   body.subpage .page { padding: 24px 16px 56px; }
-  .hero { padding: 28px 22px; border-radius: 16px; }
+  .hero { padding: 28px 22px; }
   .page-hero { padding: 22px 20px; border-radius: 14px; }
   .page-hero h1 { font-size: var(--text-lg); }
   .skill-card { flex-direction: column; gap: 8px; }
