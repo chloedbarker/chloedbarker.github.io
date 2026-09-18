@@ -1038,6 +1038,19 @@ a.skill-chip:hover { background: var(--accent); color: #fff; border-color: var(-
 
 /* Sidebar stops being sticky and the layout collapses to one column
    before there's not enough width for both */
+/* Compact the sidebar on shorter windows (typical laptop viewport height
+   with browser chrome) so everything fits without an internal scrollbar,
+   while wide/tall desktop windows keep the roomier default spacing. */
+@media (min-width: 901px) and (max-height: 820px) {
+  .hero { padding: 22px 20px; top: 20px; max-height: calc(100vh - 40px); }
+  .headshot { width: 76px; height: 76px; margin-bottom: 10px; }
+  .sidebar-meta { margin-bottom: 10px; }
+  .side-nav { padding: 10px 0; margin-bottom: 10px; }
+  .side-nav a { padding: 6px 10px; }
+  .contact-links { margin-bottom: 10px; }
+  .hero-stats { padding-top: 10px; }
+}
+
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
   .hero { position: static; max-height: none; overflow-y: visible; }
