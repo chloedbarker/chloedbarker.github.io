@@ -9,22 +9,16 @@
 <link rel="icon" type="image/png" href="../../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../../favicon-180.png">
 <meta name="description" content="Two questions on the Ames, Iowa housing dataset: does price-per-square-foot vary by neighborhood, and how accurately can sale price be predicted for a Kaggle competition.">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=20260831">
-<link rel="stylesheet" href="../../assets/project.css?v=20260831">
-<style>
-  /* Palette hook — warm real-estate mood for this project only. */
-  body.case-study {
-    --accent:   #fbbf24;
-    --accent-2: #fcd34d;
-    --accent-3: #3a2a0d;
-    --bg:       #1c1408;
-    --bg-2:     #291d0d;
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260920">
+<link rel="stylesheet" href="../../assets/project.css?v=20260920">
+<style>body { --cover-color: #fbbf24; }</style>
+<link rel="stylesheet" href="../../assets/theme.css?v=20260920">
 </head>
 <body class="subpage case-study">
-<div class="page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main class="page" id="main-content">
+  <nav class="site-nav" aria-label="Portfolio navigation"><a class="home-button" href="../../index.html" aria-label="Portfolio home" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 6.75V21h-6v-7H9v7H3V9.75L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a><a href="../../index.html#projects">Browse projects ↗</a></nav>
 
   <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
 
@@ -79,7 +73,7 @@
   <div class="project-section">
     <div class="project-section-label">The Approach</div>
     <h2>Two questions, two ways of answering them</h2>
-    <p>For the neighborhood question, I log-transformed price and living area to satisfy regression assumptions, then tested whether adding a neighborhood-by-area interaction improved the model. For the prediction question, I compared four candidate models of increasing complexity and validated the winner against standard regression diagnostics before submitting to Kaggle.</p>
+    <p>For the neighborhood question, I log-transformed price and living area to improve model fit and assess regression assumptions, then tested whether adding a neighborhood-by-area interaction improved the model. For the prediction question, I compared four candidate models of increasing complexity and validated the winner against standard regression diagnostics before submitting to Kaggle.</p>
     <div class="approach-flow">
       <span class="approach-step">Log-Transform &amp; Clean</span>
       <span class="approach-arrow">→</span>
@@ -95,8 +89,8 @@
 
   <div class="project-section">
     <div class="project-section-label">Results, Part 1</div>
-    <h2>Yes, the price-per-square-foot effect depends on the neighborhood</h2>
-    <p>The interaction between living area and neighborhood was statistically significant (F = 8.649, p = 0.0002), meaning an extra 100 square feet is not worth the same amount everywhere.</p>
+    <h2>The fitted size–price relationship varied by neighborhood</h2>
+    <p>The log living-area × neighborhood interaction was statistically significant in this sample (F = 8.649, p = 0.0002). This indicates differing fitted proportional size–price relationships, not a constant dollar value per additional square foot.</p>
     <div class="metric-grid">
       <div class="metric-card">
         <span class="metric-value accent">8.649</span>
@@ -116,26 +110,26 @@
       </div>
     </div>
     <div class="chart-container">
-      <img src="assets/sale-price.png" alt="Scatter plot of log sale price versus log living area, with separate regression lines for NAmes, BrkSide, and Edwards neighborhoods">
-      <p class="chart-caption">BrkSide homes start from a lower base price but climb faster with size, crossing above NAmes and Edwards by around 300 additional square feet. Edwards tracked NAmes closely enough that a separate slope wasn't statistically justified (p = 0.52).</p>
+      <img src="assets/sale-price.png" alt="Scatter plot of log sale price versus log living area, with separate regression lines for NAmes, BrkSide, and Edwards neighborhoods" decoding="async">
+      <p class="chart-caption">The fitted BrkSide relationship had a lower intercept and steeper slope than NAmes. The Edwards slope difference from NAmes was not statistically significant (p = 0.52); this does not establish that the slopes are identical.</p>
     </div>
   </div>
 
   <div class="project-section">
     <div class="project-section-label">Results, Part 2</div>
-    <h2>The full prediction model explained 86.65% of price variance</h2>
+    <h2>The final model achieved an adjusted R² of about 0.867 for log price</h2>
     <p>Adding overall quality, garage area, basement size, and neighborhood on top of living area moved the model from a rough baseline to a strong predictor, and it held up on Kaggle's held-out test set.</p>
     <div class="metric-grid">
       <div class="metric-card">
         <span class="metric-value accent">86.65%</span>
-        <span class="metric-label">Variance in log sale price explained by the final model</span>
+        <span class="metric-label">Adjusted R² × 100, final log-price model</span>
       </div>
       <div class="metric-card">
         <span class="metric-value accent">0.150</span>
         <span class="metric-label">Kaggle RMSLE, down from 0.229 for the simplest model</span>
       </div>
     </div>
-    <div class="model-table-wrap">
+    <div class="model-table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table">
       <table class="model-table">
         <thead>
           <tr><th>Model</th><th>Adj. R²</th><th>CV PRESS</th><th>AIC</th><th>Kaggle Score</th></tr>
@@ -149,7 +143,7 @@
       </table>
     </div>
     <div class="chart-container" style="margin-top: 18px;">
-      <img src="assets/numeric.png" alt="Bar chart ranking individual predictors by their standalone adjusted R-squared, led by Overall Quality and Neighborhood">
+      <img src="assets/numeric.png" alt="Bar chart ranking individual predictors by their standalone adjusted R-squared, led by Overall Quality and Neighborhood" decoding="async">
       <p class="chart-caption">Ranking each predictor on its own explanatory power guided variable selection. Overall quality led every candidate; neighborhood ranked second, ahead of most physical features of the house.</p>
     </div>
   </div>
@@ -175,7 +169,7 @@
       </div>
       <div class="insight-card">
         <span class="insight-number">04</span>
-        <h3>The full model roughly halved the prediction error</h3>
+        <h3>The final model reduced the Kaggle error by about 35%</h3>
         <p>Going from a one-variable baseline to the final model dropped the Kaggle score from 0.229 to 0.150 RMSLE, and pushed explained variance from 66.8% to 86.65%.</p>
       </div>
     </div>
@@ -188,7 +182,7 @@
       <strong>This is an observational dataset.</strong> The neighborhood findings describe association, not causation, since homes weren't randomly assigned to neighborhoods. Differences in price-per-square-foot could reflect factors correlated with neighborhood, like lot size or school zoning, rather than location itself.
     </div>
     <div class="callout">
-      <strong>Diagnostics were mostly clean.</strong> The Durbin-Watson statistic (2.003, p = 0.94) showed no meaningful autocorrelation, and every home's Cook's D stayed well below 1, so no single sale distorted the model. The main soft spot was a longer left tail in the error distribution and two homes with somewhat higher leverage, though neither had an outsized residual.
+      <strong>Diagnostics were mostly clean.</strong> The Durbin-Watson statistic (2.003, p = 0.94) showed no meaningful autocorrelation, and every home's Cook's D stayed well below 1, which did not flag extreme influence by that rule of thumb; it does not prove that individual sales had no influence. The main soft spot was a longer left tail in the error distribution and two homes with somewhat higher leverage, though neither had an outsized residual.
     </div>
   </div>
 
@@ -197,6 +191,6 @@
     <a href="../../index.html">Portfolio Home →</a>
   </div>
 
-</div>
+</main>
 </body>
 </html>

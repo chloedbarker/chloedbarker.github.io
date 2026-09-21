@@ -9,22 +9,16 @@
 <link rel="icon" type="image/png" href="../../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../../favicon-180.png">
 <meta name="description" content="Benchmarking six clustering algorithms on 100K health records and mining association rules from 541K retail transactions.">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=20260831">
-<link rel="stylesheet" href="../../assets/project.css?v=20260831">
-<style>
-  /* Palette hook — analytical/violet mood for this project only. */
-  body.case-study {
-    --accent:   #a78bfa;
-    --accent-2: #c4b5fd;
-    --accent-3: #281f47;
-    --bg:       #150f26;
-    --bg-2:     #1d1735;
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260920">
+<link rel="stylesheet" href="../../assets/project.css?v=20260920">
+<style>body { --cover-color: #a78bfa; }</style>
+<link rel="stylesheet" href="../../assets/theme.css?v=20260920">
 </head>
 <body class="subpage case-study">
-<div class="page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main class="page" id="main-content">
+  <nav class="site-nav" aria-label="Portfolio navigation"><a class="home-button" href="../../index.html" aria-label="Portfolio home" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 6.75V21h-6v-7H9v7H3V9.75L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a><a href="../../index.html#projects">Browse projects ↗</a></nav>
 
   <a class="back-link" href="../index.html">← Back to Machine Learning</a>
 
@@ -98,12 +92,12 @@
 
   <div class="project-section">
     <div class="project-section-label">Results</div>
-    <h2>The health data doesn't cluster. The retail data clearly does.</h2>
-    <p>Every clustering method independently converged on the same answer: at best a very weak two-way split, with essentially zero agreement with the true disease-risk label. The retail basket data told the opposite story, producing strong, actionable rules.</p>
+    <h2>Weak health-data clusters; potentially useful retail associations</h2>
+    <p>The evaluated methods did not identify well-separated, disease-label-aligned segments under the tested preprocessing and settings. This does not rule out all possible cluster structures. Retail association mining identified co-purchase patterns for further investigation.</p>
     <div class="metric-grid">
       <div class="metric-card">
         <span class="metric-value accent">0.000</span>
-        <span class="metric-label">Adjusted Rand Index, best clustering method vs. true disease risk</span>
+        <span class="metric-label">Adjusted Rand Index for K-Means vs. the synthetic disease-risk label</span>
       </div>
       <div class="metric-card">
         <span class="metric-value accent">24×</span>
@@ -112,11 +106,11 @@
     </div>
 
     <div class="chart-container">
-      <img src="assets/clusters.png" alt="Scatter plot of spectral clustering results in PCA space, k=2, showing two heavily overlapping clusters">
-      <p class="chart-caption">Every method's clusters look like this in PCA space: two heavily overlapping clouds, not the well-separated groups a useful segmentation would show.</p>
+      <img src="assets/clusters.png" alt="Scatter plot of spectral clustering results in PCA space, k=2, showing two heavily overlapping clusters" decoding="async">
+      <p class="chart-caption">The spectral clustering projection shows substantial overlap in two-dimensional PCA space. This visualization is illustrative; the validation metrics provide a broader assessment.</p>
     </div>
 
-    <div class="model-table-wrap" style="margin-top: 18px;">
+    <div class="model-table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table" style="margin-top: 18px;">
       <table class="model-table">
         <thead>
           <tr><th>Method</th><th>Best k</th><th>Silhouette</th><th>ARI</th><th>NMI</th></tr>
@@ -131,7 +125,7 @@
         </tbody>
       </table>
     </div>
-    <p style="margin-top: 14px; font-size: var(--text-xs); color: var(--muted);">Silhouette scores near zero and ARI/NMI at essentially zero across every method, six independent algorithms agreeing this strongly is itself a finding.</p>
+    <p style="margin-top: 14px; font-size: var(--text-xs); color: var(--muted);">The table shows low silhouette scores for the selected partitioning solutions and near-zero agreement with the synthetic risk label. DBSCAN labeled most observations as noise, so its result is not equivalent to a two-cluster partition.</p>
   </div>
 
   <div class="project-section">
@@ -140,8 +134,8 @@
     <div class="insight-grid">
       <div class="insight-card">
         <span class="insight-number">01</span>
-        <h3>Six algorithms agreeing is a real result</h3>
-        <p>K-Means, HAC, GMM, DBSCAN, Spectral, and graph-based clustering all independently landed on the same weak, at-best-two-cluster structure, that convergence is stronger evidence than any single method's score.</p>
+        <h3>Weak separation across the evaluated methods</h3>
+        <p>Several partitioning methods favored weak two-way splits, while DBSCAN labeled most records as noise. These results provide limited support for segmentation under the tested settings, rather than independent proof that no meaningful segments exist.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">02</span>
@@ -151,12 +145,12 @@
       <div class="insight-card">
         <span class="insight-number">03</span>
         <h3>A specific product trio dominated the retail rules</h3>
-        <p>Three stock codes (22697, 22698, 22699) showed up together with 24× lift and high confidence, a clear, actionable signal for bundling or merchandising.</p>
+        <p>Three stock codes (22697, 22698, 22699) showed up together with 24× lift and high confidence, a candidate for a bundling or merchandising experiment, not evidence of incremental sales.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">04</span>
-        <h3>The support threshold controlled everything</h3>
-        <p>Dropping the minimum support from 2% to 3% collapsed 251 itemsets down to 94, all singletons, and eliminated every association rule, interpretability lived entirely in that one parameter.</p>
+        <h3>Rule counts were sensitive to the support threshold</h3>
+        <p>Increasing the minimum support from 2% to 3% collapsed 251 itemsets down to 94, all singletons, and eliminated every association rule, illustrating sensitivity to this modeling choice.</p>
       </div>
     </div>
   </div>
@@ -177,6 +171,6 @@
     <a href="../../index.html">Portfolio Home →</a>
   </div>
 
-</div>
+</main>
 </body>
 </html>

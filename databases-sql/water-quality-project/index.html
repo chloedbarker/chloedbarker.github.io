@@ -9,22 +9,16 @@
 <link rel="icon" type="image/png" href="../../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../../favicon-180.png">
 <meta name="description" content="A normalized MySQL database and geospatial analysis pipeline for Texas groundwater-quality data across all 254 counties.">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=20260831">
-<link rel="stylesheet" href="../../assets/project.css?v=20260831">
-<style>
-  /* Palette hook — technical/database mood for this project only. */
-  body.case-study {
-    --accent:   #3b82f6;
-    --accent-2: #60a5fa;
-    --accent-3: #16244a;
-    --bg:       #0a1122;
-    --bg-2:     #101a32;
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260920">
+<link rel="stylesheet" href="../../assets/project.css?v=20260920">
+<style>body { --cover-color: #3b82f6; }</style>
+<link rel="stylesheet" href="../../assets/theme.css?v=20260920">
 </head>
 <body class="subpage case-study">
-<div class="page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main class="page" id="main-content">
+  <nav class="site-nav" aria-label="Portfolio navigation"><a class="home-button" href="../../index.html" aria-label="Portfolio home" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 6.75V21h-6v-7H9v7H3V9.75L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a><a href="../../index.html#projects">Browse projects ↗</a></nav>
 
   <a class="back-link" href="../index.html">← Back to Databases &amp; SQL</a>
 
@@ -51,8 +45,8 @@
 
   <div class="project-section">
     <div class="project-section-label">The Problem</div>
-    <h2>Public groundwater data that nobody could actually query</h2>
-    <p>The Texas Water Development Board maintains one of the most comprehensive groundwater datasets in the country, decades of measurements for arsenic, fluoride, nitrate, lithium, manganese, uranium, and hundreds of other minerals, across wells statewide. But it's distributed as fragmented text files and spreadsheets, which makes real analysis, mapping, or public-health research painfully manual. Co-authored with Samson Akomolafe, Blake Armstrong, and Tracy Dower.</p>
+    <h2>Groundwater records requiring integration for cross-source analysis</h2>
+    <p>The Texas Water Development Board maintains one of the most comprehensive groundwater datasets in the country, decades of measurements for arsenic, fluoride, nitrate, lithium, manganese, uranium, and other measured constituents, across wells statewide. But it's distributed as fragmented text files and spreadsheets, which makes real analysis, mapping, or public-health research painfully manual. Co-authored with Samson Akomolafe, Blake Armstrong, and Tracy Dower.</p>
   </div>
 
   <div class="project-section">
@@ -79,7 +73,7 @@
     </div>
     <p class="er-label" style="margin-top: 22px;">ER Diagram</p>
     <a class="er-diagram" href="ER.png" target="_blank" rel="noopener">
-      <img src="ER.png" alt="Entity-Relationship Diagram for Texas water quality database" />
+      <img src="ER.png" alt="Entity-Relationship Diagram for Texas water quality database" / decoding="async">
     </a>
   </div>
 
@@ -103,7 +97,7 @@
   <div class="project-section">
     <div class="project-section-label">Results</div>
     <h2>From scattered files to a queryable, mappable system</h2>
-    <p>SQL joins confirmed accurate relational integrity across wells, samples, minerals, and counties, and aggregation queries correctly produced county-level summaries. That eliminated the manual filtering and spreadsheet wrangling the raw TWDB files required, and made it possible to spot geographic patterns directly: arsenic ran higher in parts of West Texas, fluoride clustered in central and western counties, and lithium varied enough across counties to be worth studying against health outcomes, exactly the question the follow-up capstone project picked up.</p>
+    <p>SQL checks assessed relational consistency across wells, samples, minerals, and counties, and aggregation queries produced county-level summaries. That reduced repeated manual filtering and spreadsheet merging, and made it possible to spot geographic patterns directly: arsenic ran higher in parts of West Texas, fluoride clustered in central and western counties, and lithium varied enough across counties to be worth studying against health outcomes, exactly the question the follow-up capstone project picked up.</p>
   </div>
 
   <div class="project-section">
@@ -128,7 +122,7 @@
     <div class="insight-grid">
       <div class="insight-card">
         <span class="insight-number">01</span>
-        <h3>Normalization made cross-mineral queries trivial</h3>
+        <h3>Normalization simplified cross-mineral queries</h3>
         <p>Separating wells, sampling events, and mineral concentrations into their own tables meant a single join could answer questions that would have required manual spreadsheet merging across dozens of raw files.</p>
       </div>
       <div class="insight-card">
@@ -139,7 +133,7 @@
       <div class="insight-card">
         <span class="insight-number">03</span>
         <h3>Geographic patterns were visible immediately once mapped</h3>
-        <p>Arsenic, fluoride, and lithium each showed distinct regional clustering once summarized by county and mapped, patterns that were effectively invisible in the original text files.</p>
+        <p>Arsenic, fluoride, and lithium each showed distinct regional clustering once summarized by county and mapped, patterns that were easier to inspect in maps than in the raw tables.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">04</span>
@@ -165,7 +159,7 @@
     <a href="../../index.html">Portfolio Home →</a>
   </div>
 
-</div>
+</main>
 
 <script>
   const mapTabs = document.querySelectorAll('.map-tab');
@@ -185,14 +179,17 @@
       mapFrame.title = 'Texas county-level groundwater choropleth map';
       mapPlaceholder.replaceWith(mapFrame);
     }
+    mapFrame.title = `${document.querySelector('.map-tab.active').textContent} groundwater map of Texas`;
     mapFrame.src = activeMapSrc();
   }
 
   mapLoadBtn.addEventListener('click', loadMap);
 
   mapTabs.forEach(btn => {
+    btn.setAttribute('aria-pressed', String(btn.classList.contains('active')));
     btn.addEventListener('click', () => {
-      mapTabs.forEach(b => b.classList.remove('active'));
+      mapTabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.setAttribute('aria-pressed', 'true');
       btn.classList.add('active');
       mapFullscreenLink.href = btn.dataset.map;
       if (mapFrame) loadMap();
