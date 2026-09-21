@@ -9,12 +9,15 @@
 <link rel="icon" type="image/png" href="../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../favicon-180.png">
 <meta name="description" content="MS capstone: does groundwater lithium relate to dementia prevalence across Texas counties? A homogeneity framework, OLS with HC3 robust SEs, and geospatial analysis on TWDB and NORC data.">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css?v=20260831">
-<link rel="stylesheet" href="../assets/project.css?v=20260831">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css?v=20260920">
+<link rel="stylesheet" href="../assets/project.css?v=20260920">
+<link rel="stylesheet" href="../assets/theme.css?v=20260920">
 </head>
 <body class="subpage case-study">
-<div class="page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main class="page" id="main-content">
+  <nav class="site-nav" aria-label="Portfolio navigation"><a class="home-button" href="../index.html" aria-label="Portfolio home" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 6.75V21h-6v-7H9v7H3V9.75L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a><a href="../index.html#projects">Browse projects ↗</a></nav>
 
   <a class="back-link" href="../index.html">← Back to Portfolio</a>
 
@@ -22,7 +25,7 @@
     <span class="project-eyebrow">★ MS Capstone · Best Presentation</span>
     <h1>Groundwater Lithium &amp; Dementia Prevalence in Texas</h1>
     <p style="font-size: var(--text-sm); color: var(--muted); margin-bottom: 14px;">Co-authored with Tracy Dower &nbsp;·&nbsp; Advised by Jacob Turner, PhD &amp; Jacquelyn Cheun, PhD</p>
-    <p class="project-hero-lede">Do Texas counties with higher, more consistent groundwater lithium concentrations show lower dementia prevalence? I test that question with county-level data and a homogeneity framework built to survive the measurement error a small ecological sample can't otherwise absorb.</p>
+    <p class="project-hero-lede">Do Texas counties with higher, more consistent groundwater lithium concentrations show lower dementia prevalence? I test that question with county-level data and a homogeneity framework designed to examine sensitivity to heterogeneous county-level exposure measurements.</p>
 
     <div class="project-tags">
       <span class="project-tag">Python</span>
@@ -73,7 +76,7 @@
     </div>
     <p>A key engineering challenge was ensuring consistent county identifiers (FIPS codes) across all three sources and resolving naming mismatches prior to merging.</p>
     <div class="chart-container wide">
-      <img src="map_lithium_vs_dementia_sidebyside.png" alt="Side-by-side choropleth maps of Texas counties showing mean groundwater lithium concentration and 2020 dementia prevalence">
+      <img src="map_lithium_vs_dementia_sidebyside.png" alt="Side-by-side choropleth maps of Texas counties showing mean groundwater lithium concentration and 2020 dementia prevalence" decoding="async">
       <p class="chart-caption"><strong>Fig. 2.</strong> Mean groundwater lithium concentration (μg/L, pre-2020; TWDB, 2024) and 2020 dementia prevalence among Medicare beneficiaries under age 75 (NORC, 2024). Gray counties indicate missing lithium data. Higher lithium concentrations are concentrated in the Panhandle and Trans-Pecos regions.</p>
     </div>
   </div>
@@ -99,12 +102,12 @@
 
   <div class="project-section">
     <div class="project-section-label">Results</div>
-    <h2>Restricting to homogeneous-exposure counties tripled explanatory power</h2>
-    <p>Across the 240 counties with complete data, groundwater lithium showed effectively no association with dementia prevalence (r = −0.095, R² = 0.009). Rather than treat this as the end of the analysis, I examined why the null appeared: a county-mean lithium value averages residents drawing from wells with substantially different concentrations, and this measurement error in the predictor attenuates regression coefficients toward zero regardless of the underlying effect.</p>
+    <h2>Model fit varied with the county subset and covariate adjustment</h2>
+    <p>Across 240 counties with complete data, the unadjusted lithium model had R² = 0.009. The sodium-adjusted model had R² = 0.082 in the full sample and 0.226 in the 14-county homogeneous subset. Because both the sample and model specification affect fit, these differences do not establish that exposure filtering recovered a true effect. The subset lithium estimate remained uncertain (p = 0.73).</p>
     <div class="metric-grid">
       <div class="metric-card">
-        <span class="metric-value accent">0.009 → 0.226</span>
-        <span class="metric-label">R², full sample vs. homogeneous subsample</span>
+        <span class="metric-value accent">0.082 → 0.226</span>
+        <span class="metric-label">Sodium-adjusted R²: full sample vs. subset; different samples</span>
       </div>
       <div class="metric-card">
         <span class="metric-value">14</span>
@@ -112,11 +115,11 @@
       </div>
       <div class="metric-card">
         <span class="metric-value">86%</span>
-        <span class="metric-label">Leave-one-out slopes remained protective</span>
+        <span class="metric-label">Leave-one-out lithium slopes remained negative</span>
       </div>
       <div class="metric-card">
         <span class="metric-value">66%</span>
-        <span class="metric-label">Bootstrap slopes remained protective</span>
+        <span class="metric-label">Bootstrap lithium slopes remained negative</span>
       </div>
     </div>
   </div>
@@ -127,23 +130,23 @@
     <div class="insight-grid">
       <div class="insight-card">
         <span class="insight-number">01</span>
-        <h3>The full sample said nothing was there</h3>
-        <p>Across all 240 counties with complete data, lithium and dementia showed essentially no relationship (r = −0.095, R² = 0.009), a result that measurement error alone can produce even when a real effect exists underneath it.</p>
+        <h3>The unadjusted full-sample association was weak</h3>
+        <p>The unadjusted correlation was weak (r = −0.095). Exposure measurement error is one possible explanation, alongside confounding, limited signal, and other sources of uncertainty; this analysis does not distinguish them conclusively.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">02</span>
-        <h3>A homogeneity framework rescued the signal</h3>
-        <p>Restricting to the 14 counties where a county mean is a defensible exposure proxy raised R² to 0.226. The lithium coefficient was negative, and 86% of leave-one-out slopes and 66% of bootstrap slopes stayed in the protective direction.</p>
+        <h3>The subset estimate remained uncertain</h3>
+        <p>In the sodium-adjusted 14-county model, the lithium coefficient was negative. It remained negative in 86% of leave-one-out fits and 66% of bootstrap samples, but the confidence interval included zero.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">03</span>
-        <h3>Sodium confounding alone flips the sign</h3>
-        <p>Without adjusting for sodium, the lithium coefficient becomes positive. Controlling for geochemical co-variates turned out to be essential, not optional, in this analysis.</p>
+        <h3>The coefficient sign depended on sodium adjustment</h3>
+        <p>Within the homogeneous subset, the lithium coefficient was positive without sodium adjustment and negative after adjustment. This sensitivity limits confidence in a stable lithium association.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">04</span>
-        <h3>The geography lines up</h3>
-        <p>Choropleth maps show lithium concentrated in the Panhandle and Trans-Pecos regions, which also show lower dementia prevalence, consistent with the regression result.</p>
+        <h3>Maps provide descriptive context</h3>
+        <p>The maps show regional variation in lithium concentrations and dementia prevalence. Visual overlap is descriptive and does not establish an individual exposure–outcome relationship.</p>
       </div>
     </div>
   </div>
@@ -152,10 +155,10 @@
     <div class="project-section-label">Model Limitations</div>
     <h2>What this analysis should, and shouldn't, be trusted for</h2>
     <div class="callout warn">
-      <strong>This is a small-sample ecological result, not a causal claim.</strong> At N = 14, the primary model's p-value is 0.73 and the bootstrap confidence interval spans zero. These results are directionally consistent with the existing literature but are not statistically significant, and the ecological design does not support causal inference.
+      <strong>This is a small-sample ecological result, not a causal claim.</strong> At N = 14, the lithium coefficient’s p-value is 0.73 and the bootstrap confidence interval spans zero. These results are directionally consistent with the existing literature but are not statistically significant, and the ecological design does not support causal inference.
     </div>
     <div class="callout">
-      <strong>The methodological contribution is the framework itself.</strong> The homogeneity classification approach extends to other trace elements and health outcomes studied at the county level, independent of whether this particular lithium-dementia result replicates.
+      <strong>The methodological contribution is the framework itself.</strong> The framework could be adapted to other county-level exposure studies, but its thresholds and usefulness would need validation in each setting.
     </div>
   </div>
 
@@ -187,6 +190,6 @@
     <a href="../index.html">← Portfolio Home</a>
   </div>
 
-</div>
+</main>
 </body>
 </html>

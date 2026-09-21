@@ -9,29 +9,23 @@
 <link rel="icon" type="image/png" href="../../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../../favicon-180.png">
 <meta name="description" content="A decision-support tool that ranks diabetes patients by 30-day readmission risk, plans cost and capacity scenarios, and grounds its guidance in CMS/AHRQ documents via RAG.">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=20260831">
-<link rel="stylesheet" href="../../assets/project.css?v=20260831">
-<style>
-  /* Palette hook — enterprise/operations mood for this project only. */
-  body.case-study {
-    --accent:   #94a3b8;
-    --accent-2: #cbd5e1;
-    --accent-3: #232b38;
-    --bg:       #12161d;
-    --bg-2:     #1a2029;
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260920">
+<link rel="stylesheet" href="../../assets/project.css?v=20260920">
+<style>body { --cover-color: #94a3b8; }</style>
+<link rel="stylesheet" href="../../assets/theme.css?v=20260920">
 </head>
 <body class="subpage case-study">
-<div class="page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main class="page" id="main-content">
+  <nav class="site-nav" aria-label="Portfolio navigation"><a class="home-button" href="../../index.html" aria-label="Portfolio home" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 6.75V21h-6v-7H9v7H3V9.75L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a><a href="../../index.html#projects">Browse projects ↗</a></nav>
 
   <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
 
   <div class="project-hero">
     <span class="project-eyebrow">Predictive Analytics · Case Study</span>
     <h1>Diabetes Transitional Care Resource Allocation System</h1>
-    <p class="project-hero-lede">Hospitals can't give every diabetic patient intensive post-discharge support. This tool ranks patients by 30-day readmission risk, plans cost and capacity scenarios, and grounds its guidance in CMS/AHRQ documents, so a care-management leader can decide who gets scarce transitional-care resources first.</p>
+    <p class="project-hero-lede">Hospitals may face constraints on intensive post-discharge support. This tool ranks patients by 30-day readmission risk, plans cost and capacity scenarios, and grounds its guidance in CMS/AHRQ documents, as a public-data prototype for exploring prioritization scenarios.</p>
 
     <div class="project-tags">
       <span class="project-tag">Python</span>
@@ -50,14 +44,14 @@
     </div>
 
     <div class="project-hero-image">
-      <img src="assets/hospital.jpg" alt="Hospital hallway with a nurse moving a patient in a wheelchair toward the nurses' station">
+      <img src="assets/hospital.jpg" alt="Hospital hallway with a nurse moving a patient in a wheelchair toward the nurses' station" decoding="async">
     </div>
   </div>
 
   <div class="project-section">
     <div class="project-section-label">The Problem</div>
     <h2>Who gets scarce transitional-care resources first?</h2>
-    <p>A hospital can't fund enhanced follow-up for every discharged diabetes patient, staff hours and intervention slots are fixed. The real decision isn't "who might be readmitted," it's: given a fixed capacity, which patients does supporting actually pay off for, in both clinical and financial terms? That's a resource-allocation problem, not just a classification problem, so the model had to be evaluated on capacity-aware business metrics, not accuracy.</p>
+    <p>This prototype assumes a fixed transitional-care capacity and ranks eligible encounters by predicted readmission risk. It explores cost and staffing scenarios; higher predicted risk does not necessarily imply greater benefit from an intervention.</p>
   </div>
 
   <div class="project-section">
@@ -87,7 +81,7 @@
   <div class="project-section">
     <div class="project-section-label">The Approach</div>
     <h2>Rank, tier, ground, compare, then price it out</h2>
-    <p>A tuned Gradient Boosting model scores every patient's 30-day readmission risk; those scores sort patients into a 3-tier intervention ladder, from routine discharge support up to intensive nurse care management. A RAG layer answers care-management questions by retrieving from actual CMS/AHRQ source documents rather than generating unsupported answers, and a separate fine-tuned text classifier is evaluated on the exact same business scorecard as a required comparison.</p>
+    <p>A tuned Gradient Boosting model estimates 30-day readmission risk and assigns support tiers. A retrieval-augmented generation (RAG) layer retrieves CMS/AHRQ passages to inform generated responses. A fine-tuned text classifier provides a comparison on the same evaluation metrics. Retrieval and citations do not guarantee that an answer is correct or clinically appropriate.</p>
     <div class="approach-flow">
       <span class="approach-step">Clean &amp; Group Features</span>
       <span class="approach-arrow">→</span>
@@ -102,15 +96,15 @@
       <span class="approach-step">RAG Guidance + Cost Planner</span>
     </div>
     <div class="chart-container">
-      <img src="assets/tiers.jpg" alt="3-tier transitional care intervention ladder: routine discharge support, follow-up call and appointment coordination, intensive nurse care management">
+      <img src="assets/tiers.jpg" alt="3-tier transitional care intervention ladder: routine discharge support, follow-up call and appointment coordination, intensive nurse care management" decoding="async">
       <p class="chart-caption">Every scored patient maps to one of three support levels, so the model's output is a staffing decision, not just a risk number.</p>
     </div>
   </div>
 
   <div class="project-section">
     <div class="project-section-label">Results</div>
-    <h2>At the top 500 highest-risk patients, the model roughly triples random targeting</h2>
-    <p>Evaluated where a hospital would actually operate, the top 500 highest-risk patients, the calibrated Gradient Boosting model beat a fine-tuned text classifier on every business metric, including going net-positive where the text model went net-negative.</p>
+    <h2>In the test set, precision at 500 was 3.6× the readmission prevalence</h2>
+    <p>At the assumed capacity of 500 encounters in the held-out evaluation, calibrated Gradient Boosting had better reported PR-AUC, precision, recall, lift, and expected net value than the text classifier. Expected net value depends on the specified cost and intervention-effectiveness assumptions.</p>
     <div class="metric-grid">
       <div class="metric-card">
         <span class="metric-value accent">3.6×</span>
@@ -118,11 +112,11 @@
       </div>
       <div class="metric-card">
         <span class="metric-value accent">40.8%</span>
-        <span class="metric-label">Precision at 500 (about 2 in 5 flagged patients actually readmitted)</span>
+        <span class="metric-label">Precision at 500 (about 2 in 5 selected test encounters had a recorded readmission)</span>
       </div>
       <div class="metric-card">
         <span class="metric-value">204</span>
-        <span class="metric-label">Real 30-day readmissions captured within the top 500</span>
+        <span class="metric-label">Recorded 30-day readmissions among the top 500 test encounters</span>
       </div>
       <div class="metric-card">
         <span class="metric-value accent">+$113,700</span>
@@ -130,7 +124,7 @@
       </div>
     </div>
 
-    <div class="model-table-wrap">
+    <div class="model-table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table">
       <table class="model-table">
         <thead>
           <tr><th>Metric (at 500 patients)</th><th>Gradient Boosting (deployed)</th><th>Fine-Tuned Prompt Classifier</th></tr>
@@ -146,7 +140,7 @@
       </table>
     </div>
 
-    <p style="margin-top: 18px;">Under the default cost assumptions ($15,000 per readmission, $300 per intervention, 10% intervention effectiveness), acting on the top 500 patients avoids an estimated 17.6 readmissions, $263,700 in gross avoided cost against $150,000 in intervention spend, for a net value of +$113,700 and a break-even effectiveness of just 5.7%. All of these assumptions are adjustable live in the app.</p>
+    <p style="margin-top: 18px;">Under the default cost assumptions ($15,000 per readmission, $300 per intervention, 10% intervention effectiveness), the scenario projects 17.6 readmissions, $263,700 in gross avoided cost against $150,000 in intervention spend, for a net value of +$113,700 and a break-even effectiveness of 5.7%. All of these assumptions are adjustable live in the app.</p>
   </div>
 
   <div class="project-section">
@@ -160,18 +154,18 @@
       </div>
       <div class="insight-card">
         <span class="insight-number">02</span>
-        <h3>The fancier model lost to the simpler one</h3>
-        <p>The fine-tuned text classifier undershot the tabular Gradient Boosting model on every business metric, including going net-negative in expected value, a reminder that matching the model to the deployment metric beats defaulting to whatever's newest.</p>
+        <h3>Tabular Gradient Boosting performed better in this comparison</h3>
+        <p>In this comparison, Gradient Boosting performed better on the reported metrics. The result supports selecting models against task-specific evaluation criteria; it does not establish that tabular methods always outperform text models.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">03</span>
-        <h3>Calibration made the dollar figures honest</h3>
-        <p>Because the deployed model's probabilities are calibrated, its risk scores mean something as actual probabilities, not just a ranking, which is what makes the net-value and break-even calculator meaningful instead of decorative.</p>
+        <h3>Calibration supports probability-based scenarios</h3>
+        <p>Calibration is intended to align estimated probabilities with observed frequencies on evaluation data. It does not guarantee accurate risks for a new hospital population. The net-value calculator remains a scenario model dependent on calibration, costs, and assumed intervention effectiveness.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">04</span>
-        <h3>Guidance is grounded, not generated</h3>
-        <p>The RAG layer retrieves from CMS/AHRQ source documents rather than letting a model freestyle a clinical recommendation, and every answer in the app is cited back to a source page.</p>
+        <h3>Retrieval adds source context to generated guidance</h3>
+        <p>The RAG layer retrieves CMS/AHRQ passages and provides source references. Users still need to check whether the retrieved passage supports the generated response; citations alone do not rule out unsupported conclusions.</p>
       </div>
     </div>
   </div>
@@ -192,6 +186,6 @@
     <a href="../../index.html">Portfolio Home →</a>
   </div>
 
-</div>
+</main>
 </body>
 </html>

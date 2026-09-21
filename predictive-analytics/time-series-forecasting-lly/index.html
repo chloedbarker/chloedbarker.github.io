@@ -9,22 +9,16 @@
 <link rel="icon" type="image/png" href="../../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../../favicon-180.png">
 <meta name="description" content="Forecasting Eli Lilly's monthly stock price at two horizons, comparing ARMA, ARIMA, VAR, and an MLP neural network.">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=20260831">
-<link rel="stylesheet" href="../../assets/project.css?v=20260831">
-<style>
-  /* Palette hook — dark navy/financial mood for this project only. */
-  body.case-study {
-    --accent:   #818cf8;
-    --accent-2: #a5b4fc;
-    --accent-3: #1d1a4a;
-    --bg:       #0d0c22;
-    --bg-2:     #15142f;
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Inter+Tight:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=20260920">
+<link rel="stylesheet" href="../../assets/project.css?v=20260920">
+<style>body { --cover-color: #818cf8; }</style>
+<link rel="stylesheet" href="../../assets/theme.css?v=20260920">
 </head>
 <body class="subpage case-study">
-<div class="page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<main class="page" id="main-content">
+  <nav class="site-nav" aria-label="Portfolio navigation"><a class="home-button" href="../../index.html" aria-label="Portfolio home" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 6.75V21h-6v-7H9v7H3V9.75L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a><a href="../../index.html#projects">Browse projects ↗</a></nav>
 
   <a class="back-link" href="../index.html">← Back to Predictive Analytics</a>
 
@@ -99,7 +93,7 @@
 
   <div class="project-section">
     <div class="project-section-label">Results</div>
-    <h2>No single model won both horizons</h2>
+    <h2>The best reported model differed by evaluation horizon</h2>
     <p>ARIMA was the strongest short-term forecaster but degraded sharply at twelve months, while a nonlinear neural network reversed that pattern almost entirely.</p>
     <div class="metric-grid">
       <div class="metric-card">
@@ -108,11 +102,11 @@
       </div>
       <div class="metric-card">
         <span class="metric-value accent">0.017</span>
-        <span class="metric-label">Best 12-month ASE, MLP neural net</span>
+        <span class="metric-label">Lowest 12-month ASE among the log-price models, MLP</span>
       </div>
     </div>
 
-    <div class="model-table-wrap">
+    <div class="model-table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table">
       <table class="model-table">
         <thead>
           <tr><th>Model</th><th>Short-Term ASE (3 mo)</th><th>Long-Term ASE (12 mo)</th></tr>
@@ -135,23 +129,23 @@
     <div class="insight-grid">
       <div class="insight-card">
         <span class="insight-number">01</span>
-        <h3>ARIMA won short-term by riding the random walk</h3>
-        <p>Stock prices behave close to a random walk, so ARIMA's short-horizon forecast is mostly an extension of the most recent trend, and that's exactly what worked at three months.</p>
+        <h3>ARIMA had the lowest short-horizon log-price error</h3>
+        <p>ARIMA(4,1,0) had the lowest three-month ASE among the models evaluated on log price. This is a result for the held-out period, not evidence of reliable outperformance across market conditions.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">02</span>
-        <h3>That same behavior sank it long-term</h3>
-        <p>Projecting the recent trend forward for twelve months meant extrapolating LLY's explosive 2022-2024 GLP-1 run indefinitely, and the ASE blew out to 0.355 as a result.</p>
+        <h3>ARIMA error increased at the longer horizon</h3>
+        <p>ARIMA’s 12-month ASE rose to 0.355 in this evaluation. Extrapolation and changes in the series may contribute, but this comparison does not isolate the cause of the error.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">03</span>
         <h3>A nonlinear model handled the long horizon better</h3>
-        <p>The MLP neural network produced the lowest 12-month ASE, suggesting the longer-term pattern in LLY's price isn't purely linear the way ARIMA assumes.</p>
+        <p>MLP had the lowest 12-month ASE among the models evaluated on log price. That result does not by itself establish that the underlying process is nonlinear or that MLP will remain preferable in future periods.</p>
       </div>
       <div class="insight-card">
         <span class="insight-number">04</span>
-        <h3>The competitor mattered more than the sector</h3>
-        <p>VAR with Novo Nordisk, LLY's direct GLP-1 rival, beat VAR with the broader healthcare ETF at both horizons, company-specific competition carried more signal than sector-wide movement.</p>
+        <h3>The NVO VAR specification had lower reported error</h3>
+        <p>VAR with NVO had lower ASE than VAR with XLV at both evaluated horizons. This comparison does not show that competitive dynamics caused the improvement.</p>
       </div>
     </div>
   </div>
@@ -172,6 +166,6 @@
     <a href="../../index.html">Portfolio Home →</a>
   </div>
 
-</div>
+</main>
 </body>
 </html>

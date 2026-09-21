@@ -30,14 +30,16 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260920-2">
+<link rel="stylesheet" href="assets/theme.css?v=20260920-5">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="layout">
 
   <!-- Sidebar: stays in view while content scrolls -->
   <aside class="hero">
-    <img src="headshot.jpg" alt="Chloe Barker" class="headshot">
+    <img src="headshot.jpg" alt="Chloe Barker" class="headshot" decoding="async">
     <h1>Chloe Barker</h1>
     <p class="hero-role">Data Scientist</p>
     <p class="sidebar-meta">M.S. Data Science, SMU<br>Seeking full-time roles fall 2026</p>
@@ -69,13 +71,10 @@
     </div>
   </aside>
 
-  <main class="content">
+  <main class="content" id="main-content">
 
       <div class="top-bar">
-        <div class="history-controls" aria-hidden="true">
-          <span class="circle-control">‹</span>
-          <span class="circle-control">›</span>
-        </div>
+        <a class="home-button" href="index.html" aria-label="Portfolio home" aria-current="page" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.8 2.7a2 2 0 0 1 2.4 0l7 5.25A2 2 0 0 1 21 9.55V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.55a2 2 0 0 1 .8-1.6l7-5.25Z"/></svg></a>
         <div class="top-bar-actions">
           <a class="top-bar-link" href="resume/Chloe_Barker_Resume.pdf" target="_blank" rel="noopener">Resume</a>
           <a class="top-bar-pill" href="mailto:chloedbarkerr@icloud.com">Open to Work</a>
@@ -87,7 +86,7 @@
         <div class="profile-copy">
           <span class="profile-label">Portfolio Profile</span>
           <h2>Chloe Barker</h2>
-          <p class="profile-subtitle">Data Scientist · Data Analytics · Machine Learning</p>
+          <p class="profile-subtitle">Data Scientist · Machine Learning · Analytics</p>
           <p class="about-text">
             M.S. Data Science graduate from SMU focused on applied machine learning, data analytics, decision support, and data engineering. I build projects that move past notebook metrics into stakeholder decisions: who to prioritize, which model to trust, what trade-off matters, and how to explain the result clearly. Recently completed a Data Science internship at Goosehead Insurance, working with Python, SQL, PySpark, Snowflake, and Databricks on lead prioritization and marketing analytics.
           </p>
@@ -98,16 +97,19 @@
         </div>
         <div class="profile-highlights" aria-label="Portfolio highlights">
           <div>
-            <span class="profile-stat-value">2026</span>
-            <span class="profile-stat-label">M.S. Data Science</span>
+            <span class="profile-highlight-heading">EXPERIENCE</span>
+            <span class="profile-highlight-detail">Data Science Intern</span>
+            <span class="profile-highlight-note">Goosehead Insurance · 2026</span>
           </div>
           <div>
-            <span class="profile-stat-value">ML</span>
-            <span class="profile-stat-label">Healthcare decision systems</span>
+            <span class="profile-highlight-heading">CORE TOOLS</span>
+            <span class="profile-highlight-detail">Python · SQL · Databricks</span>
+            <span class="profile-highlight-note">PySpark · scikit-learn</span>
           </div>
           <div>
-            <span class="profile-stat-value">SQL</span>
-            <span class="profile-stat-label">Data engineering + maps</span>
+            <span class="profile-highlight-heading">CAPABILITIES</span>
+            <span class="profile-highlight-detail">Machine Learning · Statistics</span>
+            <span class="profile-highlight-note">Visualization · Decision Support</span>
           </div>
         </div>
       </section>
@@ -133,14 +135,14 @@
         <div class="card certifications-card reveal">
           <div class="section-header"><h2>Certifications</h2></div>
           <a class="cert-item" href="certifications/MSDS_Best_Capstone_Presentation_Certificate.pdf" target="_blank" rel="noopener">
-            <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png?v=2" alt="SMU badge">
+            <img class="cert-logo" src="certifications/msds-best-capstone-presentation.png?v=2" alt="SMU badge" decoding="async">
             <div class="cert-info">
               <div class="cert-issuer">SMU MSDS</div>
               <div class="cert-name">Best Capstone Presentation</div>
             </div>
           </a>
           <a class="cert-item" href="certifications/Data_Scientist_Certificate.pdf" target="_blank" rel="noopener">
-            <img class="cert-logo" src="certifications/datacamp_logo.png" alt="DataCamp logo">
+            <img class="cert-logo" src="certifications/datacamp_logo.png" alt="DataCamp logo" decoding="async">
             <div class="cert-info">
               <div class="cert-issuer">DataCamp</div>
               <div class="cert-name">Certified Data Scientist</div>
@@ -153,7 +155,7 @@
       <div id="experience" class="card reveal">
         <div class="section-header"><h2>Experience</h2></div>
         <div class="exp-item">
-          <div class="exp-logo"><img src="certifications/goosehead.jpeg" alt="Goosehead Insurance"></div>
+          <div class="exp-logo"><img src="certifications/goosehead.jpeg" alt="Goosehead Insurance" decoding="async"></div>
           <div class="exp-body">
             <div class="exp-company">Goosehead Insurance</div>
             <div class="exp-title">Data Science Intern</div>
@@ -177,14 +179,14 @@
                 <span class="skill-card-label">Programming &amp; Data</span>
               </div>
               <div class="skill-list">
-                <a class="skill-chip" href="https://www.python.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/python" alt="">Python</a>
+                <a class="skill-chip" href="https://www.python.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/python" alt="" decoding="async">Python</a>
                 <a class="skill-chip" href="https://en.wikipedia.org/wiki/SQL" target="_blank" rel="noopener">SQL</a>
-                <a class="skill-chip" href="https://www.r-project.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/r" alt="">R</a>
-                <a class="skill-chip" href="https://www.sas.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/sas.png" alt="">SAS</a>
-                <a class="skill-chip" href="https://pandas.pydata.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/pandas" alt="">pandas</a>
-                <a class="skill-chip" href="https://numpy.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/numpy" alt="">NumPy</a>
-                <a class="skill-chip" href="https://scikit-learn.org/stable/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/scikitlearn" alt="">scikit-learn</a>
-                <a class="skill-chip" href="https://spark.apache.org/docs/latest/api/python/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/apachespark.svg" alt="">PySpark</a>
+                <a class="skill-chip" href="https://www.r-project.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/r" alt="" decoding="async">R</a>
+                <a class="skill-chip" href="https://www.sas.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/sas.png" alt="" decoding="async">SAS</a>
+                <a class="skill-chip" href="https://pandas.pydata.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/pandas" alt="" decoding="async">pandas</a>
+                <a class="skill-chip" href="https://numpy.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/numpy" alt="" decoding="async">NumPy</a>
+                <a class="skill-chip" href="https://scikit-learn.org/stable/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/scikitlearn" alt="" decoding="async">scikit-learn</a>
+                <a class="skill-chip" href="https://spark.apache.org/docs/latest/api/python/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/apachespark.svg" alt="" decoding="async">PySpark</a>
               </div>
             </div>
 
@@ -220,11 +222,11 @@
                 <span class="skill-card-label">Data Platforms &amp; Management</span>
               </div>
               <div class="skill-list">
-                <a class="skill-chip" href="https://www.databricks.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/databricks" alt="">Databricks</a>
-                <a class="skill-chip" href="https://www.snowflake.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/snowflake" alt="">Snowflake</a>
-                <a class="skill-chip" href="https://www.mysql.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/mysql.svg" alt="">MySQL</a>
-                <a class="skill-chip" href="https://www.microsoft.com/en-us/microsoft-365/excel" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/excel.svg" alt="">Excel</a>
-                <a class="skill-chip" href="https://www.microsoft.com/en-us/microsoft-365/powerpoint" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/powerpoint.svg" alt="">PowerPoint</a>
+                <a class="skill-chip" href="https://www.databricks.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/databricks" alt="" decoding="async">Databricks</a>
+                <a class="skill-chip" href="https://www.snowflake.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/snowflake" alt="" decoding="async">Snowflake</a>
+                <a class="skill-chip" href="https://www.mysql.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/mysql.svg" alt="" decoding="async">MySQL</a>
+                <a class="skill-chip" href="https://www.microsoft.com/en-us/microsoft-365/excel" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/excel.svg" alt="" decoding="async">Excel</a>
+                <a class="skill-chip" href="https://www.microsoft.com/en-us/microsoft-365/powerpoint" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/powerpoint.svg" alt="" decoding="async">PowerPoint</a>
                 <span class="skill-chip">ETL</span>
                 <span class="skill-chip">Data Pipelines</span>
                 <span class="skill-chip">Data Cleaning &amp; Transformation</span>
@@ -240,14 +242,14 @@
                 <span class="skill-card-label">Visualization &amp; Geospatial</span>
               </div>
               <div class="skill-list">
-                <a class="skill-chip" href="https://www.tableau.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/tableau.png" alt="">Tableau</a>
-                <a class="skill-chip" href="https://matplotlib.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-plain.svg" alt="">matplotlib</a>
-                <a class="skill-chip" href="https://seaborn.pydata.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/seaborn.svg" alt="">seaborn</a>
-                <a class="skill-chip" href="https://plotly.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/plotly.svg" alt="">Plotly</a>
-                <a class="skill-chip" href="https://ggplot2.tidyverse.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/ggplot2.svg" alt="">ggplot2</a>
+                <a class="skill-chip" href="https://www.tableau.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/tableau.png" alt="" decoding="async">Tableau</a>
+                <a class="skill-chip" href="https://matplotlib.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-plain.svg" alt="" decoding="async">matplotlib</a>
+                <a class="skill-chip" href="https://seaborn.pydata.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/seaborn.svg" alt="" decoding="async">seaborn</a>
+                <a class="skill-chip" href="https://plotly.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/plotly.svg" alt="" decoding="async">Plotly</a>
+                <a class="skill-chip" href="https://ggplot2.tidyverse.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/ggplot2.svg" alt="" decoding="async">ggplot2</a>
                 <a class="skill-chip" href="https://shiny.posit.co/" target="_blank" rel="noopener">R Shiny</a>
-                <a class="skill-chip" href="https://geopandas.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/geopandas.svg" alt="">GeoPandas</a>
-                <a class="skill-chip" href="https://python-visualization.github.io/folium/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/folium.svg" alt="">Folium</a>
+                <a class="skill-chip" href="https://geopandas.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/geopandas.svg" alt="" decoding="async">GeoPandas</a>
+                <a class="skill-chip" href="https://python-visualization.github.io/folium/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/folium.svg" alt="" decoding="async">Folium</a>
               </div>
             </div>
 
@@ -256,18 +258,18 @@
                 <span class="skill-card-label">Development &amp; AI Tools</span>
               </div>
               <div class="skill-list">
-                <a class="skill-chip" href="https://git-scm.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/git.svg" alt="">Git</a>
-                <a class="skill-chip" href="https://github.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github" alt="">GitHub</a>
-                <a class="skill-chip" href="https://about.gitlab.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/gitlab.svg" alt="">GitLab</a>
-                <a class="skill-chip" href="https://jupyter.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/jupyter" alt="">Jupyter</a>
-                <a class="skill-chip" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-plain.svg" alt="">VS Code</a>
+                <a class="skill-chip" href="https://git-scm.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/git.svg" alt="" decoding="async">Git</a>
+                <a class="skill-chip" href="https://github.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github" alt="" decoding="async">GitHub</a>
+                <a class="skill-chip" href="https://about.gitlab.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/gitlab.svg" alt="" decoding="async">GitLab</a>
+                <a class="skill-chip" href="https://jupyter.org/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/jupyter" alt="" decoding="async">Jupyter</a>
+                <a class="skill-chip" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-plain.svg" alt="" decoding="async">VS Code</a>
                 <span class="skill-chip">LLM Applications</span>
                 <span class="skill-chip">RAG</span>
                 <span class="skill-chip">Prompt Engineering</span>
                 <span class="skill-chip">HTML</span>
                 <span class="skill-chip">CSS</span>
-                <a class="skill-chip" href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/claude.svg" alt="">Claude Code</a>
-                <a class="skill-chip" href="https://cursor.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/cursor.svg" alt="">Cursor</a>
+                <a class="skill-chip" href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/claude.svg" alt="" decoding="async">Claude Code</a>
+                <a class="skill-chip" href="https://cursor.com/" target="_blank" rel="noopener"><img class="skill-chip-icon" onerror="this.remove()" src="assets/icons/cursor.svg" alt="" decoding="async">Cursor</a>
               </div>
             </div>
 
@@ -297,18 +299,18 @@
           <div class="project-link cat-capstone" data-project-card data-categories="healthcare modeling engineering" data-tags="healthcare modeling engineering geospatial capstone groundwater lithium dementia python geopandas statsmodels">
             <a class="project-link-stretch" href="capstone/index.html" aria-label="Groundwater Lithium &amp; Dementia Prevalence in Texas &mdash; view case study"></a>
             <div class="project-cover">
-              <img src="assets/project-covers/capstone-groundwater-lithium.jpg" alt="Abstract Texas groundwater and dementia analytics project cover">
+              <img src="assets/project-covers/capstone-groundwater-lithium.jpg" alt="Abstract Texas groundwater and dementia analytics project cover" decoding="async">
             </div>
             <span class="project-eyebrow">MS Capstone · Best Presentation</span>
             <div class="project-link-top">
               <span class="project-name">Groundwater Lithium &amp; Dementia Prevalence in Texas</span>
               <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             </div>
-            <p class="project-desc">Linked groundwater lithium to dementia rates across 254 Texas counties, tracing a null result to exposure misclassification and fixing it with a homogeneity framework.</p>
+            <p class="project-desc">Studied county-level lithium–dementia associations in Texas and tested sensitivity to exposure heterogeneity, covariate adjustment, and influential observations.</p>
             <div class="project-kpis">
-              <span>R² 0.009 → 0.226</span>
+              <span>240-county analysis</span>
               <span>254 counties</span>
-              <span>86% LOO slopes protective</span>
+              <span>14-county sensitivity subset</span>
             </div>
             <div class="project-link-tags">
               <span>Python</span>
@@ -319,21 +321,21 @@
               <span>LOO Diagnostics</span>
             </div>
             <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="">Code</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
             </div>
           </div>
 
           <div class="project-link featured-project" data-project-card data-categories="healthcare deployed modeling" data-tags="healthcare deployed modeling decision support diabetes readmission rag faiss gradio hugging face python scikit-learn gradient boosting">
             <a class="project-link-stretch" href="predictive-analytics/diabetes-readmission-project/index.html" aria-label="Diabetes Care Decision Support App &mdash; view case study"></a>
             <div class="project-cover">
-              <img src="assets/project-covers/diabetes-readmission-app.jpg" alt="Abstract diabetes readmission decision support app cover">
+              <img src="assets/project-covers/diabetes-readmission-app.jpg" alt="Abstract diabetes readmission decision support app cover" decoding="async">
             </div>
             <span class="project-eyebrow">Featured · Deployed App</span>
             <div class="project-link-top">
               <span class="project-name">Diabetes Care Decision Support App</span>
               <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             </div>
-            <p class="project-desc">Deployed app that ranks diabetes discharges by readmission risk and grounds care recommendations in CMS/AHRQ guidance via RAG.</p>
+            <p class="project-desc">Deployed prototype that ranks diabetes encounters by predicted readmission risk and retrieves CMS/AHRQ guidance for scenario planning.</p>
             <div class="project-kpis">
               <span>40.8% Precision@500</span>
               <span>3.6× lift</span>
@@ -347,14 +349,14 @@
             </div>
             <div class="project-quicklinks">
               <a class="project-quicklink" href="https://huggingface.co/spaces/chloebarker/diabetes-care-management-decision-support" target="_blank" rel="noopener">Live App ↗</a>
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="">Code</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
             </div>
           </div>
 
           <div class="project-link cat-modeling" data-project-card data-categories="healthcare modeling" data-tags="healthcare modeling predictive analytics classification regression hr finance real estate time series attrition heart disease hospital sale price crab age">
             <a class="project-link-stretch" href="predictive-analytics/index.html" aria-label="Predictive Modeling &amp; Decision Systems &mdash; view case study"></a>
             <div class="project-cover">
-              <img src="assets/project-covers/predictive-modeling.jpg" alt="Abstract predictive modeling and forecasting project cover">
+              <img src="assets/project-covers/predictive-modeling.jpg" alt="Abstract predictive modeling and forecasting project cover" decoding="async">
             </div>
             <span class="project-eyebrow">Modeling</span>
             <div class="project-link-top">
@@ -368,35 +370,35 @@
               <span>Threshold strategy</span>
             </div>
             <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="">Code</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
             </div>
           </div>
 
           <div class="project-link cat-ml" data-project-card data-categories="modeling" data-tags="modeling unsupervised learning clustering association rules retail health kmeans dbscan gmm spectral apriori fp-growth python">
             <a class="project-link-stretch" href="machine-learning/index.html" aria-label="Unsupervised Learning &amp; Pattern Discovery &mdash; view case study"></a>
             <div class="project-cover">
-              <img src="assets/project-covers/unsupervised-learning.jpg" alt="Abstract clustering and association rules project cover">
+              <img src="assets/project-covers/unsupervised-learning.jpg" alt="Abstract clustering and association rules project cover" decoding="async">
             </div>
             <span class="project-eyebrow">Unsupervised ML</span>
             <div class="project-link-top">
               <span class="project-name">Unsupervised Learning &amp; Pattern Discovery</span>
               <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             </div>
-            <p class="project-desc">Compared 6 clustering methods on 100K health records and mined 541K retail transactions for product association rules.</p>
+            <p class="project-desc">Compared 6 clustering methods on 100K synthetic health records and mined 541K retail transactions for product association rules.</p>
             <div class="project-kpis">
               <span>6 clustering methods</span>
               <span>541K transactions</span>
               <span>24× rule lift</span>
             </div>
             <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="">Code</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
             </div>
           </div>
 
           <div class="project-link cat-engineering" data-project-card data-categories="engineering" data-tags="engineering sql database mysql geospatial groundwater folium geopandas etl normalized schema texas water quality">
             <a class="project-link-stretch" href="databases-sql/index.html" aria-label="Data Engineering, SQL &amp; Geospatial Systems &mdash; view case study"></a>
             <div class="project-cover">
-              <img src="assets/project-covers/data-engineering-sql-geospatial.jpg" alt="Abstract SQL database and Texas geospatial mapping project cover">
+              <img src="assets/project-covers/data-engineering-sql-geospatial.jpg" alt="Abstract SQL database and Texas geospatial mapping project cover" decoding="async">
             </div>
             <span class="project-eyebrow">Data Engineering</span>
             <div class="project-link-top">
@@ -410,14 +412,14 @@
               <span>Capstone foundation</span>
             </div>
             <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="">Code</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
             </div>
           </div>
 
           <div class="project-link cat-communication" data-project-card data-categories="communication" data-tags="communication storytelling executive presentation infographic healthcare product analysis nlp medical devices">
             <a class="project-link-stretch" href="data-storytelling/index.html" aria-label="Executive Communication &amp; Data Storytelling &mdash; view case study"></a>
             <div class="project-cover">
-              <img src="assets/project-covers/data-storytelling.jpg" alt="Abstract data storytelling and executive communication project cover">
+              <img src="assets/project-covers/data-storytelling.jpg" alt="Abstract data storytelling and executive communication project cover" decoding="async">
             </div>
             <span class="project-eyebrow">Communication</span>
             <div class="project-link-top">
@@ -431,11 +433,12 @@
               <span>Technical translation</span>
             </div>
             <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/data-storytelling" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="">Code</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/data-storytelling" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
             </div>
           </div>
 
         </div>
+        <p id="projectResults" role="status" aria-live="polite" class="results-count"></p>
         <p id="projectEmpty" class="project-empty" hidden>No matching projects yet.</p>
       </div>
 
@@ -481,7 +484,12 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const id = '#' + entry.target.id;
-          navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+          navLinks.forEach(a => {
+            const active = a.getAttribute('href') === id;
+            a.classList.toggle('active', active);
+            if (active) a.setAttribute('aria-current', 'location');
+            else a.removeAttribute('aria-current');
+          });
         }
       });
     }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
@@ -507,7 +515,7 @@
       const categories = normalize(card.dataset.categories || '').split(' ').filter(Boolean);
       const haystack = normalize(`${card.textContent} ${card.dataset.tags || ''}`);
       const matchesFilter = activeProjectFilter === 'all' || categories.includes(activeProjectFilter);
-      const matchesQuery = !query || haystack.includes(query);
+      const matchesQuery = query.split(' ').every(term => haystack.includes(term));
       const visible = matchesFilter && matchesQuery;
       card.hidden = !visible;
       card.classList.toggle('is-hidden', !visible);
@@ -515,6 +523,7 @@
     });
 
     if (projectEmpty) projectEmpty.hidden = visibleCount !== 0;
+    document.getElementById('projectResults').textContent = `${visibleCount} of ${projectCards.length} project collections`;
   }
 
   projectSearch?.addEventListener('input', updateProjectCards);
@@ -531,17 +540,6 @@
   });
   updateProjectCards();
 
-  const sidebar = document.querySelector('.hero');
-  const desktopSidebar = window.matchMedia('(min-width: 721px)');
-
-  function lockSidebarScroll(event) {
-    if (!desktopSidebar.matches) return;
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  sidebar?.addEventListener('wheel', lockSidebarScroll, { passive: false });
-  sidebar?.addEventListener('touchmove', lockSidebarScroll, { passive: false });
 </script>
 
 </body>

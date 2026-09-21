@@ -917,17 +917,9 @@ a:hover {
 
     border-radius: 8px;
 
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
 }
 
 
-.skill-card:hover {
-    background: var(--card-hover);
-
-    transform: translateY(-2px);
-}
 
 
 .skill-card-header {
@@ -976,7 +968,7 @@ a:hover {
 }
 
 
-.skill-chip:hover {
+a.skill-chip[href]:hover {
     background: #404040;
 
     color: var(--white);
@@ -1095,7 +1087,7 @@ a:hover {
 .projects-grid {
     display: grid;
 
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 
     gap: var(--content-spacing);
 }
@@ -1277,16 +1269,8 @@ a:hover {
 .skill-card {
     background: var(--background-elevated);
 
-    transition:
-        background var(--transition-fast),
-        transform var(--transition-fast);
 }
 
-.skill-card:hover {
-    background: var(--background-elevated-hover);
-
-    transform: translateY(-2px);
-}
 
 
 /* =========================================================
