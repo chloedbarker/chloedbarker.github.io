@@ -385,6 +385,8 @@ a:hover {
    ========================================================= */
 
 .content {
+    position: relative;
+
     width: calc(100% - var(--left-gutter) - var(--sidebar-width) - var(--panel-gap) - var(--right-gutter));
 
     min-height: calc(100vh - 16px);
@@ -402,6 +404,34 @@ a:hover {
             var(--black) 520px
         );
     border-radius: 8px;
+}
+
+/* Static backing behind the top bar: sticks in lockstep with the bar
+   itself so the rounded corners never reveal the content gradient
+   scrolling underneath. It reproduces the same gradient, frozen as it
+   looks at the very top of the page. Zero-footprint (negative bottom
+   margin cancels its own height) so it doesn't push the top bar down. */
+.content::before {
+    content: "";
+    position: sticky;
+    top: 0;
+    z-index: calc(var(--top-bar-z-index) - 1);
+
+    display: block;
+    height: var(--top-bar-height);
+
+    margin: 0 var(--content-spacing-negative) calc(-1 * var(--top-bar-height));
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(45, 95, 66, 0.74) 0,
+            #181818 230px,
+            var(--black) 520px
+        );
+    border-radius: 8px 8px 0 0;
+
+    pointer-events: none;
 }
 
 
@@ -424,6 +454,7 @@ a:hover {
     padding: 8px var(--content-spacing);
 
     background: rgba(18, 18, 18, 0.74);
+    border-radius: 8px 8px 0 0;
 
     backdrop-filter: blur(18px);
 }
