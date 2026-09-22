@@ -411,7 +411,7 @@ a:hover {
 
 .top-bar {
     position: sticky;
-    top: var(--left-gutter);
+    top: 0;
     z-index: var(--top-bar-z-index);
 
     display: flex;
