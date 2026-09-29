@@ -30,7 +30,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css?v=20260920-2">
+  <link rel="stylesheet" href="style.css?v=20260928-2">
 <link rel="stylesheet" href="assets/theme.css?v=20260920-5">
 </head>
 <body>
@@ -42,13 +42,13 @@
     <img src="assets/images/headshot.jpg" alt="Chloe Barker" class="headshot" decoding="async">
     <h1>Chloe Barker</h1>
     <p class="hero-role">Data Scientist</p>
-    <p class="sidebar-meta">M.S. Data Science, SMU<br>Seeking full-time roles fall 2026</p>
+    <p class="sidebar-meta">M.S. Data Science, SMU<br>Open to full-time opportunities</p>
 
-    <nav class="side-nav">
+    <nav class="side-nav" aria-label="Portfolio sections">
       <a href="#about">About</a>
+      <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
     </nav>
 
     <div class="contact-links">
@@ -56,7 +56,7 @@
       <a href="https://linkedin.com/in/chloedbarker" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/chloedbarker/chloedbarker.github.io" target="_blank" rel="noopener">GitHub</a>
       <a href="resume/Chloe_Barker_Resume.pdf" target="_blank" rel="noopener">Resume</a>
-      <a href="resume/Projects_Overview.pdf" target="_blank" rel="noopener">One-Pager</a>
+      <a href="resume/Projects_Overview.pdf" target="_blank" rel="noopener">Project Overview</a>
     </div>
 
     <div class="hero-stats">
@@ -75,6 +75,7 @@
 
       <div class="top-bar">
         <a class="home-button" href="index.html" aria-label="Portfolio home" aria-current="page" title="Portfolio home"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.8 2.7a2 2 0 0 1 2.4 0l7 5.25A2 2 0 0 1 21 9.55V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.55a2 2 0 0 1 .8-1.6l7-5.25Z"/></svg></a>
+        <a class="search-shortcut" href="#projectSearch" aria-label="Search projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span>Explore projects</span></a>
         <div class="top-bar-actions">
           <a class="top-bar-link" href="resume/Chloe_Barker_Resume.pdf" target="_blank" rel="noopener">Resume</a>
           <a class="top-bar-pill" href="mailto:chloedbarkerr@icloud.com">Open to Work</a>
@@ -84,15 +85,15 @@
       <!-- About -->
       <section id="about" class="profile-overview reveal">
         <div class="profile-copy">
-          <span class="profile-label">Portfolio Profile</span>
+          <span class="profile-label">Data Science Portfolio</span>
           <h2>Chloe Barker</h2>
           <p class="profile-subtitle">Data Scientist · Machine Learning · Analytics</p>
           <p class="about-text">
-            M.S. Data Science graduate from SMU focused on applied machine learning, data analytics, decision support, and data engineering. I build projects that move past notebook metrics into stakeholder decisions: who to prioritize, which model to trust, what trade-off matters, and how to explain the result clearly. Recently completed a Data Science internship at Goosehead Insurance, working with Python, SQL, PySpark, Snowflake, and Databricks on lead prioritization and marketing analytics.
+            I turn complex data into clear decisions. My work spans machine learning, healthcare analytics, and data engineering—from identifying who to prioritize to explaining which model to trust. M.S. Data Science, SMU; recent Data Science Intern at Goosehead Insurance.
           </p>
           <div class="profile-actions">
             <a class="profile-button primary" href="#projects">View Projects</a>
-            <a class="profile-button" href="resume/Projects_Overview.pdf" target="_blank" rel="noopener">One-Pager</a>
+            <a class="profile-button" href="resume/Projects_Overview.pdf" target="_blank" rel="noopener">Project Overview</a>
           </div>
         </div>
         <div class="profile-highlights" aria-label="Portfolio highlights">
@@ -149,6 +150,172 @@
             </div>
           </a>
         </div>
+      </div>
+
+      <!-- Projects -->
+      <div id="projects" class="card reveal">
+        <div class="section-header">
+          <h2>Explore My Work</h2>
+          <p>Start with a featured case study or browse a collection. Each brings together the problem, approach, and results.</p>
+        </div>
+        <div class="project-toolbar" role="search">
+          <input id="projectSearch" class="project-search" type="search" placeholder="Search projects, methods, or domains" aria-label="Search projects">
+          <div class="project-filters" aria-label="Project filters">
+            <button type="button" class="project-filter active" data-filter="all">All</button>
+            <button type="button" class="project-filter" data-filter="healthcare">Healthcare</button>
+            <button type="button" class="project-filter" data-filter="deployed">Deployed</button>
+            <button type="button" class="project-filter" data-filter="modeling">Modeling</button>
+            <button type="button" class="project-filter" data-filter="engineering">Engineering</button>
+            <button type="button" class="project-filter" data-filter="communication">Communication</button>
+          </div>
+        </div>
+        <div class="projects-grid">
+
+          <div class="project-link cat-capstone" data-project-card data-categories="healthcare modeling engineering" data-tags="healthcare modeling engineering geospatial capstone groundwater lithium dementia python geopandas statsmodels">
+            <a class="project-link-stretch" href="capstone/index.html" aria-label="Groundwater Lithium &amp; Dementia Prevalence in Texas &mdash; view case study"></a>
+            <div class="project-cover">
+              <img src="assets/project-covers/capstone-groundwater-lithium.jpg" alt="Abstract Texas groundwater and dementia analytics project cover" decoding="async">
+            </div>
+            <span class="project-eyebrow">MS Capstone · Best Presentation</span>
+            <div class="project-link-top">
+              <span class="project-name">Groundwater Lithium &amp; Dementia Prevalence in Texas</span>
+              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            </div>
+            <p class="project-desc">Studied county-level lithium–dementia associations in Texas and tested sensitivity to exposure heterogeneity, covariate adjustment, and influential observations.</p>
+            <div class="project-kpis">
+              <span>254 TX counties</span>
+            </div>
+            <div class="project-link-tags">
+              <span>Python</span>
+              <span>GeoPandas</span>
+              <span>statsmodels</span>
+            </div>
+            <div class="project-quicklinks">
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
+            </div>
+          </div>
+
+          <div class="project-link featured-project" data-project-card data-categories="healthcare deployed modeling" data-tags="healthcare deployed modeling decision support diabetes readmission rag faiss gradio hugging face python scikit-learn gradient boosting">
+            <a class="project-link-stretch" href="predictive-analytics/diabetes-readmission-project/index.html" aria-label="Diabetes Care Decision Support App &mdash; view case study"></a>
+            <div class="project-cover">
+              <img src="assets/project-covers/diabetes-readmission-app.jpg" alt="Abstract diabetes readmission decision support app cover" decoding="async">
+            </div>
+            <span class="project-eyebrow">Featured · Deployed App</span>
+            <div class="project-link-top">
+              <span class="project-name">Diabetes Care Decision Support App</span>
+              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            </div>
+            <p class="project-desc">Deployed prototype that ranks diabetes encounters by predicted readmission risk and retrieves CMS/AHRQ guidance for scenario planning.</p>
+            <div class="project-kpis">
+              <span>+$113.7K modeled net value</span>
+            </div>
+            <div class="project-link-tags">
+              <span>Python</span>
+              <span>Gradient Boosting</span>
+              <span>RAG</span>
+            </div>
+            <div class="project-quicklinks">
+              <a class="project-quicklink" href="https://huggingface.co/spaces/chloebarker/diabetes-care-management-decision-support" target="_blank" rel="noopener">Live App ↗</a>
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
+            </div>
+          </div>
+
+          <div class="project-link cat-modeling" data-project-card data-categories="healthcare modeling" data-tags="healthcare modeling predictive analytics classification regression hr finance real estate time series attrition heart disease hospital sale price crab age">
+            <a class="project-link-stretch" href="predictive-analytics/index.html" aria-label="Predictive Modeling &amp; Decision Systems &mdash; view case study"></a>
+            <div class="project-cover">
+              <img src="assets/project-covers/predictive-modeling.jpg" alt="Abstract predictive modeling and forecasting project cover" decoding="async">
+            </div>
+            <span class="project-eyebrow">Modeling</span>
+            <div class="project-link-top">
+              <span class="project-name">Predictive Modeling &amp; Decision Systems</span>
+              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            </div>
+            <p class="project-desc">Seven end-to-end models across healthcare, HR, real estate, and finance, from feature engineering to validation and business recommendations.</p>
+            <div class="project-kpis">
+              <span>R² · AUROC · RMSE</span>
+            </div>
+            <div class="project-link-tags">
+              <span>R</span>
+              <span>tidyverse</span>
+              <span>caret</span>
+            </div>
+            <div class="project-quicklinks">
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
+            </div>
+          </div>
+
+          <div class="project-link cat-ml" data-project-card data-categories="modeling" data-tags="modeling unsupervised learning clustering association rules retail health kmeans dbscan gmm spectral apriori fp-growth python">
+            <a class="project-link-stretch" href="machine-learning/index.html" aria-label="Unsupervised Learning &amp; Pattern Discovery &mdash; view case study"></a>
+            <div class="project-cover">
+              <img src="assets/project-covers/unsupervised-learning.jpg" alt="Abstract clustering and association rules project cover" decoding="async">
+            </div>
+            <span class="project-eyebrow">Unsupervised ML</span>
+            <div class="project-link-top">
+              <span class="project-name">Unsupervised Learning &amp; Pattern Discovery</span>
+              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            </div>
+            <p class="project-desc">Compared 6 clustering methods on 100K synthetic health records and mined 541K retail transactions for product association rules.</p>
+            <div class="project-kpis">
+              <span>24× rule lift</span>
+            </div>
+            <div class="project-link-tags">
+              <span>Python</span>
+              <span>K-Means</span>
+              <span>DBSCAN</span>
+            </div>
+            <div class="project-quicklinks">
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
+            </div>
+          </div>
+
+          <div class="project-link cat-engineering" data-project-card data-categories="engineering" data-tags="engineering sql database mysql geospatial groundwater folium geopandas etl normalized schema texas water quality">
+            <a class="project-link-stretch" href="databases-sql/index.html" aria-label="Data Engineering, SQL &amp; Geospatial Systems &mdash; view case study"></a>
+            <div class="project-cover">
+              <img src="assets/project-covers/data-engineering-sql-geospatial.jpg" alt="Abstract SQL database and Texas geospatial mapping project cover" decoding="async">
+            </div>
+            <span class="project-eyebrow">Data Engineering</span>
+            <div class="project-link-top">
+              <span class="project-name">Data Engineering, SQL &amp; Geospatial Systems</span>
+              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            </div>
+            <p class="project-desc">Built a 64-table MySQL database for 20+ years of Texas groundwater data, paired with SQL aggregation and interactive geospatial maps.</p>
+            <div class="project-kpis">
+              <span>64-table schema</span>
+            </div>
+            <div class="project-link-tags">
+              <span>MySQL</span>
+              <span>SQL</span>
+              <span>GeoPandas</span>
+            </div>
+            <div class="project-quicklinks">
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
+            </div>
+          </div>
+
+          <div class="project-link cat-communication" data-project-card data-categories="communication" data-tags="communication storytelling executive presentation infographic healthcare product analysis nlp medical devices">
+            <a class="project-link-stretch" href="data-storytelling/index.html" aria-label="Executive Communication &amp; Data Storytelling &mdash; view case study"></a>
+            <div class="project-cover">
+              <img src="assets/project-covers/data-storytelling.jpg" alt="Abstract data storytelling and executive communication project cover" decoding="async">
+            </div>
+            <span class="project-eyebrow">Communication</span>
+            <div class="project-link-top">
+              <span class="project-name">Executive Communication &amp; Data Storytelling</span>
+              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            </div>
+            <p class="project-desc">Executive decks and infographics that translate technical findings into clear, non-technical recommendations.</p>
+            <div class="project-link-tags">
+              <span>PowerPoint</span>
+              <span>Data Visualization</span>
+              <span>Storytelling</span>
+            </div>
+            <div class="project-quicklinks">
+              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/data-storytelling" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
+            </div>
+          </div>
+
+        </div>
+        <p id="projectResults" role="status" aria-live="polite" class="results-count"></p>
+        <div id="projectEmpty" class="project-empty" hidden><h3>No matching projects</h3><p>Try a different keyword or clear your search and filters.</p><button type="button" id="resetProjects" class="project-filter">Show all projects</button></div>
       </div>
 
       <!-- Experience -->
@@ -277,174 +444,10 @@
         </div>
       </div>
 
-      <!-- Projects -->
-      <div id="projects" class="card reveal">
-        <div class="section-header">
-          <h2>Project Playlists</h2>
-          <p>Curated collections of applied analytics, modeling, engineering, and storytelling work.</p>
-        </div>
-        <div class="project-toolbar" role="search">
-          <input id="projectSearch" class="project-search" type="search" placeholder="Search projects, methods, or domains" aria-label="Search projects">
-          <div class="project-filters" aria-label="Project filters">
-            <button type="button" class="project-filter active" data-filter="all">All</button>
-            <button type="button" class="project-filter" data-filter="healthcare">Healthcare</button>
-            <button type="button" class="project-filter" data-filter="deployed">Deployed</button>
-            <button type="button" class="project-filter" data-filter="modeling">Modeling</button>
-            <button type="button" class="project-filter" data-filter="engineering">Engineering</button>
-            <button type="button" class="project-filter" data-filter="communication">Communication</button>
-          </div>
-        </div>
-        <div class="projects-grid">
-
-          <div class="project-link cat-capstone" data-project-card data-categories="healthcare modeling engineering" data-tags="healthcare modeling engineering geospatial capstone groundwater lithium dementia python geopandas statsmodels">
-            <a class="project-link-stretch" href="capstone/index.html" aria-label="Groundwater Lithium &amp; Dementia Prevalence in Texas &mdash; view case study"></a>
-            <div class="project-cover">
-              <img src="assets/project-covers/capstone-groundwater-lithium.jpg" alt="Abstract Texas groundwater and dementia analytics project cover" decoding="async">
-            </div>
-            <span class="project-eyebrow">MS Capstone · Best Presentation</span>
-            <div class="project-link-top">
-              <span class="project-name">Groundwater Lithium &amp; Dementia Prevalence in Texas</span>
-              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
-            </div>
-            <p class="project-desc">Studied county-level lithium–dementia associations in Texas and tested sensitivity to exposure heterogeneity, covariate adjustment, and influential observations.</p>
-            <div class="project-kpis">
-              <span>254 TX counties</span>
-            </div>
-            <div class="project-link-tags">
-              <span>Python</span>
-              <span>GeoPandas</span>
-              <span>statsmodels</span>
-            </div>
-            <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/capstone" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
-            </div>
-          </div>
-
-          <div class="project-link featured-project" data-project-card data-categories="healthcare deployed modeling" data-tags="healthcare deployed modeling decision support diabetes readmission rag faiss gradio hugging face python scikit-learn gradient boosting">
-            <a class="project-link-stretch" href="predictive-analytics/diabetes-readmission-project/index.html" aria-label="Diabetes Care Decision Support App &mdash; view case study"></a>
-            <div class="project-cover">
-              <img src="assets/project-covers/diabetes-readmission-app.jpg" alt="Abstract diabetes readmission decision support app cover" decoding="async">
-            </div>
-            <span class="project-eyebrow">Featured · Deployed App</span>
-            <div class="project-link-top">
-              <span class="project-name">Diabetes Care Decision Support App</span>
-              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
-            </div>
-            <p class="project-desc">Deployed prototype that ranks diabetes encounters by predicted readmission risk and retrieves CMS/AHRQ guidance for scenario planning.</p>
-            <div class="project-kpis">
-              <span>+$113.7K value</span>
-            </div>
-            <div class="project-link-tags">
-              <span>Python</span>
-              <span>Gradient Boosting</span>
-              <span>RAG</span>
-            </div>
-            <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://huggingface.co/spaces/chloebarker/diabetes-care-management-decision-support" target="_blank" rel="noopener">Live App ↗</a>
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics/diabetes-readmission-project" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
-            </div>
-          </div>
-
-          <div class="project-link cat-modeling" data-project-card data-categories="healthcare modeling" data-tags="healthcare modeling predictive analytics classification regression hr finance real estate time series attrition heart disease hospital sale price crab age">
-            <a class="project-link-stretch" href="predictive-analytics/index.html" aria-label="Predictive Modeling &amp; Decision Systems &mdash; view case study"></a>
-            <div class="project-cover">
-              <img src="assets/project-covers/predictive-modeling.jpg" alt="Abstract predictive modeling and forecasting project cover" decoding="async">
-            </div>
-            <span class="project-eyebrow">Modeling</span>
-            <div class="project-link-top">
-              <span class="project-name">Predictive Modeling &amp; Decision Systems</span>
-              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
-            </div>
-            <p class="project-desc">Seven end-to-end models across healthcare, HR, real estate, and finance, from feature engineering to validation and business recommendations.</p>
-            <div class="project-kpis">
-              <span>R² · AUROC · RMSE</span>
-            </div>
-            <div class="project-link-tags">
-              <span>R</span>
-              <span>tidyverse</span>
-              <span>caret</span>
-            </div>
-            <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/predictive-analytics" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
-            </div>
-          </div>
-
-          <div class="project-link cat-ml" data-project-card data-categories="modeling" data-tags="modeling unsupervised learning clustering association rules retail health kmeans dbscan gmm spectral apriori fp-growth python">
-            <a class="project-link-stretch" href="machine-learning/index.html" aria-label="Unsupervised Learning &amp; Pattern Discovery &mdash; view case study"></a>
-            <div class="project-cover">
-              <img src="assets/project-covers/unsupervised-learning.jpg" alt="Abstract clustering and association rules project cover" decoding="async">
-            </div>
-            <span class="project-eyebrow">Unsupervised ML</span>
-            <div class="project-link-top">
-              <span class="project-name">Unsupervised Learning &amp; Pattern Discovery</span>
-              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
-            </div>
-            <p class="project-desc">Compared 6 clustering methods on 100K synthetic health records and mined 541K retail transactions for product association rules.</p>
-            <div class="project-kpis">
-              <span>24× rule lift</span>
-            </div>
-            <div class="project-link-tags">
-              <span>Python</span>
-              <span>K-Means</span>
-              <span>DBSCAN</span>
-            </div>
-            <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/machine-learning" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
-            </div>
-          </div>
-
-          <div class="project-link cat-engineering" data-project-card data-categories="engineering" data-tags="engineering sql database mysql geospatial groundwater folium geopandas etl normalized schema texas water quality">
-            <a class="project-link-stretch" href="databases-sql/index.html" aria-label="Data Engineering, SQL &amp; Geospatial Systems &mdash; view case study"></a>
-            <div class="project-cover">
-              <img src="assets/project-covers/data-engineering-sql-geospatial.jpg" alt="Abstract SQL database and Texas geospatial mapping project cover" decoding="async">
-            </div>
-            <span class="project-eyebrow">Data Engineering</span>
-            <div class="project-link-top">
-              <span class="project-name">Data Engineering, SQL &amp; Geospatial Systems</span>
-              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
-            </div>
-            <p class="project-desc">Built a 64-table MySQL database for 20+ years of Texas groundwater data, paired with SQL aggregation and interactive geospatial maps.</p>
-            <div class="project-kpis">
-              <span>64-table schema</span>
-            </div>
-            <div class="project-link-tags">
-              <span>MySQL</span>
-              <span>SQL</span>
-              <span>GeoPandas</span>
-            </div>
-            <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/databases-sql" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
-            </div>
-          </div>
-
-          <div class="project-link cat-communication" data-project-card data-categories="communication" data-tags="communication storytelling executive presentation infographic healthcare product analysis nlp medical devices">
-            <a class="project-link-stretch" href="data-storytelling/index.html" aria-label="Executive Communication &amp; Data Storytelling &mdash; view case study"></a>
-            <div class="project-cover">
-              <img src="assets/project-covers/data-storytelling.jpg" alt="Abstract data storytelling and executive communication project cover" decoding="async">
-            </div>
-            <span class="project-eyebrow">Communication</span>
-            <div class="project-link-top">
-              <span class="project-name">Executive Communication &amp; Data Storytelling</span>
-              <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
-            </div>
-            <p class="project-desc">Executive decks and infographics that translate technical findings into clear, non-technical recommendations.</p>
-            <div class="project-link-tags">
-              <span>PowerPoint</span>
-              <span>Data Visualization</span>
-              <span>Storytelling</span>
-            </div>
-            <div class="project-quicklinks">
-              <a class="project-quicklink" href="https://github.com/chloedbarker/chloedbarker.github.io/tree/main/data-storytelling" target="_blank" rel="noopener"><img class="project-quicklink-icon" onerror="this.remove()" src="https://cdn.simpleicons.org/github/B3B3B3" alt="" decoding="async">Code</a>
-            </div>
-          </div>
-
-        </div>
-        <p id="projectResults" role="status" aria-live="polite" class="results-count"></p>
-        <p id="projectEmpty" class="project-empty" hidden>No matching projects yet.</p>
-      </div>
-
       <div class="footer reveal">
-        <a href="https://github.com/chloedbarker/chloedbarker.github.io">View source on GitHub</a>
+        <p>Let’s turn data into better decisions.</p>
+        <a class="profile-button primary" href="mailto:chloedbarkerr@icloud.com">Get in touch</a>
+        <a href="https://github.com/chloedbarker/chloedbarker.github.io">View source on GitHub ↗</a>
       </div>
 
   </main>
@@ -480,29 +483,40 @@
   const navLinks = document.querySelectorAll('.side-nav a');
   const navSections = [...navLinks].map(a => document.querySelector(a.getAttribute('href')));
 
-  if ('IntersectionObserver' in window && navSections.every(Boolean)) {
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = '#' + entry.target.id;
-          navLinks.forEach(a => {
-            const active = a.getAttribute('href') === id;
-            a.classList.toggle('active', active);
-            if (active) a.setAttribute('aria-current', 'location');
-            else a.removeAttribute('aria-current');
-          });
-        }
-      });
-    }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
-
-    navSections.forEach(section => navObserver.observe(section));
+  // Use section positions so tall sections and upward scrolling stay in sync.
+  let navFrame;
+  function updateNavigation() {
+    const current = [...navSections].reverse().find(section => section.getBoundingClientRect().top <= 140) || navSections[0];
+    navLinks.forEach(link => {
+      const active = link.hash === '#' + current.id;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    navFrame = null;
   }
+  window.addEventListener('scroll', () => {
+    if (!navFrame) navFrame = requestAnimationFrame(updateNavigation);
+  }, { passive: true });
+  window.addEventListener('resize', updateNavigation);
+  updateNavigation();
 
   const projectSearch = document.getElementById('projectSearch');
   const projectCards = [...document.querySelectorAll('[data-project-card]')];
-  const projectFilters = [...document.querySelectorAll('.project-filter')];
+  const projectFilters = [...document.querySelectorAll('.project-filter[data-filter]')];
   const projectEmpty = document.getElementById('projectEmpty');
-  let activeProjectFilter = 'all';
+  const searchState = new URLSearchParams(location.search);
+  let activeProjectFilter = projectFilters.some(button => button.dataset.filter === searchState.get('filter')) ? searchState.get('filter') : 'all';
+  projectSearch.value = searchState.get('q') || '';
+  document.querySelector('.search-shortcut').addEventListener('click', () => {
+    projectSearch.focus({ preventScroll: true });
+  });
+  document.getElementById('resetProjects').addEventListener('click', () => {
+    projectSearch.value = '';
+    activeProjectFilter = 'all';
+    updateProjectCards();
+    projectSearch.focus({ preventScroll: true });
+  });
 
   function normalize(value) {
     return value.toLowerCase().replace(/\s+/g, ' ').trim();
@@ -510,6 +524,16 @@
 
   function updateProjectCards() {
     const query = normalize(projectSearch?.value || '');
+    projectFilters.forEach(button => {
+      const active = button.dataset.filter === activeProjectFilter;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    const url = new URL(location.href);
+    if (query) url.searchParams.set('q', projectSearch.value); else url.searchParams.delete('q');
+    if (activeProjectFilter !== 'all') url.searchParams.set('filter', activeProjectFilter); else url.searchParams.delete('filter');
+    if (url.href !== location.href) history.replaceState(null, '', url);
+
     let visibleCount = 0;
 
     projectCards.forEach(card => {
@@ -524,7 +548,7 @@
     });
 
     if (projectEmpty) projectEmpty.hidden = visibleCount !== 0;
-    document.getElementById('projectResults').textContent = `${visibleCount} of ${projectCards.length} project collections`;
+    document.getElementById('projectResults').textContent = `${visibleCount} of ${projectCards.length} projects and collections`;
   }
 
   projectSearch?.addEventListener('input', updateProjectCards);
