@@ -101,6 +101,11 @@ body.subpage .page, body.case-study .page {
 }
 :is(.site-nav, .top-bar) .home-button:hover { background: #2a2a2a; color: #fff; transform: scale(1.04); }
 .home-button svg { display: block; width: 26px; height: 26px; fill: currentColor; }
+
+/* Plain-text arrow glyphs (e.g. "↗") render inconsistently across devices
+   and can fall back to colored emoji; use a drawn SVG instead so external
+   links look identical everywhere. */
+.external-arrow { width: .8em; height: .8em; margin-left: 5px; vertical-align: -0.05em; }
 /* On the homepage the sidebar above already serves as "you are here";
    a second Home button right below it in the top bar has nowhere to go. */
 @media (max-width: 720px) {
