@@ -68,6 +68,11 @@ body.subpage .page, body.case-study .page {
 .profile-actions { flex-wrap: wrap; }
 @media (max-width: 720px) {
   .top-bar { margin-left: -14px; margin-right: -14px; padding-left: 14px; padding-right: 14px; }
+  /* The sidebar above already covers Resume on mobile, where it renders
+     inline instead of sticking beside the content; keeping it here too
+     stacks two navigation blocks before any page content. */
+  .top-bar-link { display: none; }
+  .search-shortcut { margin-left: 0; }
 }
 @media (max-width: 450px) {
   .top-bar { margin-left: -10px; margin-right: -10px; padding-left: 10px; padding-right: 10px; }
@@ -96,6 +101,11 @@ body.subpage .page, body.case-study .page {
 }
 :is(.site-nav, .top-bar) .home-button:hover { background: #2a2a2a; color: #fff; transform: scale(1.04); }
 .home-button svg { display: block; width: 26px; height: 26px; fill: currentColor; }
+/* On the homepage the sidebar above already serves as "you are here";
+   a second Home button right below it in the top bar has nowhere to go. */
+@media (max-width: 720px) {
+  .top-bar .home-button { display: none; }
+}
 
 /* Header copy fills the available inner width and wraps within the panel. */
 .page-hero p, .project-hero-lede {
