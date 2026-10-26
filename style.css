@@ -1990,3 +1990,13 @@ input:focus-visible {
 }
 @media (max-width: 720px) { .content::before { margin-left: -14px; margin-right: -14px; } }
 @media (max-width: 450px) { .content::before { margin-left: -10px; margin-right: -10px; } }
+
+/* Career timeline: distinguish the current role without overstating results. */
+.exp-item + .exp-item { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border); }
+.exp-body { min-width: 0; }
+.exp-current .exp-logo img { object-fit: contain; background: #fff; padding: 4px; }
+.current-badge { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 3px 9px; border-radius: 999px; background: var(--green-soft); color: var(--green); font: 600 11px var(--font-body); }
+.exp-summary, .exp-scope { margin: 14px 0 0; max-width: 78ch; line-height: 1.7; }
+.exp-scope { color: var(--text-subdued); }
+.exp-scope strong { color: var(--text-base); font-weight: 500; }
+.project-link:focus-within { outline: 2px solid var(--green); outline-offset: 4px; }

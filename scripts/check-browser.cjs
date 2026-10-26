@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..');
-const pages = fs.readdirSync(root, {recursive: true}).filter(p => /(^|\/)index\.html$/.test(p) && !p.startsWith('.'));
+const pages = fs.readdirSync(root, {recursive: true}).filter(p => /(^|\/)index\.html$/.test(p) && !p.split(path.sep).some(part => part.startsWith('.') || part === 'node_modules'));
 (async () => {
  const browser = await chromium.launch({channel: 'chrome', headless: true});
  const page = await browser.newPage();

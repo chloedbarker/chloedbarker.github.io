@@ -20,7 +20,7 @@ class Document(HTMLParser):
         for key in ('href', 'src'):
             if key in attrs: self.refs.append(attrs[key])
 
-pages = {p: Document(p) for p in ROOT.rglob('index.html') if '.git' not in p.parts}
+pages = {p: Document(p) for p in ROOT.rglob('index.html') if not {'.git', 'node_modules', '.venv'} & set(p.relative_to(ROOT).parts)}
 errors = []
 count = 0
 for path, doc in pages.items():
