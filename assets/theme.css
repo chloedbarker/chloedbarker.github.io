@@ -135,7 +135,9 @@ body.subpage .page, body.case-study .page {
   cursor: default;
 }
 #skills .skill-chip:not(a), #skills .skill-chip:not(a):hover {
-  background: #303030;
+  background: transparent;
+  border-left: 2px solid var(--border);
+  border-radius: 0;
   color: var(--light-gray);
   transform: none;
   box-shadow: none;

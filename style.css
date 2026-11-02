@@ -1962,9 +1962,11 @@ input:focus-visible {
 .search-shortcut { display: flex; align-items: center; gap: 10px; margin: 0 auto 0 12px; padding: 10px 16px; min-height: 44px; border-radius: 999px; background: #242424; color: #b3b3b3; font-weight: 500; }
 .search-shortcut svg { width: 22px; height: 22px; flex-shrink: 0; }
 .search-shortcut:hover { background: #303030; color: #fff; }
-.profile-overview { grid-template-columns: minmax(0, 1fr) minmax(220px, 280px); }
-.profile-overview h2 { font-size: clamp(44px, 6vw, 80px); letter-spacing: -.045em; }
-.profile-overview .about-text { max-width: 64ch; color: #d0d8d3; }
+.profile-overview { grid-template-columns: minmax(0, 1fr); }
+.profile-copy { min-width: 0; }
+.profile-highlights { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.profile-overview h2 { font-size: clamp(44px, 6vw, 80px); letter-spacing: -.015em; }
+.profile-overview .about-text { max-width: none; color: #d0d8d3; }
 #projects { background: transparent; border-color: transparent; }
 .project-search:focus-visible { outline: 2px solid white; outline-offset: 3px; }
 .project-empty { text-align: center; padding: 32px 16px; }
@@ -1996,7 +1998,7 @@ input:focus-visible {
 .exp-body { min-width: 0; }
 .exp-current .exp-logo img { object-fit: contain; background: #fff; padding: 4px; }
 .current-badge { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 3px 9px; border-radius: 999px; background: var(--green-soft); color: var(--green); font: 600 11px var(--font-body); }
-.exp-summary, .exp-scope { margin: 14px 0 0; max-width: 78ch; line-height: 1.7; }
+.exp-summary, .exp-scope { margin: 14px 0 0; line-height: 1.7; }
 .exp-scope { color: var(--text-subdued); }
 .exp-scope strong { color: var(--text-base); font-weight: 500; }
 .project-link:focus-within { outline: 2px solid var(--green); outline-offset: 4px; }
