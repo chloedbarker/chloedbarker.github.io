@@ -30,3 +30,6 @@ capstone/data/All_Counties_Water_Quality_with_COUNTY_NAME.csv
 node_modules/
 playwright-report/
 test-results/
+
+# Private academic records
+certifications/Transcript_SMU.pdf
